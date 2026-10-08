@@ -1,0 +1,113 @@
+{
+  "width": 8,
+  "height": 9,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 3,
+      "y": 0
+    },
+    {
+      "x": 4,
+      "y": 0
+    },
+    {
+      "x": 0,
+      "y": 1
+    },
+    {
+      "x": 7,
+      "y": 1
+    },
+    {
+      "x": 0,
+      "y": 4
+    },
+    {
+      "x": 7,
+      "y": 4
+    },
+    {
+      "x": 0,
+      "y": 7
+    },
+    {
+      "x": 7,
+      "y": 7
+    },
+    {
+      "x": 3,
+      "y": 8
+    },
+    {
+      "x": 4,
+      "y": 8
+    }
+  ],
+  "gates": [
+    {
+      "id": "purple-1",
+      "side": "top",
+      "start": 1,
+      "length": 2,
+      "color": "purple",
+      "line": 0
+    },
+    {
+      "id": "red-1",
+      "side": "top",
+      "start": 5,
+      "length": 2,
+      "color": "red",
+      "line": 0
+    },
+    {
+      "id": "yellow-1",
+      "side": "left",
+      "start": 2,
+      "length": 2,
+      "color": "yellow",
+      "line": 0
+    },
+    {
+      "id": "orange-1",
+      "side": "right",
+      "start": 2,
+      "length": 2,
+      "color": "orange",
+      "line": 7
+    },
+    {
+      "id": "yellow-2",
+      "side": "left",
+      "start": 5,
+      "length": 2,
+      "color": "yellow",
+      "line": 0
+    },
+    {
+      "id": "green-1",
+      "side": "right",
+      "start": 5,
+      "length": 2,
+      "color": "green",
+      "line": 7
+    },
+    {
+      "id": "red-2",
+      "side": "bottom",
+      "start": 1,
+      "length": 2,
+      "color": "red",
+      "line": 8
+    },
+    {
+      "id": "yellow-3",
+      "side": "bottom",
+      "start": 5,
+      "length": 2,
+      "color": "yellow",
+      "line": 8
+    }
+  ]
+}

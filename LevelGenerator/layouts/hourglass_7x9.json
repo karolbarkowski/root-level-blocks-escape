@@ -1,0 +1,193 @@
+{
+  "width": 9,
+  "height": 12,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 0,
+      "y": 0
+    },
+    {
+      "x": 1,
+      "y": 0
+    },
+    {
+      "x": 4,
+      "y": 0
+    },
+    {
+      "x": 7,
+      "y": 0
+    },
+    {
+      "x": 8,
+      "y": 0
+    },
+    {
+      "x": 0,
+      "y": 1
+    },
+    {
+      "x": 8,
+      "y": 1
+    },
+    {
+      "x": 1,
+      "y": 4
+    },
+    {
+      "x": 2,
+      "y": 4
+    },
+    {
+      "x": 6,
+      "y": 4
+    },
+    {
+      "x": 7,
+      "y": 4
+    },
+    {
+      "x": 0,
+      "y": 6
+    },
+    {
+      "x": 1,
+      "y": 6
+    },
+    {
+      "x": 2,
+      "y": 6
+    },
+    {
+      "x": 6,
+      "y": 6
+    },
+    {
+      "x": 7,
+      "y": 6
+    },
+    {
+      "x": 8,
+      "y": 6
+    },
+    {
+      "x": 0,
+      "y": 7
+    },
+    {
+      "x": 8,
+      "y": 7
+    },
+    {
+      "x": 0,
+      "y": 10
+    },
+    {
+      "x": 8,
+      "y": 10
+    },
+    {
+      "x": 0,
+      "y": 11
+    },
+    {
+      "x": 1,
+      "y": 11
+    },
+    {
+      "x": 4,
+      "y": 11
+    },
+    {
+      "x": 7,
+      "y": 11
+    },
+    {
+      "x": 8,
+      "y": 11
+    }
+  ],
+  "gates": [
+    {
+      "id": "blue-1",
+      "side": "top",
+      "start": 2,
+      "length": 2,
+      "color": "blue",
+      "line": 0
+    },
+    {
+      "id": "cyan-1",
+      "side": "top",
+      "start": 5,
+      "length": 2,
+      "color": "cyan",
+      "line": 0
+    },
+    {
+      "id": "red-1",
+      "side": "left",
+      "start": 2,
+      "length": 2,
+      "color": "red",
+      "line": 0
+    },
+    {
+      "id": "yellow-1",
+      "side": "right",
+      "start": 2,
+      "length": 2,
+      "color": "yellow",
+      "line": 8
+    },
+    {
+      "id": "purple-1",
+      "side": "left",
+      "start": 5,
+      "length": 1,
+      "color": "purple",
+      "line": 2
+    },
+    {
+      "id": "orange-1",
+      "side": "right",
+      "start": 5,
+      "length": 1,
+      "color": "orange",
+      "line": 6
+    },
+    {
+      "id": "green-1",
+      "side": "left",
+      "start": 8,
+      "length": 2,
+      "color": "green",
+      "line": 0
+    },
+    {
+      "id": "orange-2",
+      "side": "right",
+      "start": 8,
+      "length": 2,
+      "color": "orange",
+      "line": 8
+    },
+    {
+      "id": "purple-2",
+      "side": "bottom",
+      "start": 2,
+      "length": 2,
+      "color": "purple",
+      "line": 11
+    },
+    {
+      "id": "red-2",
+      "side": "bottom",
+      "start": 5,
+      "length": 2,
+      "color": "red",
+      "line": 11
+    }
+  ]
+}

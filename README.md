@@ -56,6 +56,23 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 
 `run.json` in the output folder records the invocation, saved files, attempts, timing and whether the run completed. Each level's `analysis` holds composition, solver status, opening bounds (`opening`, `firstTwoFullRemovals`) and the difficulty rating.
 
+### Sample layouts
+
+`LevelGenerator/layouts/` contains eight layouts sized after boards in the genre: compact 6×7-style boards with 2-cell gates, two per side, up to irregular 9×11 shapes with towers, recessed gates and corridors. They're listed roughly from easiest to hardest.
+
+| Layout | Floor cells | Gates / colors | Shape | Sample difficulty |
+|---|---:|---:|---|---:|
+| `starter_4x5` | 20 | 4 / 4 | rectangle, one gate per side | 228 |
+| `classic_5x6` | 30 | 5 / 4 | rectangle | 232 |
+| `notched_6x8` | 44 | 6 / 6 | cut corners | 266 |
+| `classic_6x7` | 42 | 8 / 5 | rectangle, two 2-cell gates per side | 338 |
+| `cross_8x8` | 48 | 8 / 7 | plus shape, four recessed corner gates | 326 |
+| `hourglass_7x9` | 58 | 10 / 7 | 3-wide waist with recessed side gates | 473 |
+| `pillars_7x7` | 45 | 8 / 7 | interior pillars forming lanes | 547 |
+| `fortress_9x11` | 77 | 10 / 7 | two towers, side gates, bottom corridor | 736 |
+
+Sample difficulties come from one level each with default options and `--seed 1`. Each layout generated a verified level in 1–15 seconds.
+
 ### Difficulty and file names
 
 Files are named `<difficulty>-<layout>-<counter>`, for example `0423-simple-001.json`:

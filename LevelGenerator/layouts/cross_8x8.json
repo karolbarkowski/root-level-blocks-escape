@@ -1,0 +1,153 @@
+{
+  "width": 10,
+  "height": 10,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 2,
+      "y": 0
+    },
+    {
+      "x": 3,
+      "y": 0
+    },
+    {
+      "x": 6,
+      "y": 0
+    },
+    {
+      "x": 7,
+      "y": 0
+    },
+    {
+      "x": 2,
+      "y": 1
+    },
+    {
+      "x": 7,
+      "y": 1
+    },
+    {
+      "x": 2,
+      "y": 2
+    },
+    {
+      "x": 7,
+      "y": 2
+    },
+    {
+      "x": 0,
+      "y": 3
+    },
+    {
+      "x": 9,
+      "y": 3
+    },
+    {
+      "x": 0,
+      "y": 6
+    },
+    {
+      "x": 9,
+      "y": 6
+    },
+    {
+      "x": 2,
+      "y": 7
+    },
+    {
+      "x": 7,
+      "y": 7
+    },
+    {
+      "x": 2,
+      "y": 8
+    },
+    {
+      "x": 7,
+      "y": 8
+    },
+    {
+      "x": 2,
+      "y": 9
+    },
+    {
+      "x": 3,
+      "y": 9
+    },
+    {
+      "x": 6,
+      "y": 9
+    },
+    {
+      "x": 7,
+      "y": 9
+    }
+  ],
+  "gates": [
+    {
+      "id": "cyan-1",
+      "side": "top",
+      "start": 4,
+      "length": 2,
+      "color": "cyan",
+      "line": 0
+    },
+    {
+      "id": "blue-1",
+      "side": "top",
+      "start": 1,
+      "length": 1,
+      "color": "blue",
+      "line": 2
+    },
+    {
+      "id": "yellow-1",
+      "side": "top",
+      "start": 8,
+      "length": 1,
+      "color": "yellow",
+      "line": 2
+    },
+    {
+      "id": "red-1",
+      "side": "left",
+      "start": 4,
+      "length": 2,
+      "color": "red",
+      "line": 0
+    },
+    {
+      "id": "orange-1",
+      "side": "right",
+      "start": 4,
+      "length": 2,
+      "color": "orange",
+      "line": 9
+    },
+    {
+      "id": "green-1",
+      "side": "bottom",
+      "start": 1,
+      "length": 1,
+      "color": "green",
+      "line": 7
+    },
+    {
+      "id": "purple-1",
+      "side": "bottom",
+      "start": 8,
+      "length": 1,
+      "color": "purple",
+      "line": 7
+    },
+    {
+      "id": "red-2",
+      "side": "bottom",
+      "start": 4,
+      "length": 2,
+      "color": "red",
+      "line": 9
+    }
+  ]
+}
