@@ -1,0 +1,59 @@
+{
+  "options": {
+    "seed": 44,
+    "width": 6,
+    "height": 6,
+    "blocks": 10,
+    "seconds": 15,
+    "minOpening": 4,
+    "count": 1,
+    "specials": true,
+    "fixedLayout": {
+      "width": 6,
+      "height": 6,
+      "walls": [
+        {
+          "x": 2,
+          "y": 2
+        }
+      ],
+      "gates": [
+        {
+          "id": "red-top",
+          "side": "top",
+          "start": 0,
+          "length": 3,
+          "color": "red"
+        },
+        {
+          "id": "blue-right",
+          "side": "right",
+          "start": 0,
+          "length": 3,
+          "color": "blue"
+        },
+        {
+          "id": "yellow-bottom",
+          "side": "bottom",
+          "start": 3,
+          "length": 3,
+          "color": "yellow"
+        },
+        {
+          "id": "green-left",
+          "side": "left",
+          "start": 3,
+          "length": 3,
+          "color": "green"
+        }
+      ]
+    },
+    "method": "anneal",
+    "iterations": 0
+  },
+  "attempts": 37387,
+  "constructed": 30455,
+  "evaluated": 30455,
+  "seconds": 15.0183797,
+  "exported": 1
+}

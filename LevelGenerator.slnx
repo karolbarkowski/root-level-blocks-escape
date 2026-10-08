@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LevelGenerator/LevelGenerator.csproj" />
+  <Project Path="LevelGenerator.Tests/LevelGenerator.Tests.csproj" />
+  <Project Path="LevelGenerator.Tools/LevelGenerator.Tools.csproj" />
+  <Project Path="Shared/BlockPuzzle.Core/BlockPuzzle.Core.csproj" />
+</Solution>

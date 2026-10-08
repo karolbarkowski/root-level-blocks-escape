@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f6f7"><title>Block Studio · Layout editor</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header class="app-header">
+  <a class="brand" href="./" aria-label="Block Studio home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><strong>Block Studio</strong></a>
+  <span class="header-divider"></span><span class="app-label">Layout editor</span>
+  <div class="header-actions"><button id="new-button">New layout</button><button id="open-button">Open JSON</button><button class="primary" id="export-button">Export JSON <span aria-hidden="true">↗</span></button></div>
+</header>
+<main class="workspace">
+  <aside class="sidebar left-sidebar">
+    <section class="document-section"><p class="eyebrow">WORKING FILE</p><label class="sr-only" for="filename">Layout filename</label><input id="filename" value="untitled-layout" maxlength="80" spellcheck="false"><p id="save-status" class="subtle">Draft saved in this browser</p></section>
+    <section><div class="section-heading"><h2>Canvas</h2><span id="board-size" class="mono">6 × 6</span></div><form id="resize-form"><div class="two-fields"><label>Width<input id="width" type="number" min="2" max="20" required value="6"></label><label>Height<input id="height" type="number" min="2" max="20" required value="6"></label></div><button class="full-width secondary" type="submit">Resize board</button></form><p class="field-note">2–20 cells per side</p><label>Boundary mode<select id="boundary-mode"><option value="enclosed">Drawn enclosure</option><option value="rectangle">Rectangle (legacy)</option></select></label><p class="field-note">Draw walls and gates to enclose white floor. Pale cells outside the boundary are not playable.</p></section>
+    <section><div class="section-heading"><h2>Tools</h2><span class="subtle">1–4</span></div><div class="tools" role="group" aria-label="Drawing tools">
+      <button data-tool="wall" aria-pressed="true"><span class="tool-symbol wall-symbol" aria-hidden="true"></span><span>Draw walls</span><kbd>1</kbd></button>
+      <button data-tool="erase" aria-pressed="false"><span class="tool-symbol erase-symbol" aria-hidden="true"></span><span>Erase</span><kbd>2</kbd></button>
+      <button data-tool="gate" aria-pressed="false"><span class="tool-symbol gate-symbol" aria-hidden="true"></span><span>Place gates</span><kbd>3</kbd></button>
+      <button data-tool="select" aria-pressed="false"><span class="tool-symbol select-symbol" aria-hidden="true">↖</span><span>Select</span><kbd>4</kbd></button>
+    </div><p class="field-note" id="tool-help">Drag across cells to paint walls. Hold Shift to erase.</p></section>
+    <section id="paint-color-section"><label id="paint-direction-field">Exit direction<select id="paint-direction"><option value="left">← Left</option><option value="right">→ Right</option><option value="top">↑ Up</option><option value="bottom">↓ Down</option></select></label><h2>Gate color</h2><div class="swatches" id="swatches" role="group" aria-label="Gate color"></div><label class="field-note" for="paint-color">Color name</label><input id="paint-color" value="red" maxlength="100" list="color-names" spellcheck="false"><datalist id="color-names"><option value="red"><option value="blue"><option value="yellow"><option value="green"><option value="purple"><option value="orange"><option value="cyan"></datalist></section>
+    <div class="sidebar-bottom"><button id="example-button" class="text-button">Load example layout <span aria-hidden="true">↗</span></button><p class="subtle">Your files stay on this device.</p></div>
+  </aside>
+  <section class="canvas-panel" aria-label="Layout canvas">
+    <div class="canvas-toolbar"><div class="history-buttons"><button id="undo" aria-label="Undo" title="Undo (Ctrl+Z)">↶</button><button id="redo" aria-label="Redo" title="Redo (Ctrl+Shift+Z)">↷</button><span class="toolbar-divider"></span><span class="subtle" id="tool-label">Draw walls</span></div><div class="zoom-controls"><label for="zoom" class="sr-only">Board zoom</label><select id="zoom"><option value="fit">Fit to view</option value="75">75%</option><option value="100">100%</option><option value="150">150%</option><option value="200">200%</option></select></div></div>
+    <div class="canvas-scroll" id="canvas-scroll"><div class="board-wrap" id="board-wrap"><svg id="board" xmlns="http://www.w3.org/2000/svg" aria-label="Editable layout. Arrow keys move between cells, Enter uses the selected tool." role="group"></svg></div></div>
+    <div class="canvas-footer"><span id="cursor-position" class="mono">X · Y</span><span><span class="legend-outside"></span>Outside <span class="legend-floor"></span>Floor <span class="legend-wall"></span>Wall <span class="legend-gate"></span>Gate</span><span class="subtle">Coordinates start at 0</span></div>
+    <div class="drop-overlay" id="drop-overlay" hidden>Drop a layout JSON file<span>Generated level files work too. Only the board is imported.</span></div>
+  </section>
+  <aside class="sidebar right-sidebar">
+    <section class="validation-section"><div class="section-heading"><h2>Layout check</h2><span id="validation-badge" class="badge">Ready</span></div><div class="stats"><div><strong id="floor-count">36</strong><span>floor cells</span></div><div><strong id="wall-count">0</strong><span>walls</span></div><div><strong id="gate-count">0</strong><span>gates</span></div></div><div id="validation-messages" aria-live="polite"></div></section>
+    <section><div class="section-heading"><h2>Gates</h2><button id="add-gate" class="small-button">+ Add</button></div><div id="gate-list" class="gate-list"></div></section>
+    <section id="gate-inspector" hidden><div class="section-heading"><h2>Gate properties</h2><button id="deselect" class="text-button" aria-label="Deselect gate">×</button></div><form id="gate-form">
+      <label>Gate ID<input id="gate-id" required maxlength="100" spellcheck="false"></label>
+      <div class="two-fields"><label>Exit direction<select id="gate-side"><option value="top">Top</option><option value="right">Right</option><option value="bottom">Bottom</option><option value="left">Left</option></select></label><label>Color<input id="gate-color" required maxlength="100" list="color-names" spellcheck="false"></label></div>
+      <div class="two-fields"><label>Start<input id="gate-start" type="number" min="0" max="19" required></label><label>Length<input id="gate-length" type="number" min="1" max="20" required></label></div>
+      <label id="gate-line-field">Line<input id="gate-line" type="number" min="0" max="19"></label><p class="field-note">Left/right: Line is the column, Start is the first row. Top/bottom: Line is the row, Start is the first column. The arrow points out of the level.</p><button type="submit" class="full-width secondary">Apply changes</button><button type="button" class="full-width danger-button" id="delete-gate">Delete gate</button>
+    </form></section>
+    <section class="output-section"><h2>Generator output</h2><p class="subtle">Export a layout, then pass it to the generator with <code>--layout</code>.</p><button class="full-width secondary" id="json-button">Inspect JSON</button><p class="field-note">Layout checks validate geometry, not puzzle solvability. White floor is enclosed by walls and gates. Outside space cannot hold blocks.</p></section>
+  </aside>
+</main>
+<input type="file" id="file-input" accept=".json,application/json" hidden>
+<div class="toast" id="toast" role="status" hidden></div>
+<dialog id="new-dialog"><form id="new-form"><div class="dialog-heading"><h2>New layout</h2><button type="button" data-close="new-dialog" aria-label="Close">×</button></div><p>Start with an empty canvas. Draw an enclosed boundary with walls and gates. Your current layout remains available with Undo.</p><label>Name<input id="new-name" value="untitled-layout" maxlength="80" required></label><div class="two-fields"><label>Width<input id="new-width" type="number" min="2" max="20" required value="6"></label><label>Height<input id="new-height" type="number" min="2" max="20" required value="6"></label></div><div class="dialog-actions"><button type="button" data-close="new-dialog">Cancel</button><button class="primary">Create layout</button></div></form></dialog>
+<dialog id="json-dialog"><div class="dialog-heading"><h2>Layout JSON</h2><button data-close="json-dialog" aria-label="Close">×</button></div><p>Paste a layout here to import it, or inspect the current export. A generated level’s <code>board</code> can also be imported.</p><label class="sr-only" for="json-text">Layout JSON</label><textarea id="json-text" spellcheck="false"></textarea><p id="json-error" class="error-text" role="alert"></p><div class="dialog-actions"><button id="copy-json">Copy</button><button class="primary" id="apply-json">Import this JSON</button></div></dialog>
+<script type="module" src="app.js"></script>
+</body></html>
+

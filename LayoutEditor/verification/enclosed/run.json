@@ -1,0 +1,164 @@
+{
+  "options": {
+    "seed": 17,
+    "width": 6,
+    "height": 6,
+    "blocks": 10,
+    "seconds": 30,
+    "minOpening": 2,
+    "count": 1,
+    "specials": true,
+    "fixedLayout": {
+      "width": 10,
+      "height": 10,
+      "walls": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 6,
+          "y": 0
+        },
+        {
+          "x": 7,
+          "y": 0
+        },
+        {
+          "x": 8,
+          "y": 0
+        },
+        {
+          "x": 9,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 9,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 9,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 9,
+          "y": 3
+        },
+        {
+          "x": 0,
+          "y": 4
+        },
+        {
+          "x": 9,
+          "y": 4
+        },
+        {
+          "x": 0,
+          "y": 5
+        },
+        {
+          "x": 1,
+          "y": 5
+        },
+        {
+          "x": 2,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 5
+        },
+        {
+          "x": 7,
+          "y": 5
+        },
+        {
+          "x": 8,
+          "y": 5
+        },
+        {
+          "x": 9,
+          "y": 5
+        },
+        {
+          "x": 2,
+          "y": 9
+        },
+        {
+          "x": 3,
+          "y": 9
+        },
+        {
+          "x": 4,
+          "y": 9
+        },
+        {
+          "x": 5,
+          "y": 9
+        },
+        {
+          "x": 6,
+          "y": 9
+        }
+      ],
+      "gates": [
+        {
+          "id": "red-left",
+          "side": "left",
+          "start": 6,
+          "length": 3,
+          "color": "red",
+          "line": 2
+        },
+        {
+          "id": "blue-right",
+          "side": "right",
+          "start": 6,
+          "length": 3,
+          "color": "blue",
+          "line": 6
+        }
+      ],
+      "boundaryMode": "enclosed"
+    },
+    "method": "anneal",
+    "iterations": 0
+  },
+  "attempts": 8999,
+  "constructed": 8591,
+  "evaluated": 8591,
+  "seconds": 30.0794519,
+  "exported": 1
+}

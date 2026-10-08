@@ -1,0 +1,548 @@
+{
+  "format": "block-puzzle/v1",
+  "rules": "grid-drag-drop/v1",
+  "seed": 17,
+  "board": {
+    "width": 10,
+    "height": 10,
+    "walls": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 3,
+        "y": 0
+      },
+      {
+        "x": 4,
+        "y": 0
+      },
+      {
+        "x": 5,
+        "y": 0
+      },
+      {
+        "x": 6,
+        "y": 0
+      },
+      {
+        "x": 7,
+        "y": 0
+      },
+      {
+        "x": 8,
+        "y": 0
+      },
+      {
+        "x": 9,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 9,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 9,
+        "y": 2
+      },
+      {
+        "x": 0,
+        "y": 3
+      },
+      {
+        "x": 9,
+        "y": 3
+      },
+      {
+        "x": 0,
+        "y": 4
+      },
+      {
+        "x": 9,
+        "y": 4
+      },
+      {
+        "x": 0,
+        "y": 5
+      },
+      {
+        "x": 1,
+        "y": 5
+      },
+      {
+        "x": 2,
+        "y": 5
+      },
+      {
+        "x": 6,
+        "y": 5
+      },
+      {
+        "x": 7,
+        "y": 5
+      },
+      {
+        "x": 8,
+        "y": 5
+      },
+      {
+        "x": 9,
+        "y": 5
+      },
+      {
+        "x": 2,
+        "y": 9
+      },
+      {
+        "x": 3,
+        "y": 9
+      },
+      {
+        "x": 4,
+        "y": 9
+      },
+      {
+        "x": 5,
+        "y": 9
+      },
+      {
+        "x": 6,
+        "y": 9
+      }
+    ],
+    "gates": [
+      {
+        "id": "red-left",
+        "side": "left",
+        "start": 6,
+        "length": 3,
+        "color": "red",
+        "line": 2
+      },
+      {
+        "id": "blue-right",
+        "side": "right",
+        "start": 6,
+        "length": 3,
+        "color": "blue",
+        "line": 6
+      }
+    ],
+    "boundaryMode": "enclosed"
+  },
+  "blocks": [
+    {
+      "id": "b1",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 1
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b2",
+      "shape": [
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 4,
+        "y": 6
+      },
+      "colors": [
+        "red"
+      ],
+      "axis": "horizontal",
+      "frozenFor": 0
+    },
+    {
+      "id": "b3",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 6,
+        "y": 1
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b4",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 3,
+        "y": 3
+      },
+      "colors": [
+        "red"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b5",
+      "shape": [
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 3,
+        "y": 1
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b6",
+      "shape": [
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 5,
+        "y": 4
+      },
+      "colors": [
+        "red"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b7",
+      "shape": [
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 1
+      },
+      "colors": [
+        "red"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b8",
+      "shape": [
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 4
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b9",
+      "shape": [
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 2
+      },
+      "colors": [],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b10",
+      "shape": [
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 4,
+        "y": 5
+      },
+      "colors": [
+        "red",
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 1
+    }
+  ],
+  "solution": [
+    {
+      "block": "b3",
+      "to": {
+        "x": 7,
+        "y": 3
+      }
+    },
+    {
+      "block": "b4",
+      "to": {
+        "x": 4,
+        "y": 3
+      }
+    },
+    {
+      "block": "b5",
+      "to": {
+        "x": 5,
+        "y": 1
+      }
+    },
+    {
+      "block": "b7",
+      "to": {
+        "x": 4,
+        "y": 1
+      }
+    },
+    {
+      "block": "b9",
+      "to": {
+        "x": 2,
+        "y": 1
+      }
+    },
+    {
+      "block": "b8",
+      "to": {
+        "x": 2,
+        "y": 3
+      }
+    },
+    {
+      "block": "b2",
+      "to": {
+        "x": 3,
+        "y": 6
+      }
+    },
+    {
+      "block": "b10",
+      "to": {
+        "x": 3,
+        "y": 6
+      }
+    },
+    {
+      "block": "b10",
+      "to": {
+        "x": 4,
+        "y": 6
+      }
+    },
+    {
+      "block": "b8",
+      "to": {
+        "x": 4,
+        "y": 6
+      }
+    },
+    {
+      "block": "b1",
+      "to": {
+        "x": 5,
+        "y": 6
+      }
+    },
+    {
+      "block": "b6",
+      "to": {
+        "x": 3,
+        "y": 6
+      }
+    },
+    {
+      "block": "b3",
+      "to": {
+        "x": 4,
+        "y": 6
+      }
+    },
+    {
+      "block": "b4",
+      "to": {
+        "x": 3,
+        "y": 6
+      }
+    },
+    {
+      "block": "b5",
+      "to": {
+        "x": 3,
+        "y": 6
+      }
+    },
+    {
+      "block": "b7",
+      "to": {
+        "x": 3,
+        "y": 6
+      }
+    }
+  ],
+  "analysis": {
+    "method": "reverse construction \u002B simulated annealing \u002B diversity archive",
+    "solvability": "verifiedByReplay",
+    "solutionOptimal": true,
+    "solverStatus": "solved",
+    "solverVisited": 492,
+    "solutionMoves": 16,
+    "opening": {
+      "exact": 7,
+      "lowerBound": 7,
+      "status": "exact",
+      "visited": 245
+    },
+    "firstTwoFullRemovals": {
+      "exact": 9,
+      "lowerBound": 9,
+      "status": "exact",
+      "visited": 786
+    },
+    "distinctBlocksBeforeFirstEventInWitness": 6,
+    "occupancy": 0.6591,
+    "score": 125.023,
+    "minimumOpeningRequired": 2,
+    "seed": 17,
+    "attempts": 8999,
+    "generationSeconds": 30.079
+  }
+}

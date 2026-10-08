@@ -1,0 +1,40 @@
+{
+  "width": 6,
+  "height": 6,
+  "walls": [
+    {
+      "x": 2,
+      "y": 2
+    }
+  ],
+  "gates": [
+    {
+      "id": "red-top",
+      "side": "top",
+      "start": 0,
+      "length": 3,
+      "color": "red"
+    },
+    {
+      "id": "blue-right",
+      "side": "right",
+      "start": 0,
+      "length": 3,
+      "color": "blue"
+    },
+    {
+      "id": "yellow-bottom",
+      "side": "bottom",
+      "start": 3,
+      "length": 3,
+      "color": "yellow"
+    },
+    {
+      "id": "green-left",
+      "side": "left",
+      "start": 3,
+      "length": 3,
+      "color": "green"
+    }
+  ]
+}
