@@ -2,7 +2,7 @@
 
 Measured on 9 September 2026 using .NET SDK 10.0.302, Release build, on the supplied Windows workspace. These are small engineering experiments, not a statistically powered benchmark or a player study.
 
-> **Historical snapshot.** The commands below use the options and binary name of that time (`BlockPuzzle.dll`, `--seconds`, `--count`, `--blocks`); the current CLI is `LevelGenerator.dll` and rejects those options (see `../LevelGenerator/README.md`). The `output/` and `examples/` files referenced here were not kept in the repository, so the numbers cannot be reopened from these links.
+> **Historical snapshot.** The commands below use the options and binary name of that time (`BlockPuzzle.dll`, `--seconds`, `--count`, `--blocks`); the current CLI is `LevelGenerator.dll` and rejects those options (see `../README.md`). The `output/` and `examples/` files referenced here were not kept in the repository, so the numbers cannot be reopened from these links.
 
 ## Delivered examples
 

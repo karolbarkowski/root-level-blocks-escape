@@ -221,6 +221,35 @@ public static class SelfTests
                 if(!cancelAfterFirst) Check(System.Text.Json.JsonSerializer.Serialize(result.Levels[0].Blocks,Files.Json)!=System.Text.Json.JsonSerializer.Serialize(result.Levels[1].Blocks,Files.Json));
             }
         });
+        Test("level names sort by difficulty and keep a per-layout counter",()=>
+        {
+            Check(LevelNames.Stem(7,"sh_106",3)=="0007-sh_106-003"&&LevelNames.Stem(5000,"x",1)=="1000-x-001");
+            Check(LevelNames.Layout(null)=="random"&&LevelNames.Layout("C:/a/my layout!.json")=="my_layout");
+            Check(LevelNames.TryParse("0423-sh-106-012",out int d,out string l,out int c)&&d==423&&l=="sh-106"&&c==12);
+            Check(!LevelNames.TryParse("level-001",out _,out _,out _));
+            string folder=Path.Combine(Path.GetTempPath(),"blockpuzzle-names-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            try
+            {
+                Check(LevelNames.NextCounter(folder,"room")==1);
+                File.WriteAllText(Path.Combine(folder,"0900-room-004.svg"),"");File.WriteAllText(Path.Combine(folder,"0100-other-009.json"),"");
+                Check(LevelNames.NextCounter(folder,"room")==5&&LevelNames.NextCounter(folder,"other")==10);
+            }
+            finally {Directory.Delete(folder,true);}
+        });
+        Test("difficulty is deterministic, bounded and ranks a trivial level low",()=>
+        {
+            var trivial=new Level {Board=new(3,3,[],[new("r",Side.Top,0,3,"red")]),Blocks=[new("a",[new(0,0)],new(0,0),["red"])]};
+            var first=Difficulty.Rate(trivial);
+            Check(first.Score==Difficulty.Rate(trivial).Score);
+            Check(first.Score>=Difficulty.MinScore&&first.Score<=Difficulty.MaxScore);
+            Check(first.Score<200,$"trivial level rated {first.Score}");
+            var layout=new Layout(6,6,[new(2,2)],
+                [new("r",Side.Top,0,3,"red"),new("b",Side.Right,0,3,"blue"),new("y",Side.Bottom,3,3,"yellow"),new("g",Side.Left,3,3,"green")]);
+            var generated=new Generator(new(FixedLayout:layout,Coverage:65,SingleCellRatio:.4m,MinOpening:3)).Run(_=>{}).Levels[0];
+            int rated=(int)generated.Analysis["difficulty"];
+            Check(rated>first.Score,$"generated level {rated} not above trivial {first.Score}");
+        });
         Console.WriteLine($"{count} tests passed.");
     }
 }

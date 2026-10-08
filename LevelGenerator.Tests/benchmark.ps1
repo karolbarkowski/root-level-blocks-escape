@@ -9,7 +9,7 @@ try {
         foreach ($method in @('random', 'anneal')) {
             $folder = Join-Path $Output "$seed-$method"
             New-Item -ItemType Directory -Path $folder -Force | Out-Null
-            Remove-Item -LiteralPath (Join-Path $folder 'run.json'), (Join-Path $folder 'level-001.json') -ErrorAction SilentlyContinue
+            Get-ChildItem -LiteralPath $folder -File | Where-Object Extension -in '.json', '.html', '.svg' | Remove-Item
             $arguments = "../LevelGenerator/bin/Release/net10.0/LevelGenerator.dll generate --seed $seed --method $method --specials false --min-opening 4 --maxCandidates 1 --out `"$folder`""
             $watch = [Diagnostics.Stopwatch]::StartNew()
             $process = Start-Process dotnet -ArgumentList $arguments -NoNewWindow -PassThru `
@@ -19,8 +19,8 @@ try {
             $watch.Stop()
             $runPath = Join-Path $folder 'run.json'
             $run = if (Test-Path -LiteralPath $runPath) { Get-Content -Raw -LiteralPath $runPath | ConvertFrom-Json } else { $null }
-            $path = Join-Path $folder 'level-001.json'
-            $level = if ($run.exported -gt 0 -and (Test-Path -LiteralPath $path)) { Get-Content -Raw -LiteralPath $path | ConvertFrom-Json } else { $null }
+            $path = if ($run.exported -gt 0) { Join-Path $folder $run.files[0] } else { $null }
+            $level = if ($path -and (Test-Path -LiteralPath $path)) { Get-Content -Raw -LiteralPath $path | ConvertFrom-Json } else { $null }
             $rows += [pscustomobject]@{
                 seed = $seed; method = $method; searchBudgetSeconds = $Seconds; timedOut = $timedOut
                 exitCode = if ($timedOut) { $null } else { $process.ExitCode }
@@ -28,7 +28,7 @@ try {
                 openingLowerBound = $level.analysis.opening.lowerBound
                 openingExact = $level.analysis.opening.exact
                 solutionMoves = $level.solution.Count; optimal = $level.analysis.solutionOptimal
-                occupancy = $level.analysis.occupancy; elapsedSeconds = [math]::Round($watch.Elapsed.TotalSeconds, 2)
+                difficulty = $level.analysis.difficulty; occupancy = $level.analysis.occupancy; elapsedSeconds = [math]::Round($watch.Elapsed.TotalSeconds, 2)
             }
             $rows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Output 'summary.json') -Encoding utf8
             Write-Host "seed=$seed method=$method exported=$([int]$run.exported) opening=$($level.analysis.opening.lowerBound) timedOut=$timedOut"

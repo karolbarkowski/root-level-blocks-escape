@@ -13,7 +13,7 @@ UTF-8 JSON. All coordinates and counts are integers. Property names and enum val
 | `board.gates` | Colored exit segments; enclosed gates occupy cells in the drawn boundary |
 | `blocks` | Initial block definitions |
 | `solution` | Replayable pickup/drop destinations, optional for a user-authored unsolved input |
-| `analysis` | Optional generator/solver measurements; gameplay must not depend on these |
+| `analysis` | Optional generator/solver measurements, including `difficulty` (1–1000) and `difficultyFeatures`; gameplay must not depend on these |
 
 A gate has a unique `id`, `side` (`top`, `right`, `bottom`, `left`), `start`, `length`, and `color`. For top/bottom, `start` is an X coordinate and length spans columns. For left/right, it is a Y coordinate and length spans rows. Gate color strings match block color strings exactly. Gates cannot overlap on one side or face blocked cells.
 

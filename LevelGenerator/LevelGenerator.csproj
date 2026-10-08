@@ -13,4 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Shared\BlockPuzzle.Core\BlockPuzzle.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="levels\" />
+  </ItemGroup>
 </Project>

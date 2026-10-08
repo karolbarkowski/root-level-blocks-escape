@@ -47,7 +47,9 @@ try
             string folder=Path.GetFullPath(Text("out","output"));
             Directory.CreateDirectory(folder);
             var saved=new List<string>();
-            int nextFile=1;
+            // Files are named <difficulty 0001-1000>-<layout>-<counter>; the counter is per layout and never reused.
+            string layoutName=LevelNames.Layout(opts.GetValueOrDefault("layout"));
+            int nextCounter=LevelNames.NextCounter(folder,layoutName);
             using var cancellation=new CancellationTokenSource();
             ConsoleCancelEventHandler cancel=(_,e)=>{e.Cancel=true;cancellation.Cancel();};
             Console.CancelKeyPress+=cancel;
@@ -55,9 +57,7 @@ try
             {
                 var result=new Generator(options).Run(Console.WriteLine,(level,index)=>
                 {
-                    string stem;
-                    do {stem=Path.Combine(folder,$"level-{nextFile++:000}");}
-                    while(new[]{".json",".html",".svg"}.Any(ext=>File.Exists(stem+ext)));
+                    string stem=Path.Combine(folder,LevelNames.Stem((int)level.Analysis["difficulty"],layoutName,nextCounter++));
                     var engine=new Engine(level);
                     engine.Replay(level.Solution);
                     Renderer.Write(level,stem+".html");

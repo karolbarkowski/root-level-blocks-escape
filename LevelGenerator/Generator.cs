@@ -89,8 +89,10 @@ public sealed partial class Generator(GenerateOptions options)
         var two=Search.Opening(engine,engine.Initial(),12,50000,DateTime.UtcNow.AddSeconds(2),2);
         var frames=engine.Replay(c.Level.Solution);
         int first=frames.FindIndex(s=>s.Events>0);
+        var difficulty=Difficulty.Rate(engine,opening,two);
         c.Level.Analysis = new()
         {
+            ["difficulty"] = difficulty.Score, ["difficultyFeatures"] = difficulty.Features,
             ["method"] = options.Method == "anneal" ? "reverse construction + simulated annealing" : "reverse construction + random sampling",
             ["solvability"] = "verifiedByReplay", ["solutionOptimal"] = solved.Optimal,
             ["solverStatus"] = solved.Status,["solverVisited"] = solved.Visited,
