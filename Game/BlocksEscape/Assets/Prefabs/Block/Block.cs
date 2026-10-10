@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using BlocksEscape.Levels;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BlocksEscape
 {
@@ -9,7 +10,8 @@ namespace BlocksEscape
     // can match a level shape to a prefab in any of four 90° rotations; mirror images are separate prefabs.
     // Footprint cells are in level coordinates (x right, y down) relative to the cell under the pivot,
     // and the pivot must sit on that cell's center.
-    // The mesh uses a shared material; this tints it with the block's outermost color through a property block.
+    // The block is drawn with its outermost type's material when that type has one (see BlockTypeMaterials);
+    // otherwise the prefab's shared material is tinted with the type's color through a property block.
     [ExecuteAlways]
     [DisallowMultipleComponent]
     public sealed class Block : MonoBehaviour
@@ -19,7 +21,11 @@ namespace BlocksEscape
 
         [SerializeField] Vector2Int[] footprint = { Vector2Int.zero };
         [SerializeField] string blockId;
-        [SerializeField] string[] colors = Array.Empty<string>();
+        [SerializeField, FormerlySerializedAs("colors")] string[] types = Array.Empty<string>(); // outside to inside; empty = neutral
+        [SerializeField] Color color = BlockTypeSet.NeutralColor;
+        [SerializeField] Material material; // type material; null uses the prefab material, tinted
+        [SerializeField] Material prefabMaterial;
+        [SerializeField] Vector2Int pivotCell; // shape cell under the pivot, relative to the level position
         [SerializeField] string axis = "free";
         [SerializeField] int frozenFor;
 
@@ -27,7 +33,8 @@ namespace BlocksEscape
 
         public IReadOnlyList<Vector2Int> Footprint => footprint;
         public string BlockId => blockId;
-        public IReadOnlyList<string> Colors => colors;
+        public Vector2Int PivotCell => pivotCell;
+        public IReadOnlyList<string> Types => types;
         public string Axis => axis;
         public int FrozenFor => frozenFor;
 
@@ -87,12 +94,21 @@ namespace BlocksEscape
             return min;
         }
 
-        public void Setup(BlockData data)
+        public void Setup(BlockData data, Vector2Int pivot, BlockTypeSet blockTypes, BlockTypeMaterials typeMaterials)
         {
             blockId = data.id;
-            colors = data.colors ?? Array.Empty<string>();
+            pivotCell = pivot;
             axis = string.IsNullOrEmpty(data.axis) ? "free" : data.axis;
             frozenFor = data.frozenFor;
+            SetTypes(data.types, blockTypes, typeMaterials);
+        }
+
+        // Changes the remaining types, e.g. after a gate peeled the outer one; the look follows the new outer type.
+        public void SetTypes(string[] remaining, BlockTypeSet blockTypes, BlockTypeMaterials typeMaterials)
+        {
+            types = remaining ?? Array.Empty<string>();
+            color = blockTypes.ColorOf(types);
+            material = typeMaterials != null && types.Length > 0 ? typeMaterials.Get(types[0]) : null;
             ApplyColor();
         }
 
@@ -104,7 +120,14 @@ namespace BlocksEscape
         {
             var meshRenderer = GetComponentInChildren<MeshRenderer>();
             if (meshRenderer == null) return;
-            var color = LevelPalette.Get(colors != null && colors.Length > 0 ? colors[0] : null);
+            if (prefabMaterial == null && meshRenderer.sharedMaterial != material) prefabMaterial = meshRenderer.sharedMaterial;
+            if (material != null)
+            {
+                meshRenderer.sharedMaterial = material;
+                meshRenderer.SetPropertyBlock(null);
+                return;
+            }
+            if (prefabMaterial != null) meshRenderer.sharedMaterial = prefabMaterial;
             _block ??= new MaterialPropertyBlock();
             _block.Clear();
             _block.SetColor(BaseColorId, color);

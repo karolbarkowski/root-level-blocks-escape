@@ -1,5 +1,5 @@
 {
-  "format": "block-puzzle/v1",
+  "format": "block-puzzle/v2",
   "rules": "grid-drag-drop/v1",
   "seed": 42,
   "board": {
@@ -93,7 +93,7 @@
         "side": "top",
         "start": 4,
         "length": 2,
-        "color": "cyan",
+        "type": "animal7",
         "line": 0
       },
       {
@@ -101,7 +101,7 @@
         "side": "top",
         "start": 1,
         "length": 1,
-        "color": "blue",
+        "type": "cow",
         "line": 2
       },
       {
@@ -109,7 +109,7 @@
         "side": "top",
         "start": 8,
         "length": 1,
-        "color": "yellow",
+        "type": "animal4",
         "line": 2
       },
       {
@@ -117,7 +117,7 @@
         "side": "left",
         "start": 4,
         "length": 2,
-        "color": "red",
+        "type": "animal3",
         "line": 0
       },
       {
@@ -125,7 +125,7 @@
         "side": "right",
         "start": 4,
         "length": 2,
-        "color": "orange",
+        "type": "animal6",
         "line": 9
       },
       {
@@ -133,7 +133,7 @@
         "side": "bottom",
         "start": 1,
         "length": 1,
-        "color": "green",
+        "type": "animal5",
         "line": 7
       },
       {
@@ -141,7 +141,7 @@
         "side": "bottom",
         "start": 8,
         "length": 1,
-        "color": "purple",
+        "type": "pig",
         "line": 7
       },
       {
@@ -149,7 +149,7 @@
         "side": "bottom",
         "start": 4,
         "length": 2,
-        "color": "red",
+        "type": "animal3",
         "line": 9
       }
     ],
@@ -176,8 +176,8 @@
         "x": 7,
         "y": 5
       },
-      "colors": [
-        "orange"
+      "types": [
+        "animal6"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -202,8 +202,8 @@
         "x": 4,
         "y": 4
       },
-      "colors": [
-        "orange"
+      "types": [
+        "animal6"
       ],
       "axis": "horizontal",
       "frozenFor": 0
@@ -232,8 +232,8 @@
         "x": 1,
         "y": 5
       },
-      "colors": [
-        "red"
+      "types": [
+        "animal3"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -254,8 +254,8 @@
         "x": 5,
         "y": 2
       },
-      "colors": [
-        "purple"
+      "types": [
+        "pig"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -272,8 +272,8 @@
         "x": 4,
         "y": 1
       },
-      "colors": [
-        "blue"
+      "types": [
+        "cow"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -290,8 +290,8 @@
         "x": 5,
         "y": 6
       },
-      "colors": [
-        "green"
+      "types": [
+        "animal5"
       ],
       "axis": "free",
       "frozenFor": 3
@@ -308,9 +308,9 @@
         "x": 8,
         "y": 4
       },
-      "colors": [
-        "purple",
-        "cyan"
+      "types": [
+        "pig",
+        "animal7"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -339,8 +339,8 @@
         "x": 1,
         "y": 3
       },
-      "colors": [
-        "red"
+      "types": [
+        "animal3"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -369,8 +369,8 @@
         "x": 3,
         "y": 6
       },
-      "colors": [
-        "cyan"
+      "types": [
+        "animal7"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -395,8 +395,8 @@
         "x": 3,
         "y": 5
       },
-      "colors": [
-        "red"
+      "types": [
+        "animal3"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -417,8 +417,8 @@
         "x": 5,
         "y": 1
       },
-      "colors": [
-        "orange"
+      "types": [
+        "animal6"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -443,7 +443,7 @@
         "x": 5,
         "y": 7
       },
-      "colors": [],
+      "types": [],
       "axis": "vertical",
       "frozenFor": 0
     },
@@ -463,8 +463,8 @@
         "x": 6,
         "y": 5
       },
-      "colors": [
-        "yellow"
+      "types": [
+        "animal4"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -493,8 +493,8 @@
         "x": 3,
         "y": 1
       },
-      "colors": [
-        "cyan"
+      "types": [
+        "animal7"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -515,8 +515,8 @@
         "x": 7,
         "y": 3
       },
-      "colors": [
-        "orange"
+      "types": [
+        "animal6"
       ],
       "axis": "free",
       "frozenFor": 2
@@ -663,12 +663,12 @@
       "openingLowerBound": 3,
       "firstTwoFullRemovalsLowerBound": 4,
       "blocks": 15,
-      "colorLayers": 15,
+      "typeLayers": 15,
       "floorCells": 48,
       "frozenBlocks": 2,
       "extraLayers": 1,
       "directionalBlocks": 2,
-      "grayBlocks": 1,
+      "neutralBlocks": 1,
       "mechanicTypes": 4,
       "specialBlocks": 5,
       "playerPlayouts": 24,

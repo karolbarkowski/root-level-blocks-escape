@@ -14,6 +14,10 @@ try
         dotnet run -c Release -- render level.json --out replay.html
         dotnet run -c Release -- rate levels-folder-or-files...
           Re-rates difficulty and renames <difficulty>-<layout>-<counter> files to the new score.
+        dotnet run -c Release -- migrate levels-or-layouts-folders-or-files...
+          Converts block-puzzle/v1 levels and layouts (gate and block colors) to v2 block types.
+        dotnet run -c Release -- rename-type <old-id> <new-id> levels-or-layouts-folders-or-files...
+          Renames a block type id in gates and blocks. Add the new id to block-types.json and rebuild first.
         """);
         return 0;
     }
@@ -31,7 +35,7 @@ try
     string Input()=>positional.Count==1?positional[0]:throw new ArgumentException("Expected one input file.");
     string[] allowed=args[0] switch
     {
-        "solve" or "analyze"=>["seconds","states","out"],"render"=>["out"],"verify" or "rate"=>[],
+        "solve" or "analyze"=>["seconds","states","out"],"render"=>["out"],"verify" or "rate" or "migrate" or "rename-type"=>[],
         "generate"=>throw new ArgumentException("generate lives in the LevelGenerator project."),
         _=>throw new ArgumentException("Unknown command.")
     };
@@ -42,7 +46,7 @@ try
         {
             var level=Files.Read<Level>(Input());var engine=new Engine(level);
             var frames=engine.Replay(level.Solution);
-            Console.WriteLine($"VALID: {level.Blocks.Length} blocks, {level.Solution.Length} legal drops, {frames[^1].Events} removal events; all colored blocks cleared.");
+            Console.WriteLine($"VALID: {level.Blocks.Length} blocks, {level.Solution.Length} legal drops, {frames[^1].Events} removal events; all typed blocks cleared.");
             break;
         }
         case "solve":
@@ -95,6 +99,25 @@ try
                     foreach (string ext in LevelNames.Extensions)
                         if (File.Exists(Path.Combine(folder,stem+ext))) File.Move(Path.Combine(folder,stem+ext),Path.Combine(folder,target+ext));
                 Console.WriteLine(target==stem?$"{stem}: {result.Score}":$"{stem} -> {target}");
+            }
+            break;
+        }
+        case "migrate":
+        {
+            if (positional.Count==0) throw new ArgumentException("Expected level or layout files or folders.");
+            foreach (string path in TypeFiles.Find(positional))
+                Console.WriteLine($"{path}: {TypeFiles.Migrate(path)}");
+            break;
+        }
+        case "rename-type":
+        {
+            if (positional.Count<3) throw new ArgumentException("Expected <old-id> <new-id> and level or layout files or folders.");
+            string from=positional[0],to=positional[1];
+            if (!BlockTypes.IsKnown(to)) throw new ArgumentException($"'{to}' is not in block-types.json. Add it there and rebuild first.");
+            foreach (string path in TypeFiles.Find(positional.Skip(2)))
+            {
+                int renamed=TypeFiles.Rename(path,from,to);
+                if (renamed>0) Console.WriteLine($"{path}: {renamed} renamed");
             }
             break;
         }

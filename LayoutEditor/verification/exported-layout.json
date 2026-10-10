@@ -13,28 +13,28 @@
       "side": "top",
       "start": 0,
       "length": 3,
-      "color": "red"
+      "type": "animal3"
     },
     {
       "id": "blue-right",
       "side": "right",
       "start": 0,
       "length": 3,
-      "color": "blue"
+      "type": "cow"
     },
     {
       "id": "yellow-bottom",
       "side": "bottom",
       "start": 3,
       "length": 3,
-      "color": "yellow"
+      "type": "animal4"
     },
     {
       "id": "green-left",
       "side": "left",
       "start": 3,
       "length": 3,
-      "color": "green"
+      "type": "animal5"
     }
   ]
 }

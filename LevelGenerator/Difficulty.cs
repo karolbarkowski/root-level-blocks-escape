@@ -26,17 +26,17 @@ public static class Difficulty
     public static DifficultyResult Rate(Engine engine, DepthResult opening, DepthResult two)
     {
         var pieces = engine.Pieces;
-        int layers = pieces.Sum(p => p.Colors.Length);
-        int frozen = pieces.Count(p => p.FrozenFor > 0), extraLayers = pieces.Sum(p => Math.Max(0, p.Colors.Length - 1));
-        int directional = pieces.Count(p => p.Axis != Axis.Free), gray = pieces.Count(p => p.Colors.Length == 0);
+        int layers = pieces.Sum(p => p.Types.Length);
+        int frozen = pieces.Count(p => p.FrozenFor > 0), extraLayers = pieces.Sum(p => Math.Max(0, p.Types.Length - 1));
+        int directional = pieces.Count(p => p.Axis != Axis.Free), neutral = pieces.Count(p => p.Types.Length == 0);
         var player = Simulate(engine, StableSeed(engine.Level));
 
         // Each term is normalized to 0..1; the weights sum to 1.
         double openingTerm = .7 * Clamp((opening.LowerBound - 2) / 10.0) + .3 * Clamp((two.LowerBound - 2) / 14.0);
         double sizeTerm = Clamp((layers - 4) / 26.0);
         // The generator freezes most late-used blocks, so count variety and share, not totals.
-        int mechanics = new[] { frozen, extraLayers, directional, gray }.Count(n => n > 0);
-        int specialBlocks = pieces.Count(p => p.FrozenFor > 0 || p.Colors.Length != 1 || p.Axis != Axis.Free);
+        int mechanics = new[] { frozen, extraLayers, directional, neutral }.Count(n => n > 0);
+        int specialBlocks = pieces.Count(p => p.FrozenFor > 0 || p.Types.Length != 1 || p.Axis != Axis.Free);
         double specialTerm = .5 * mechanics / 4.0 + .5 * specialBlocks / (double)pieces.Length;
         double effortTerm = player.MeanSteps is double steps ? Clamp((steps / Math.Max(1, layers) - 1) / 2) : 1;
         double raw = .30 * (1 - player.SuccessRate) + .15 * (1 - player.Progress) + .20 * openingTerm
@@ -46,8 +46,8 @@ public static class Difficulty
         return new(score, new()
         {
             ["openingLowerBound"] = opening.LowerBound, ["firstTwoFullRemovalsLowerBound"] = two.LowerBound,
-            ["blocks"] = pieces.Length, ["colorLayers"] = layers, ["floorCells"] = engine.Geometry.FloorCount,
-            ["frozenBlocks"] = frozen, ["extraLayers"] = extraLayers, ["directionalBlocks"] = directional, ["grayBlocks"] = gray,
+            ["blocks"] = pieces.Length, ["typeLayers"] = layers, ["floorCells"] = engine.Geometry.FloorCount,
+            ["frozenBlocks"] = frozen, ["extraLayers"] = extraLayers, ["directionalBlocks"] = directional, ["neutralBlocks"] = neutral,
             ["mechanicTypes"] = mechanics, ["specialBlocks"] = specialBlocks,
             ["playerPlayouts"] = player.Playouts, ["playerSuccessRate"] = Math.Round(player.SuccessRate, 3),
             ["playerProgress"] = Math.Round(player.Progress, 3),
@@ -64,7 +64,7 @@ public static class Difficulty
     {
         var watch = Stopwatch.StartNew();
         var initial = engine.Initial();
-        int layers = engine.Pieces.Sum(p => p.Colors.Length), cap = 10 + 3 * layers;
+        int layers = engine.Pieces.Sum(p => p.Types.Length), cap = 10 + 3 * layers;
         int played = 0, solved = 0;
         double progress = 0, steps = 0;
         for (; played < Playouts && (played < 4 || watch.Elapsed.TotalSeconds < PlayerSeconds); played++)
@@ -95,9 +95,9 @@ public static class Difficulty
         int count = 0;
         for (int i = 0; i < engine.Pieces.Length; i++)
         {
-            var colors = engine.Pieces[i].Colors;
-            if (state.Positions[i] < 0 || colors.Length == 0) continue;
-            if (engine.Reachable(state, i).Any(pos => engine.Exit(state, i, pos, colors[state.Layers[i]]) != null)) count++;
+            var types = engine.Pieces[i].Types;
+            if (state.Positions[i] < 0 || types.Length == 0) continue;
+            if (engine.Reachable(state, i).Any(pos => engine.Exit(state, i, pos, types[state.Layers[i]]) != null)) count++;
         }
         return count;
     }

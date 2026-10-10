@@ -90,7 +90,7 @@
       "side": "top",
       "start": 4,
       "length": 2,
-      "color": "cyan",
+      "type": "animal7",
       "line": 0
     },
     {
@@ -98,7 +98,7 @@
       "side": "top",
       "start": 1,
       "length": 1,
-      "color": "blue",
+      "type": "cow",
       "line": 2
     },
     {
@@ -106,7 +106,7 @@
       "side": "top",
       "start": 8,
       "length": 1,
-      "color": "yellow",
+      "type": "animal4",
       "line": 2
     },
     {
@@ -114,7 +114,7 @@
       "side": "left",
       "start": 4,
       "length": 2,
-      "color": "red",
+      "type": "animal3",
       "line": 0
     },
     {
@@ -122,7 +122,7 @@
       "side": "right",
       "start": 4,
       "length": 2,
-      "color": "orange",
+      "type": "animal6",
       "line": 9
     },
     {
@@ -130,7 +130,7 @@
       "side": "bottom",
       "start": 1,
       "length": 1,
-      "color": "green",
+      "type": "animal5",
       "line": 7
     },
     {
@@ -138,7 +138,7 @@
       "side": "bottom",
       "start": 8,
       "length": 1,
-      "color": "purple",
+      "type": "pig",
       "line": 7
     },
     {
@@ -146,7 +146,7 @@
       "side": "bottom",
       "start": 4,
       "length": 2,
-      "color": "red",
+      "type": "animal3",
       "line": 9
     }
   ]

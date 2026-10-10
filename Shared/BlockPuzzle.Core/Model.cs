@@ -7,15 +7,17 @@ public readonly record struct Cell(int X, int Y);
 public enum Axis { Free, Horizontal, Vertical }
 public enum Side { Top, Right, Bottom, Left }
 public enum BoundaryMode { Rectangle, Enclosed }
-public sealed record Gate(string Id, Side Side, int Start, int Length, string Color,
+// Type and Types hold block type ids from BlockTypes (Shared/BlockTypes/block-types.json).
+public sealed record Gate(string Id, Side Side, int Start, int Length, string Type,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? Line = null);
-public sealed record Piece(string Id, Cell[] Shape, Cell Position, string[] Colors, Axis Axis = Axis.Free, int FrozenFor = 0);
+public sealed record Piece(string Id, Cell[] Shape, Cell Position, string[] Types, Axis Axis = Axis.Free, int FrozenFor = 0);
 public sealed record Layout(int Width, int Height, Cell[] Walls, Gate[] Gates,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] BoundaryMode BoundaryMode = BoundaryMode.Rectangle);
 public sealed record Move(string Block, Cell To);
 public sealed record Level
 {
-    public string Format { get; init; } = "block-puzzle/v1";
+    public const string CurrentFormat = "block-puzzle/v2";
+    public string Format { get; init; } = CurrentFormat;
     public string Rules { get; init; } = "grid-drag-drop/v1";
     public int Seed { get; init; }
     // [JsonRequired] instead of `required`: Unity's C# 9 compiler cannot construct types with required members.
@@ -42,8 +44,8 @@ public static class Files
     }
 }
 
-// Layer is the number of colors already peeled, including the final removal.
-// A removed colored piece has Position=-1 and Layer=Colors.Length.
+// Layer is the number of types already peeled, including the final removal.
+// A removed typed piece has Position=-1 and Layer=Types.Length.
 public sealed class State(int[] positions, int[] layers)
 {
     public int[] Positions { get; } = positions;
@@ -73,10 +75,12 @@ public sealed class Engine
     {
         Level = level;
         if(level.Board is null || level.Blocks is null || level.Board.Walls is null || level.Board.Gates is null ||
-            level.Board.Gates.Any(g=>g is null) || level.Blocks.Any(p=>p is null || p.Shape is null || p.Colors is null))
-            throw new ArgumentException("Board, blocks, shapes, colors, walls and gates must not be null.");
-        if (level.Format != "block-puzzle/v1" || level.Rules != "grid-drag-drop/v1")
-            throw new ArgumentException("Unsupported format or rules version.");
+            level.Board.Gates.Any(g=>g is null) || level.Blocks.Any(p=>p is null || p.Shape is null || p.Types is null))
+            throw new ArgumentException("Board, blocks, shapes, types, walls and gates must not be null.");
+        if (level.Format != Level.CurrentFormat || level.Rules != "grid-drag-drop/v1")
+            throw new ArgumentException(level.Format == "block-puzzle/v1"
+                ? "This is a block-puzzle/v1 level with colors; convert it with LevelGenerator.Tools migrate."
+                : "Unsupported format or rules version.");
         if (Board.Width is < 2 or > 20 || Board.Height is < 2 or > 20)
             throw new ArgumentException("Board dimensions must be between 2 and 20.");
         walls = new bool[Board.Width * Board.Height];
@@ -89,7 +93,7 @@ public sealed class Engine
         Geometry = new Geometry(Board);
         if (Pieces.Length == 0 || Pieces.Select(p => p.Id).Distinct().Count() != Pieces.Length)
             throw new ArgumentException("Blocks must have unique IDs and cannot be empty.");
-        int events = Pieces.Sum(p => p.Colors.Length);
+        int events = Pieces.Sum(p => p.Types.Length);
         foreach (var p in Pieces)
         {
             if (string.IsNullOrWhiteSpace(p.Id) || p.Shape.Length == 0 || p.Shape.Distinct().Count() != p.Shape.Length ||
@@ -106,9 +110,13 @@ public sealed class Engine
                         changed |= connected.Add(c);
             } while (changed);
             if (connected.Count != p.Shape.Length) throw new ArgumentException("Disconnected shape.");
-            if (p.FrozenFor < 0 || p.FrozenFor > events || p.Colors.Length > 32 ||
-                p.Colors.Any(c => string.IsNullOrWhiteSpace(c) || !Board.Gates.Any(g => g.Color == c)))
-                throw new ArgumentException("Invalid colors or freeze threshold.");
+            if (p.FrozenFor < 0 || p.FrozenFor > events || p.Types.Length > 32)
+                throw new ArgumentException($"Block {p.Id} has an invalid freeze threshold or too many types.");
+            foreach (var type in p.Types)
+            {
+                if (!BlockTypes.IsKnown(type)) throw new ArgumentException($"Block {p.Id} has unknown block type '{type}'.");
+                if (!Board.Gates.Any(g => g.Type == type)) throw new ArgumentException($"Block {p.Id} has type '{type}' but no gate accepts it.");
+            }
         }
     }
     public int Encode(Cell c) => c.Y * Board.Width + c.X;
@@ -126,7 +134,7 @@ public sealed class Engine
         }
         return s;
     }
-    public bool Solved(State s) => Pieces.Select((p, i) => p.Colors.Length == 0 || s.Positions[i] < 0).All(x => x);
+    public bool Solved(State s) => Pieces.Select((p, i) => p.Types.Length == 0 || s.Positions[i] < 0).All(x => x);
     public int RemovedBlocks(State s) => s.Positions.Count(p => p < 0);
     public bool[] Occupied(State s, int except = -1)
     {
@@ -177,12 +185,12 @@ public sealed class Engine
     };
     // Whole silhouette must translate straight out without hitting walls or blocks.
     // The complete transverse span must be contained in one matching gate.
-    public Gate? Exit(State s, int i, int pos, string color)
+    public Gate? Exit(State s, int i, int pos, string type)
     {
         var a = Decode(pos);
         int width = Pieces[i].Shape.Max(c => c.X)+1, height = Pieces[i].Shape.Max(c => c.Y)+1;
         var used = Occupied(s, i);
-        foreach (var g in Board.Gates.Where(g => g.Color == color))
+        foreach (var g in Board.Gates.Where(g => g.Type == type))
         {
             // Axis restrictions also apply to the outward motion.
             if (Pieces[i].Axis == Axis.Horizontal && g.Side is Side.Top or Side.Bottom) continue;
@@ -211,11 +219,11 @@ public sealed class Engine
     public State Drop(State s, int i, int pos)
     {
         var next = s.Copy(); next.Positions[i] = pos;
-        var colors = Pieces[i].Colors;
-        if (colors.Length > 0 && Exit(s,i,pos,colors[s.Layers[i]]) != null)
+        var types = Pieces[i].Types;
+        if (types.Length > 0 && Exit(s,i,pos,types[s.Layers[i]]) != null)
         {
             next.Layers[i]++;
-            if (next.Layers[i] == colors.Length) next.Positions[i] = -1;
+            if (next.Layers[i] == types.Length) next.Positions[i] = -1;
         }
         return next;
     }
@@ -240,7 +248,7 @@ public sealed class Engine
     {
         var frames = new List<State> { Initial() };
         foreach (var move in moves) frames.Add(Apply(frames[^1],move));
-        if (requireSolved && !Solved(frames[^1])) throw new ArgumentException("Solution does not clear all colored blocks.");
+        if (requireSolved && !Solved(frames[^1])) throw new ArgumentException("Solution does not clear all typed blocks.");
         return frames;
     }
 }

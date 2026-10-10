@@ -54,7 +54,7 @@ namespace BlocksEscape.EditorTools
             {
                 using (new EditorGUI.DisabledScope(board.Level == null))
                     if (GUILayout.Button("Initialize")) InitializeWithUndo(board);
-                using (new EditorGUI.DisabledScope(board.Content == null))
+                using (new EditorGUI.DisabledScope(board.LevelRoots().Count == 0))
                     if (GUILayout.Button("Clear")) ClearWithUndo(board);
             }
 
@@ -97,8 +97,9 @@ namespace BlocksEscape.EditorTools
 
             Undo.SetCurrentGroupName("Initialize Board");
             int group = Undo.GetCurrentGroup();
-            if (board.Content != null) Undo.DestroyObjectImmediate(board.Content.gameObject);
+            // Record the board before destroying the old level, so undo restores the level and its reference together.
             Undo.RecordObject(board, "Initialize Board");
+            foreach (var root in board.LevelRoots()) Undo.DestroyObjectImmediate(root);
             if (board.Surface != null) Undo.RecordObject(board.Surface, "Initialize Board");
 
             try
@@ -119,8 +120,8 @@ namespace BlocksEscape.EditorTools
             Undo.SetCurrentGroupName("Clear Board");
             int group = Undo.GetCurrentGroup();
             Undo.RecordObject(board, "Clear Board");
-            Undo.DestroyObjectImmediate(board.Content.gameObject);
-            board.Clear(); // content is already gone; this just resets the reference
+            foreach (var root in board.LevelRoots()) Undo.DestroyObjectImmediate(root);
+            board.Clear(); // the level is already gone; this just resets the references
             Undo.CollapseUndoOperations(group);
         }
     }

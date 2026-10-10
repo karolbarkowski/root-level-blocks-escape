@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b86b59f9a0d65d47bc6292e93aada63, type: 3}
+  m_Name: BlockTypeMaterials
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.Levels.BlockTypeMaterials
+  entries:
+  - type: cow
+    material: {fileID: 2100000, guid: 85ebd937e51689f4abc6a6559fbecaa1, type: 2}
+  - type: pig
+    material: {fileID: 2100000, guid: a24423147c723834ab5e66f3f4d23989, type: 2}

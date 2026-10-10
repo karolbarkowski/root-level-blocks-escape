@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4100000000000000001}
   - component: {fileID: 1140000000000000001}
+  - component: {fileID: 7127008223665992511}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -49,6 +50,8 @@ MonoBehaviour:
   yTiles: 8
   surface: {fileID: 4100000000000000002}
   level: {fileID: 0}
+  blockTypes: {fileID: 4900000, guid: e66f266c680d62b4d8f81c845d41732f, type: 3}
+  blockTypeMaterials: {fileID: 11400000, guid: be0d0d488cd9eac44a315907161a043e, type: 2}
   wallPrefab: {fileID: 4628146415705744266, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   gatePrefab: {fileID: 2245886392166917937, guid: 8f7f5e75fa47c01489d01eebf6fe9de8, type: 3}
   blockPrefabs:
@@ -65,6 +68,23 @@ MonoBehaviour:
   - {fileID: 3430186866507224830, guid: edc32458189d24b498049ce30dcee2bf, type: 3}
   - {fileID: 8287951012507678122, guid: 07a24b2f242209b43ba97c871dff3915, type: 3}
   content: {fileID: 0}
+--- !u!114 &7127008223665992511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9afd984b2e3aa4ebcced1f86d191dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.BlockDragger
+  viewCamera: {fileID: 0}
+  liftHeight: 0.3
+  liftTime: 0.08
+  snapTime: 0.09
+  cornerAssist: 0.6
 --- !u!1 &1100000000000000002
 GameObject:
   m_ObjectHideFlags: 0

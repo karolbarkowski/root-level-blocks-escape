@@ -13,4 +13,8 @@
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- The shared block type list; also read by the layout editor and the game. -->
+    <EmbeddedResource Include="..\BlockTypes\block-types.json" LogicalName="block-types.json" />
+  </ItemGroup>
 </Project>

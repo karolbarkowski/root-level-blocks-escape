@@ -1,0 +1,12 @@
+{
+  "format": "block-types/v1",
+  "types": [
+    { "id": "cow", "name": "Cow", "color": "#3373E6" },
+    { "id": "pig", "name": "Pig", "color": "#9452CC" },
+    { "id": "animal3", "name": "Animal 3", "color": "#E63836" },
+    { "id": "animal4", "name": "Animal 4", "color": "#FAD12E" },
+    { "id": "animal5", "name": "Animal 5", "color": "#42B34F" },
+    { "id": "animal6", "name": "Animal 6", "color": "#FA8C26" },
+    { "id": "animal7", "name": "Animal 7", "color": "#33CCD9" }
+  ]
+}

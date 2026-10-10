@@ -1,6 +1,6 @@
 # Blocks Escape · level pipeline
 
-Tools for producing solvable colored-block sliding puzzles: draw a layout, generate verified levels for it, rate their difficulty, and load them in the game through a shared rules library.
+Tools for producing solvable block-type sliding puzzles: draw a layout, generate verified levels for it, rate their difficulty, and load them in the game through a shared rules library.
 
 | Folder | What it is | Output |
 |---|---|---|
@@ -8,9 +8,20 @@ Tools for producing solvable colored-block sliding puzzles: draw a layout, gener
 | `LevelGenerator.Tools/` | Inspect saved levels: verify, solve, analyze, render, rate | `LevelGenerator.Tools.dll` |
 | `LevelGenerator.Tests/` | Self-tests, method benchmark, historical results | `LevelGenerator.Tests.dll` |
 | `Shared/BlockPuzzle.Core/` | Rules engine and JSON model, shared with the game (netstandard2.1) | `BlockPuzzle.Core.dll` |
+| `Shared/BlockTypes/` | The block types (`block-types.json`) used by the generator, layout editor and game | — |
 | `LayoutEditor/` | Browser editor for fixed layouts (Node.js 20+) | layout JSON |
 
 `LevelGenerator.slnx` contains the four .NET projects. Keep the folders together; projects reference each other by relative path.
+
+## Block types
+
+Gates and blocks use **block types** (eventually one per animal) instead of colors. They are listed once in [Shared/BlockTypes/block-types.json](Shared/BlockTypes/block-types.json), each with an `id` (stored in levels and layouts), a display `name` and a `#RRGGBB` `color`:
+
+- The generator embeds the file in `BlockPuzzle.Core` at build time, so rebuild after editing it. Levels and layouts with an unknown type are rejected.
+- The layout editor's server publishes it as `/block-types.json` for the gate type picker.
+- The game references the folder as a local package (`com.rootlevel.blocktypes` in `Packages/manifest.json`); the Board prefab points at its `block-types.json`.
+
+To rename a type, change its id in the file, rebuild, then update existing files with `rename-type` (see [Level tools](#level-tools)). Files from before block types (`block-puzzle/v1`, with `color`/`colors`) convert with `migrate`.
 
 Reference documents: [FORMAT.md](LevelGenerator/FORMAT.md) and [level.schema.json](LevelGenerator/level.schema.json) (level JSON contract), [RESEARCH.md](LevelGenerator/RESEARCH.md) (generation method), [RESULTS.md](LevelGenerator.Tests/RESULTS.md) (September 2026 measurements, using options that no longer exist).
 
@@ -44,15 +55,15 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 | `--block-size` | Target average cells per block; 1–4. Lower means more, smaller blocks | 2.8 |
 | `--min-opening` | Minimum drops before anything can be removed; 2–12 | 3 |
 | `--maxCandidates` | Levels to save before stopping (alias `--max-candidates`) | 1 |
-| `--specials` | Add frozen, layered, directional and gray blocks: true/false | true |
+| `--specials` | Add frozen, layered, directional and neutral (gray) blocks: true/false | true |
 | `--method` | `anneal` or `random` | anneal |
 | `--seed` | Random seed | 42 |
 | `--out` | Output folder | output |
 
 - Coverage rounds up to whole cells and counts only playable floor (not walls, gates or outside space). 80% of 38 cells means at least 31.
 - With N blocks, round(N × ratio) are 1×1, halves rounded up. The block count is steered towards covered area ÷ `--block-size`. Shapes are picked from 1–4-cell pieces in every rotation and mirror image. Targets above 3 force nearly every block to 4 cells, which barely move in narrow layouts.
-- Every gate color appears on at least one block's outer layer.
-- Specials stay occasional, as in the genre: one gray blocker, one layered block, and at most 1 + blocks ÷ 8 frozen and 1 + blocks ÷ 8 directional blocks. They never break coverage, the 1×1 count or color representation.
+- Every gate type appears on at least one block's outer layer.
+- Specials stay occasional, as in the genre: one neutral blocker, one layered block, and at most 1 + blocks ÷ 8 frozen and 1 + blocks ÷ 8 directional blocks. They never break coverage, the 1×1 count or type representation.
 - Every exported solution is checked by replay. The solver first tries to prove a shortest solution. If its budget runs out, a faster weighted search finds a short one instead, and `analysis.solutionOptimal` is false.
 - If a run seems stuck, check the progress line, e.g. `best opening 2 (need 3)`. It means the layout can't reach `--min-opening`; lower it.
 - Seeds help experiments, but machine speed affects bounded searches; the saved JSON is the reproducible artifact.
@@ -63,7 +74,7 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 
 `LevelGenerator/layouts/` contains eight layouts sized after boards in the genre. They range from compact 6×7-style boards with 2-cell gates, two per side, to irregular 9×11 shapes with towers, recessed gates and corridors. With the defaults, levels have about 12 blocks on 6×7, averaging 2.4–3 cells, with two or three special blocks.
 
-| Layout | Floor cells | Gates / colors | Shape | Sample difficulty | Time per level |
+| Layout | Floor cells | Gates / types | Shape | Sample difficulty | Time per level |
 |---|---:|---:|---|---:|---:|
 | `starter_4x5` | 20 | 4 / 4 | rectangle, one gate per side | 303–589 | ~1 s |
 | `classic_5x6` | 30 | 5 / 4 | rectangle | 189–328 | ~1 s |
@@ -91,9 +102,9 @@ The score doesn't rely on a shortest solution:
 | 30% | How often a simulated weak player fails (24 seeded playouts: usually takes an available exit, otherwise picks among a few sampled drops, with a move cap) |
 | 15% | How little of the board that player clears on average |
 | 20% | Forced opening: drops before the first removal and before two full removals |
-| 15% | Size: total color layers to clear |
+| 15% | Size: total type layers to clear |
 | 10% | Special mechanics: kinds used and share of special blocks |
-| 10% | The player's moves per color layer when it succeeds |
+| 10% | The player's moves per type layer when it succeeds |
 
 The same level always gets the same score. With the default settings, the sample layouts score about 170–590 (table above). Higher scores need bigger, more crowded boards or a deeper `--min-opening`; a crowded 7×7 board with a seven-drop forced opening scored 788. The weights in `LevelGenerator/Difficulty.cs` are first estimates; calibrate them against playtest data. Every input is stored in `analysis.difficultyFeatures`, and `rate` (below) re-scores and renames existing files after a change.
 
@@ -103,11 +114,13 @@ From `LevelGenerator.Tools/`, as `dotnet bin/Release/net10.0/LevelGenerator.Tool
 
 | Command | What it does | Options |
 |---|---|---|
-| `verify <level>` | Replays the stored solution and confirms it clears every colored block | none |
+| `verify <level>` | Replays the stored solution and confirms it clears every typed block | none |
 | `solve <level>` | Searches for a shortest solution; writes the level with it plus an HTML replay | `--seconds` 30, `--states` 100000, `--out` (default `<input>.solved.json`) |
 | `analyze <level>` | Measures drops to the first removal and to two full removals | `--seconds` 10, `--states` 100000, `--out` to save |
 | `render <level>` | Writes an HTML replay | `--out` (default `<input>.html`) |
 | `rate <files or folders>` | Recomputes difficulty, refreshes the HTML replay and renames the JSON/HTML/SVG files to the new score | none |
+| `migrate <files or folders>` | Converts `block-puzzle/v1` levels and layouts from colors to block types, in place | none |
+| `rename-type <old> <new> <files or folders>` | Renames a block type id in levels and layouts, in place; `<new>` must already be in `block-types.json` | none |
 
 Exit codes: 0 success, 1 invalid input or illegal solution, 2 when `solve` finds no solution. A solver timeout does not prove a level unsolvable.
 
@@ -115,11 +128,11 @@ Exit codes: 0 success, 1 invalid input or illegal solution, 2 when `solve` finds
 
 - Blocks are connected grid cells with a fixed orientation: no overlap, pushing or rotation.
 - One drag may turn corners through free space while other blocks stay put. Each drop counts as one move, however long the drag.
-- A block leaves through a gate of its active color when its whole width fits the gate and its outward path is clear. Merely passing a gate during a drag does nothing; dropping next to it removes exactly one color layer.
-- Colors are listed outside to inside. Removing the last layer frees the block's cells.
+- A block leaves through a gate of its active type when its whole width fits the gate and its outward path is clear. Merely passing a gate during a drag does nothing; dropping next to it removes exactly one type layer.
+- Types are listed outside to inside. Removing the last layer frees the block's cells.
 - **Directional** blocks move only horizontally or vertically (both ways) and exit only along that axis.
 - **Frozen** blocks (`frozenFor`) can't move until that many layers have been removed anywhere on the board.
-- **Gray** blocks (no colors) are permanent movable obstacles; winning means clearing every colored block.
+- **Neutral** (gray) blocks have no type and are permanent movable obstacles; winning means clearing every typed block.
 - Boards are either legacy rectangles with gates on the edge, or `enclosed`: walls and gates drawn on an empty canvas, where everything reachable from the canvas edge is outside space that blocks can't enter.
 
 ## Layout editor
@@ -135,11 +148,11 @@ Open http://127.0.0.1:8770 (set `PORT` to change it). `start.ps1` and `npm start
 
 1. Start a **New layout**, or **Open JSON** / drag a file in (a full generated level works; only its board is kept).
 2. **Draw walls** by clicking or dragging. Close a boundary with walls and gates: enclosed floor turns white. Shift-drag, right-drag or the Erase tool erases.
-3. Pick a **gate color** and **exit direction**, then drag a straight span. Gates replace walls and the arrow points outward. Click a gate to edit its ID, color, direction, Line, Start and Length. For left/right gates, Line is the column and Start the first row; for top/bottom gates, Line is the row and Start the first column.
+3. Pick a **gate block type** and **exit direction**, then drag a straight span. Gates replace walls and the arrow points outward. Click a gate to edit its ID, block type, direction, Line, Start and Length. For left/right gates, Line is the column and Start the first row; for top/bottom gates, Line is the row and Start the first column.
 4. Fix anything the validation panel reports. Overlapping or misoriented gates, duplicate IDs and an open boundary block export. Missing gates and disconnected floor are warnings only.
 5. **Export JSON** downloads the layout; pass it to `generate --layout`.
 
-Undo/redo keeps 100 edits, with a drag stroke counted as one. Resizing keeps coordinates and removes whole out-of-bounds gates after confirmation. The current draft is kept in browser storage, but only Export produces a durable file. Shortcuts: **1** wall, **2** erase, **3** gate, **4** select, **Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y** undo/redo, **Ctrl+O** open, **Ctrl+S** export, **Delete** removes the selected gate. Arrow keys move a focused cell, and Enter/Space paints it. **Load example layout** opens `examples/enclosed-layout.json`. Custom color strings are kept exactly. Legacy rectangular files keep their geometry and can be converted with the Boundary mode selector.
+Undo/redo keeps 100 edits, with a drag stroke counted as one. Resizing keeps coordinates and removes whole out-of-bounds gates after confirmation. The current draft is kept in browser storage, but only Export produces a durable file. Shortcuts: **1** wall, **2** erase, **3** gate, **4** select, **Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y** undo/redo, **Ctrl+O** open, **Ctrl+S** export, **Delete** removes the selected gate. Arrow keys move a focused cell, and Enter/Space paints it. **Load example layout** opens `examples/enclosed-layout.json`. Gate types must be in `block-types.json`; layouts from before block types must be converted with `migrate` first. Legacy rectangular files keep their geometry and can be converted with the Boundary mode selector.
 
 Code: `model.js` holds pure layout logic and validation, `app.js` the UI, `server.mjs` the localhost-only server.
 

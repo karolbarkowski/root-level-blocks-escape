@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.rootlevel.blocktypes": "file:../../../Shared/BlockTypes",
     "com.unity.ai.assistant": "2.20.0-pre.2",
     "com.unity.collab-proxy": "2.13.6",
     "com.unity.ide.rider": "3.0.40",

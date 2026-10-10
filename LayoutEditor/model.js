@@ -1,5 +1,16 @@
 export const SIDES = ['top', 'right', 'bottom', 'left'];
-export const COLORS = { red: '#e57169', blue: '#6596dc', yellow: '#e9bf53', green: '#5aaf8a', purple: '#ae88cc', orange: '#e6a05c', cyan: '#60bfc8' };
+// Block types come from Shared/BlockTypes/block-types.json, which the server publishes as /block-types.json.
+export function parseTypes(text) {
+  const file = JSON.parse(text);
+  if (file?.format !== 'block-types/v1' || !Array.isArray(file.types) || !file.types.length) throw new Error('block-types.json is missing or has an unknown format.');
+  const ids = new Set();
+  for (const t of file.types) {
+    if (typeof t?.id !== 'string' || !t.id.trim() || ids.has(t.id) || typeof t.name !== 'string' || !/^#[0-9a-f]{6}$/i.test(t.color))
+      throw new Error('Every block type needs a unique id, a name and a #RRGGBB color.');
+    ids.add(t.id);
+  }
+  return file.types.map(({ id, name, color }) => ({ id, name, color }));
+}
 export const clone = value => structuredClone(value);
 export const cellKey = ({ x, y }) => `${x},${y}`;
 export const sizeFor = (board, side) => ['top', 'bottom'].includes(side) ? board.width : board.height;
@@ -56,14 +67,17 @@ export function parseLayout(text) {
       throw new Error(`Wall ${i + 1} is outside the board or has invalid coordinates.`);
   });
   board.gates.forEach((gate, i) => {
-    fields(gate, ['id', 'side', 'start', 'length', 'color'], `Gate ${i + 1}`, ['line']);
+    if ('color' in gate && !('type' in gate)) throw new Error('This layout uses colors from the old format. Convert it with “LevelGenerator.Tools migrate” first.');
+    fields(gate, ['id', 'side', 'start', 'length', 'type'], `Gate ${i + 1}`, ['line']);
     if ('line' in gate && !Number.isInteger(gate.line)) throw new Error(`Gate ${i + 1} needs an integer line.`);
-    if (typeof gate.id !== 'string' || typeof gate.color !== 'string' || !SIDES.includes(gate.side) ||
+    if (typeof gate.id !== 'string' || typeof gate.type !== 'string' || !SIDES.includes(gate.side) ||
         !Number.isInteger(gate.start) || !Number.isInteger(gate.length)) throw new Error(`Gate ${i + 1} has invalid field types or an unknown side.`);
   });
   return { board: clone(board), extracted };
 }
-export function validate(board) {
+// Pass the block types to check gate types against them; without them only empty types are reported.
+export function validate(board, types = null) {
+  const known = types && new Set(types.map(t => t.id));
   const shape = geometry(board);
   const errors = [], warnings = [], walls = new Set(), ids = new Set(), edges = new Map();
   for (const wall of board.walls) {
@@ -76,7 +90,8 @@ export function validate(board) {
     if (!gate.id.trim()) errors.push(`Gate ${index + 1} needs an ID.`);
     if (ids.has(gate.id)) errors.push(`Gate ID “${gate.id}” is used more than once.`);
     ids.add(gate.id);
-    if (!gate.color.trim()) errors.push(`${name} needs a color.`);
+    if (!gate.type.trim()) errors.push(`${name} needs a block type.`);
+    else if (known && !known.has(gate.type)) errors.push(`${name} uses unknown block type “${gate.type}”.`);
     const size = sizeFor(board, gate.side);
     if (enclosed(board) ? !Number.isInteger(gate.line) || gate.line < 0 || gate.line >= (['top', 'bottom'].includes(gate.side) ? board.height : board.width) : 'line' in gate) {
       errors.push(`${name}: enclosed gates need an in-bounds line; rectangular gates must omit it.`); return;
@@ -98,7 +113,7 @@ export function validate(board) {
       }
     }
   });
-  if (board.gates.length === 0) warnings.push('Add a gate before generating colored blocks.');
+  if (board.gates.length === 0) warnings.push('Add a gate before generating blocks.');
   const floorCount = shape.floor.size;
   if (enclosed(board) && !floorCount) errors.push('No enclosed floor yet. Close the boundary with walls and gates.');
   if (floorCount === 0) warnings.push('There are no free cells for blocks.');
@@ -137,13 +152,13 @@ export function resize(board, width, height) {
     gates: board.gates.filter(g => g.start >= 0 && g.length > 0 && g.start + g.length <= sizeFor({ width, height }, g.side) &&
       (!enclosed(board) || g.line < (['top', 'bottom'].includes(g.side) ? height : width))) };
 }
-export function serialize(board) {
-  const report = validate(board);
+export function serialize(board, types = null) {
+  const report = validate(board, types);
   if (report.errors.length) throw new Error('Fix the layout errors before exporting.');
   return JSON.stringify({ width: board.width, height: board.height,
     ...(board.boundaryMode ? { boundaryMode: board.boundaryMode } : {}),
     walls: [...board.walls].sort((a, b) => a.y - b.y || a.x - b.x),
-    gates: board.gates.map(({ id, side, start, length, color, line }) => ({ id, side, start, length, color, ...(line !== undefined ? { line } : {}) })) }, null, 2) + '\n';
+    gates: board.gates.map(({ id, side, start, length, type, line }) => ({ id, side, start, length, type, ...(line !== undefined ? { line } : {}) })) }, null, 2) + '\n';
 }
 export class History {
   constructor(initial) { this.current = clone(initial); this.past = []; this.future = []; }

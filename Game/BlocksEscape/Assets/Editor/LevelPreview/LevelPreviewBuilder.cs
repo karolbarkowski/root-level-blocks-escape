@@ -37,13 +37,13 @@ namespace BlocksEscape.EditorTools.LevelPreview
         static readonly Color WallColor = new Color(0.22f, 0.23f, 0.26f);
         static readonly Color FloorColorA = new Color(0.86f, 0.86f, 0.83f);
         static readonly Color FloorColorB = new Color(0.80f, 0.80f, 0.77f);
-        static readonly Color GrayBlockColor = LevelPalette.Gray;
         static readonly Color AxisMarkColor = new Color(0.1f, 0.1f, 0.1f);
 
 
         readonly Dictionary<(Color, bool), Material> _materials = new Dictionary<(Color, bool), Material>();
         readonly Mesh _cube = Resources.GetBuiltinResource<Mesh>("Cube.fbx");
         readonly Shader _shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
+        readonly BlockTypeSet _types = LoadBlockTypes();
 
         HideFlags _flags;
         float _offsetX, _offsetZ;
@@ -61,11 +61,11 @@ namespace BlocksEscape.EditorTools.LevelPreview
             var gateRoot = NewObject("Gates", result.root.transform);
             var blockRoot = NewObject("Blocks", result.root.transform);
 
-            var floor = ComputeFloor(level);
+            var floor = BoardRules.ComputeFloor(level);
             for (int y = 0; y < board.height; y++)
             for (int x = 0; x < board.width; x++)
             {
-                if (!floor[x, y]) continue;
+                if (!floor[y * board.width + x]) continue;
                 var color = (x + y) % 2 == 0 ? FloorColorA : FloorColorB;
                 AddBox(floorRoot.transform, $"Floor {x},{y}", CellCenter(x, y, -FloorThickness * 0.5f),
                     new Vector3(1f, FloorThickness, 1f), color, false);
@@ -87,59 +87,14 @@ namespace BlocksEscape.EditorTools.LevelPreview
             return result;
         }
 
-        static bool[,] ComputeFloor(LevelData level)
-        {
-            var board = level.board;
-            int w = board.width, h = board.height;
-            var floor = new bool[w, h];
-            var barrier = new bool[w, h];
-            bool Inside(int x, int y) => x >= 0 && y >= 0 && x < w && y < h;
-
-            foreach (var c in board.walls ?? Array.Empty<CellData>())
-                if (Inside(c.x, c.y)) barrier[c.x, c.y] = true;
-
-            if (!level.IsEnclosed)
-            {
-                for (int y = 0; y < h; y++)
-                for (int x = 0; x < w; x++)
-                    floor[x, y] = !barrier[x, y];
-                return floor;
-            }
-
-            foreach (var g in board.gates ?? Array.Empty<GateData>())
-            foreach (var c in Board.GateCells(g, level))
-                if (Inside(c.x, c.y)) barrier[c.x, c.y] = true;
-
-            // Flood fill exterior space from the canvas edges; whatever stays unreached is playable floor.
-            var exterior = new bool[w, h];
-            var queue = new Queue<Vector2Int>();
-            void Visit(int x, int y)
-            {
-                if (!Inside(x, y) || barrier[x, y] || exterior[x, y]) return;
-                exterior[x, y] = true;
-                queue.Enqueue(new Vector2Int(x, y));
-            }
-            for (int x = 0; x < w; x++) { Visit(x, 0); Visit(x, h - 1); }
-            for (int y = 0; y < h; y++) { Visit(0, y); Visit(w - 1, y); }
-            while (queue.Count > 0)
-            {
-                var c = queue.Dequeue();
-                Visit(c.x + 1, c.y); Visit(c.x - 1, c.y); Visit(c.x, c.y + 1); Visit(c.x, c.y - 1);
-            }
-
-            for (int y = 0; y < h; y++)
-            for (int x = 0; x < w; x++)
-                floor[x, y] = !barrier[x, y] && !exterior[x, y];
-            return floor;
-        }
-
         void BuildGate(Transform parent, GateData g, LevelData level, Result result)
         {
-            var color = ParseColor(g.color);
-            var gateObject = NewObject($"Gate {g.id} ({g.color}, {g.side})", parent);
+            var type = _types.Get(g.type);
+            var color = type.Color;
+            var gateObject = NewObject($"Gate {g.id} ({type.Name}, {g.side})", parent);
             Vector3 sum = Vector3.zero;
             int count = 0;
-            foreach (var c in Board.GateCells(g, level))
+            foreach (var c in level.GateCells(g))
             {
                 var center = CellCenter(c.x, c.y, GateHeight * 0.5f);
                 AddBox(gateObject.transform, $"{c.x},{c.y}", center, new Vector3(0.98f, GateHeight, 0.98f), color, true);
@@ -161,17 +116,17 @@ namespace BlocksEscape.EditorTools.LevelPreview
             foreach (var s in b.shape ?? Array.Empty<CellData>())
                 cells.Add(new Vector2Int(b.position.x + s.x, b.position.y + s.y));
 
-            var colors = b.colors ?? Array.Empty<string>();
-            int layers = Mathf.Max(1, colors.Length);
+            var types = b.types ?? Array.Empty<string>();
+            int layers = Mathf.Max(1, types.Length);
             float top = 0f;
 
-            // Layer 0 (outermost color) is the full-size base; each inner layer is a thinner, inset slab on top.
+            // Layer 0 (outermost type) is the full-size base; each inner layer is a thinner, inset slab on top.
             for (int layer = 0; layer < layers; layer++)
             {
-                var color = colors.Length == 0 ? GrayBlockColor : ParseColor(colors[layer]);
+                var color = types.Length == 0 ? BlockTypeSet.NeutralColor : _types.Get(types[layer]).Color;
                 float height = layer == 0 ? BlockHeight : LayerHeight;
                 float inset = BlockInset + layer * LayerInset;
-                var layerObject = NewObject(colors.Length == 0 ? "gray" : $"Layer {layer} {colors[layer]}", blockObject.transform);
+                var layerObject = NewObject(types.Length == 0 ? "neutral" : $"Layer {layer} {types[layer]}", blockObject.transform);
                 foreach (var c in cells)
                     AddCellSlab(layerObject.transform, c, cells, top, height, inset, color);
                 top += height;
@@ -268,7 +223,12 @@ namespace BlocksEscape.EditorTools.LevelPreview
             return material;
         }
 
-        public static Color ParseColor(string name) => string.IsNullOrEmpty(name) ? GrayBlockColor : LevelPalette.Get(name);
+        static BlockTypeSet LoadBlockTypes()
+        {
+            var file = AssetDatabase.LoadAssetAtPath<TextAsset>(BlockTypeSet.PackagePath);
+            if (file == null) throw new InvalidOperationException($"Block types not found at {BlockTypeSet.PackagePath}.");
+            return BlockTypeSet.Parse(file.text);
+        }
 
         public void Dispose()
         {

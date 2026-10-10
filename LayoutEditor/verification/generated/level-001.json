@@ -1,5 +1,5 @@
 {
-  "format": "block-puzzle/v1",
+  "format": "block-puzzle/v2",
   "rules": "grid-drag-drop/v1",
   "seed": 44,
   "board": {
@@ -17,28 +17,28 @@
         "side": "top",
         "start": 0,
         "length": 3,
-        "color": "red"
+        "type": "animal3"
       },
       {
         "id": "blue-right",
         "side": "right",
         "start": 0,
         "length": 3,
-        "color": "blue"
+        "type": "cow"
       },
       {
         "id": "yellow-bottom",
         "side": "bottom",
         "start": 3,
         "length": 3,
-        "color": "yellow"
+        "type": "animal4"
       },
       {
         "id": "green-left",
         "side": "left",
         "start": 3,
         "length": 3,
-        "color": "green"
+        "type": "animal5"
       }
     ]
   },
@@ -59,8 +59,8 @@
         "x": 0,
         "y": 3
       },
-      "colors": [
-        "red"
+      "types": [
+        "animal3"
       ],
       "axis": "vertical",
       "frozenFor": 0
@@ -81,8 +81,8 @@
         "x": 4,
         "y": 4
       },
-      "colors": [
-        "red"
+      "types": [
+        "animal3"
       ],
       "axis": "free",
       "frozenFor": 2
@@ -107,8 +107,8 @@
         "x": 3,
         "y": 0
       },
-      "colors": [
-        "blue"
+      "types": [
+        "cow"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -137,8 +137,8 @@
         "x": 4,
         "y": 2
       },
-      "colors": [
-        "yellow"
+      "types": [
+        "animal4"
       ],
       "axis": "vertical",
       "frozenFor": 2
@@ -163,8 +163,8 @@
         "x": 0,
         "y": 1
       },
-      "colors": [
-        "blue"
+      "types": [
+        "cow"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -193,9 +193,9 @@
         "x": 2,
         "y": 3
       },
-      "colors": [
-        "green",
-        "red"
+      "types": [
+        "animal5",
+        "animal3"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -224,8 +224,8 @@
         "x": 1,
         "y": 0
       },
-      "colors": [
-        "blue"
+      "types": [
+        "cow"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -242,7 +242,7 @@
         "x": 4,
         "y": 0
       },
-      "colors": [],
+      "types": [],
       "axis": "horizontal",
       "frozenFor": 0
     },
@@ -258,8 +258,8 @@
         "x": 0,
         "y": 0
       },
-      "colors": [
-        "blue"
+      "types": [
+        "cow"
       ],
       "axis": "free",
       "frozenFor": 0
@@ -284,8 +284,8 @@
         "x": 3,
         "y": 2
       },
-      "colors": [
-        "yellow"
+      "types": [
+        "animal4"
       ],
       "axis": "vertical",
       "frozenFor": 0

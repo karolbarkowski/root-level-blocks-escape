@@ -33,8 +33,9 @@ public sealed class Geometry
         {
             int size = g.Side is Side.Top or Side.Bottom ? b.Width : b.Height;
             int depth = g.Side is Side.Top or Side.Bottom ? b.Height : b.Width;
+            if (!BlockTypes.IsKnown(g.Type)) throw new ArgumentException($"Gate {g.Id} has unknown block type '{g.Type}'.");
             if (!Enum.IsDefined(typeof(Side), g.Side) || string.IsNullOrWhiteSpace(g.Id) || !ids.Add(g.Id) ||
-                string.IsNullOrWhiteSpace(g.Color) || g.Start < 0 || g.Length < 1 || g.Length > size || g.Start > size - g.Length ||
+                g.Start < 0 || g.Length < 1 || g.Length > size || g.Start > size - g.Length ||
                 (enclosed ? !g.Line.HasValue || g.Line < 0 || g.Line >= depth : g.Line.HasValue))
                 throw new ArgumentException("Invalid gate: enclosed gates require an in-bounds line; rectangular gates must omit it.");
             foreach (var c in GateCells(b, g))

@@ -12,10 +12,13 @@ public static class SelfTests
         int count=0;
         void Test(string name,Action body) { body();Console.WriteLine("PASS "+name);count++; }
         void Check(bool value,string message="Assertion failed") { if(!value)throw new InvalidOperationException(message); }
+        // Tests use whichever shared types exist, so renaming a type in block-types.json does not break them.
+        var t=BlockTypes.All.Select(x=>x.Id).ToArray();
+        string A=t[0],B=t[1],C=t[2],D=t[3],E=t[4],F=t[5];
         Engine Make(int w,int h,Piece[] blocks,Gate[]? gates=null,Cell[]? walls=null)=>new(new Level { Board=new(w,h,walls??[],gates??[]),Blocks=blocks });
         Test("one drag turns corners",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),["red"])],[new("g",Side.Right,2,1,"red")],[new(1,0),new(1,1)]);
+            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),[A])],[new("g",Side.Right,2,1,A)],[new(1,0),new(1,1)]);
             var solved=e.Apply(e.Initial(),new("a",new(2,2)));Check(e.Solved(solved));
             Check(Search.Solve(e,1000,DateTime.UtcNow.AddSeconds(2)).Moves.Length==1);
         });
@@ -31,42 +34,42 @@ public static class SelfTests
         });
         Test("whole shape must fit gate",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0),new(1,0),new(0,1)],new(0,0),["red"])],[new("g",Side.Top,0,1,"red")]);
+            var e=Make(3,3,[new("a",[new(0,0),new(1,0),new(0,1)],new(0,0),[A])],[new("g",Side.Top,0,1,A)]);
             Check(e.Apply(e.Initial(),new("a",new(0,0))).Events==0);
         });
         Test("interlocking neighbor blocks an outward silhouette",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0),new(0,1),new(1,1)],new(0,0),["red"]),new("b",[new(0,0)],new(1,0),[])],[new("g",Side.Top,0,2,"red")]);
-            Check(e.Exit(e.Initial(),0,0,"red")==null);
+            var e=Make(3,3,[new("a",[new(0,0),new(0,1),new(1,1)],new(0,0),[A]),new("b",[new(0,0)],new(1,0),[])],[new("g",Side.Top,0,2,A)]);
+            Check(e.Exit(e.Initial(),0,0,A)==null);
         });
         Test("layer peel retains shape and thaws another piece",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),["red","blue"]),new("b",[new(0,0)],new(1,1),["blue"],Axis.Vertical,1)],
-                [new("r",Side.Top,0,1,"red"),new("b",Side.Bottom,0,3,"blue")]);
+            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),[A,B]),new("b",[new(0,0)],new(1,1),[B],Axis.Vertical,1)],
+                [new("r",Side.Top,0,1,A),new("b",Side.Bottom,0,3,B)]);
             var s=e.Initial();Check(e.Reachable(s,1).Count==0);var n=e.Apply(s,new("a",new(0,0)));
             Check(n.Positions[0]==s.Positions[0]&&n.Layers[0]==1&&n.Events==1);Check(e.Reachable(n,1).Count>0);
         });
         Test("passing a gate while held does not remove a layer",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),["red"])],[new("r",Side.Top,1,1,"red")],
+            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),[A])],[new("r",Side.Top,1,1,A)],
                 [new(0,1),new(1,1),new(2,1)]);
             Check(e.Apply(e.Initial(),new("a",new(2,0))).Events==0);
         });
         Test("gray blocks move and survive victory",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),["red"]),new("b",[new(0,0)],new(1,1),[])],[new("r",Side.Top,0,3,"red")]);
+            var e=Make(3,3,[new("a",[new(0,0)],new(0,0),[A]),new("b",[new(0,0)],new(1,1),[])],[new("r",Side.Top,0,3,A)]);
             var s=e.Apply(e.Initial(),new("b",new(2,0)));Check(s.Events==0&&s.Positions[1]>=0);
             s=e.Apply(s,new("a",new(0,0)));Check(e.Solved(s)&&s.Positions[1]>=0);
         });
-        Test("one drop peels exactly one color",()=>
+        Test("one drop peels exactly one type",()=>
         {
-            var e=Make(2,2,[new("a",[new(0,0)],new(0,0),["red","red"])],[new("r",Side.Top,0,2,"red")]);
+            var e=Make(2,2,[new("a",[new(0,0)],new(0,0),[A,A])],[new("r",Side.Top,0,2,A)]);
             var s=e.Apply(e.Initial(),new("a",new(0,0)));Check(!e.Solved(s)&&s.Events==1);
             Check(e.Solved(e.Apply(s,new("a",new(0,0)))));
         });
         Test("opening bound does not inflate when budget runs out",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0)],new(1,1),["red"])],[new("r",Side.Top,0,3,"red")]);
+            var e=Make(3,3,[new("a",[new(0,0)],new(1,1),[A])],[new("r",Side.Top,0,3,A)]);
             var r=Search.Opening(e,e.Initial(),5,1,DateTime.UtcNow.AddSeconds(1));Check(r.LowerBound==1);
         });
         Test("overlap and disconnected shapes rejected",()=>
@@ -80,32 +83,32 @@ public static class SelfTests
         });
         Test("frozen-only deadlock is unsolvable, budget is unknown",()=>
         {
-            var e=Make(2,2,[new("a",[new(0,0)],new(0,0),["red"],Axis.Free,1)],[new("r",Side.Top,0,2,"red")]);
+            var e=Make(2,2,[new("a",[new(0,0)],new(0,0),[A],Axis.Free,1)],[new("r",Side.Top,0,2,A)]);
             Check(Search.Solve(e,100,DateTime.UtcNow.AddSeconds(1)).Status=="unsolvable");
             Check(Search.Solve(e,100,DateTime.UtcNow.AddSeconds(-1)).Status=="timeBudget");
         });
         Test("frozen layered directional piece",()=>
         {
-            var e=Make(4,3,[new("a",[new(0,0)],new(0,0),["red"]),
-                new("b",[new(0,0),new(1,0)],new(1,1),["red","blue"],Axis.Horizontal,1)],
-                [new("r",Side.Left,0,3,"red"),new("b",Side.Right,0,3,"blue")]);
+            var e=Make(4,3,[new("a",[new(0,0)],new(0,0),[A]),
+                new("b",[new(0,0),new(1,0)],new(1,1),[A,B],Axis.Horizontal,1)],
+                [new("r",Side.Left,0,3,A),new("b",Side.Right,0,3,B)]);
             var frames=e.Replay([new("a",new(0,0)),new("b",new(0,1)),new("b",new(2,1))]);
             Check(frames[1].Events==1&&frames[2].Positions[1]==4&&frames[3].Events==3);
         });
         Test("gate does not override restricted outward axis",()=>
         {
-            var e=Make(3,3,[new("a",[new(0,0)],new(1,0),["red"],Axis.Horizontal)],
-                [new("r",Side.Top,0,3,"red")]);
+            var e=Make(3,3,[new("a",[new(0,0)],new(1,0),[A],Axis.Horizontal)],
+                [new("r",Side.Top,0,3,A)]);
             Check(e.Apply(e.Initial(),new("a",new(1,0))).Events==0);
         });
         Test("all disconnected and overlapping gates rejected",()=>
         {
             bool rejected=false;try {Make(3,3,[new("a",[new(0,0)],new(0,0),[])],
-                [new("r",Side.Top,0,2,"red"),new("b",Side.Top,1,2,"blue")]);}catch(ArgumentException){rejected=true;}Check(rejected);
+                [new("r",Side.Top,0,2,A),new("b",Side.Top,1,2,B)]);}catch(ArgumentException){rejected=true;}Check(rejected);
         });
         Layout Room(Side side = Side.Left, int length = 3)
         {
-            var gate = new Gate("g", side, 2, length, "red", side is Side.Left or Side.Top ? 1 : 5);
+            var gate = new Gate("g", side, 2, length, A, side is Side.Left or Side.Top ? 1 : 5);
             var cells = Geometry.GateCells(new(7,7,[],[]),gate).ToHashSet();
             var border = Enumerable.Range(1,5).SelectMany(n => new Cell[] { new(n,1),new(n,5),new(1,n),new(5,n) }).Distinct().Where(c=>!cells.Contains(c)).ToArray();
             return new(7,7,border,[gate],BoundaryMode.Enclosed);
@@ -114,16 +117,16 @@ public static class SelfTests
         void Reject(Action action) { bool rejected=false;try {action();}catch(ArgumentException){rejected=true;}Check(rejected); }
         Test("enclosed floor excludes exterior, walls and gate cells",()=>
         {
-            var e=InRoom(Room(),new Piece("a",[new(0,0)],new(3,3),["red"]));
+            var e=InRoom(Room(),new Piece("a",[new(0,0)],new(3,3),[A]));
             Check(e.Geometry.FloorCount==9);Check(e.Reachable(e.Initial(),0).Count==9);
             foreach(var c in new Cell[]{new(0,0),new(1,2),new(1,1)})
-                Reject(()=>InRoom(Room(),new Piece("a",[new(0,0)],c,["red"])).Initial());
+                Reject(()=>InRoom(Room(),new Piece("a",[new(0,0)],c,[A])).Initial());
         });
         Test("inset exits work in all four directions",()=>
         {
             foreach(var side in Enum.GetValues<Side>())
             {
-                var e=InRoom(Room(side),new Piece("a",[new(0,0)],new(3,3),["red"]));
+                var e=InRoom(Room(side),new Piece("a",[new(0,0)],new(3,3),[A]));
                 Cell target=side switch {Side.Left=>new(2,3),Side.Right=>new(4,3),Side.Top=>new(3,2),_=>new(3,4)};
                 Check(e.Solved(e.Apply(e.Initial(),new Move("a",target))));
                 Check(Search.Solve(e,100,DateTime.UtcNow.AddSeconds(1)).Moves.Length==1);
@@ -140,20 +143,20 @@ public static class SelfTests
         });
         Test("inset gate still requires the entire silhouette to fit",()=>
         {
-            var e=InRoom(Room(Side.Left,1),new Piece("a",[new(0,0),new(0,1)],new(2,2),["red"]));
-            Check(e.Exit(e.Initial(),0,e.Encode(new(2,2)),"red")==null);
-            var interlocked=InRoom(Room(Side.Top),new Piece("a",[new(0,0),new(0,1),new(1,1)],new(2,2),["red"]),new Piece("b",[new(0,0)],new(3,2),[]));
-            Check(interlocked.Exit(interlocked.Initial(),0,interlocked.Encode(new(2,2)),"red")==null);
+            var e=InRoom(Room(Side.Left,1),new Piece("a",[new(0,0),new(0,1)],new(2,2),[A]));
+            Check(e.Exit(e.Initial(),0,e.Encode(new(2,2)),A)==null);
+            var interlocked=InRoom(Room(Side.Top),new Piece("a",[new(0,0),new(0,1),new(1,1)],new(2,2),[A]),new Piece("b",[new(0,0)],new(3,2),[]));
+            Check(interlocked.Exit(interlocked.Initial(),0,interlocked.Encode(new(2,2)),A)==null);
         });
         Test("inset layer peeling, freezing and permanent blocks retain rules",()=>
         {
-            var e=InRoom(Room(),new Piece("a",[new(0,0)],new(2,2),["red","red"],Axis.Horizontal),
-                new Piece("b",[new(0,0)],new(4,4),["red"],Axis.Horizontal,1),new Piece("gray",[new(0,0)],new(3,3),[]));
+            var e=InRoom(Room(),new Piece("a",[new(0,0)],new(2,2),[A,A],Axis.Horizontal),
+                new Piece("b",[new(0,0)],new(4,4),[A],Axis.Horizontal,1),new Piece("gray",[new(0,0)],new(3,3),[]));
             var s=e.Initial();Check(e.Reachable(s,1).Count==0);
             s=e.Apply(s,new Move("a",new(2,2)));Check(s.Events==1&&s.Positions[0]>=0&&e.Reachable(s,1).Count>0);
             s=e.Apply(s,new Move("a",new(2,2)));s=e.Apply(s,new Move("b",new(2,4)));Check(e.Solved(s)&&s.Positions[2]>=0);
-            var vertical=InRoom(Room(),new Piece("a",[new(0,0)],new(2,2),["red"],Axis.Vertical));
-            Check(vertical.Exit(vertical.Initial(),0,vertical.Encode(new(2,2)),"red")==null);
+            var vertical=InRoom(Room(),new Piece("a",[new(0,0)],new(2,2),[A],Axis.Vertical));
+            Check(vertical.Exit(vertical.Initial(),0,vertical.Encode(new(2,2)),A)==null);
         });
         Test("enclosed layout JSON round trip and 20x20 canvas",()=>
         {
@@ -161,6 +164,14 @@ public static class SelfTests
             var json=System.Text.Json.JsonSerializer.Serialize(b,Files.Json);
             var restored=System.Text.Json.JsonSerializer.Deserialize<Layout>(json,Files.Json)!;
             Check(restored.BoundaryMode==BoundaryMode.Enclosed&&restored.Gates[0].Line==1&&new Geometry(restored).FloorCount==9);
+        });
+        Test("block types are shared, and unknown or unreachable types are rejected",()=>
+        {
+            Check(t.Length>=6&&t.Distinct().Count()==t.Length,"block-types.json needs at least six unique types for these tests");
+            Reject(()=>Make(3,3,[new("a",[new(0,0)],new(0,0),[])],[new("g",Side.Top,0,1,"no-such-type")]));
+            Reject(()=>Make(3,3,[new("a",[new(0,0)],new(0,0),["no-such-type"])],[new("g",Side.Top,0,1,A)]));
+            Reject(()=>Make(3,3,[new("a",[new(0,0)],new(0,0),[B])],[new("g",Side.Top,0,1,A)]));
+            Reject(()=>new Engine(new Level {Format="block-puzzle/v1",Board=new(3,3,[],[new("g",Side.Top,0,1,A)]),Blocks=[new("a",[new(0,0)],new(0,0),[A])]}));
         });
         Test("coverage uses ceiling and single-cell ratio rounds block counts",()=>
         {
@@ -170,9 +181,9 @@ public static class SelfTests
             Check(Generator.RequiredSingles(6,.4m)==2);
             Check(Generator.RequiredSingles(5,.5m)==3);
         });
-        Test("composition covers playable floor and represents every custom gate color",()=>
+        Test("composition covers playable floor and represents every gate type",()=>
         {
-            var layout=new Layout(10,10,[],[new("a",Side.Top,0,5,"Ocean"),new("b",Side.Bottom,0,5,"Rose"),new("c",Side.Right,0,5,"Ocean")]);
+            var layout=new Layout(10,10,[],[new("a",Side.Top,0,5,A),new("b",Side.Bottom,0,5,B),new("c",Side.Right,0,5,A)]);
             foreach(decimal ratio in new[]{0m,.4m,1m})
             {
                 var generator=new Generator(new(FixedLayout:layout,Coverage:80,SingleCellRatio:ratio));
@@ -182,17 +193,17 @@ public static class SelfTests
                     Check(blocks!.Sum(p=>p.Shape.Length)>=80);
                     Check(blocks.Count(p=>p.Shape.Length==1)==Generator.RequiredSingles(blocks.Count,ratio));
                     Check(generator.MeetsComposition(new Level {Board=layout,Blocks=blocks.ToArray()}));
-                    Check(blocks.Select(p=>p.Colors[0]).ToHashSet().SetEquals(["Ocean","Rose"]));
+                    Check(blocks.Select(p=>p.Types[0]).ToHashSet().SetEquals([A,B]));
                 }
             }
         });
-        Test("enclosed composition excludes exterior and rejects loss of a required color",()=>
+        Test("enclosed composition excludes exterior and rejects loss of a required type",()=>
         {
             var layout=Room();var generator=new Generator(new(FixedLayout:layout,Coverage:80,SingleCellRatio:.4m));
             var blocks=generator.CreateComposition(layout)!;
             Check(blocks.Sum(p=>p.Shape.Length)==8);
             var level=new Level {Board=layout,Blocks=blocks.ToArray()}; Check(generator.MeetsComposition(level));
-            Check(!generator.MeetsComposition(level with {Blocks=blocks.Select(p=>p with {Colors=[]}).ToArray()}));
+            Check(!generator.MeetsComposition(level with {Blocks=blocks.Select(p=>p with {Types=[]}).ToArray()}));
         });
         Test("generation rejects invalid composition options and supports cancellation",()=>
         {
@@ -205,7 +216,7 @@ public static class SelfTests
         Test("candidate limit saves verified levels immediately and cancellation retains them",()=>
         {
             var layout=new Layout(6,6,[new(2,2)],
-                [new("r",Side.Top,0,3,"red"),new("b",Side.Right,0,3,"blue"),new("y",Side.Bottom,3,3,"yellow"),new("g",Side.Left,3,3,"green")]);
+                [new("r",Side.Top,0,3,A),new("b",Side.Right,0,3,B),new("y",Side.Bottom,3,3,C),new("g",Side.Left,3,3,D)]);
             foreach(bool cancelAfterFirst in new[]{false,true})
             {
                 using var stop=new CancellationTokenSource(TimeSpan.FromSeconds(20));
@@ -239,21 +250,21 @@ public static class SelfTests
         });
         Test("difficulty is deterministic, bounded and ranks a trivial level low",()=>
         {
-            var trivial=new Level {Board=new(3,3,[],[new("r",Side.Top,0,3,"red")]),Blocks=[new("a",[new(0,0)],new(0,0),["red"])]};
+            var trivial=new Level {Board=new(3,3,[],[new("r",Side.Top,0,3,A)]),Blocks=[new("a",[new(0,0)],new(0,0),[A])]};
             var first=Difficulty.Rate(trivial);
             Check(first.Score==Difficulty.Rate(trivial).Score);
             Check(first.Score>=Difficulty.MinScore&&first.Score<=Difficulty.MaxScore);
             Check(first.Score<200,$"trivial level rated {first.Score}");
             var layout=new Layout(6,6,[new(2,2)],
-                [new("r",Side.Top,0,3,"red"),new("b",Side.Right,0,3,"blue"),new("y",Side.Bottom,3,3,"yellow"),new("g",Side.Left,3,3,"green")]);
+                [new("r",Side.Top,0,3,A),new("b",Side.Right,0,3,B),new("y",Side.Bottom,3,3,C),new("g",Side.Left,3,3,D)]);
             var generated=new Generator(new(FixedLayout:layout,Coverage:65,SingleCellRatio:.4m,MinOpening:3)).Run(_=>{}).Levels[0];
             int rated=(int)generated.Analysis["difficulty"];
             Check(rated>first.Score,$"generated level {rated} not above trivial {first.Score}");
         });
         Test("genre composition uses larger blocks and caps specials",()=>
         {
-            var layout=new Layout(8,9,[],[new("p",Side.Top,1,2,"purple",0),new("r",Side.Top,5,2,"red",0),new("y",Side.Left,2,2,"yellow",0),
-                new("o",Side.Right,2,2,"orange",7),new("g",Side.Right,5,2,"green",7),new("r2",Side.Bottom,1,2,"red",8)],BoundaryMode.Enclosed);
+            var layout=new Layout(8,9,[],[new("p",Side.Top,1,2,E,0),new("r",Side.Top,5,2,A,0),new("y",Side.Left,2,2,C,0),
+                new("o",Side.Right,2,2,F,7),new("g",Side.Right,5,2,D,7),new("r2",Side.Bottom,1,2,A,8)],BoundaryMode.Enclosed);
             var walls=new List<Cell>();
             for(int x=0;x<8;x++)for(int y=0;y<9;y++)
                 if((x is 0 or 7 || y is 0 or 8)&&!layout.Gates.Any(g=>Geometry.GateCells(layout,g).Contains(new(x,y))))walls.Add(new(x,y));
@@ -266,7 +277,7 @@ public static class SelfTests
         });
         Test("weighted search solves without claiming optimality and never lengthens a witness",()=>
         {
-            var e=Make(4,4,[new("a",[new(0,0)],new(0,0),["red"]),new("b",[new(0,0)],new(3,3),["red"])],[new("r",Side.Top,0,4,"red")]);
+            var e=Make(4,4,[new("a",[new(0,0)],new(0,0),[A]),new("b",[new(0,0)],new(3,3),[A])],[new("r",Side.Top,0,4,A)]);
             var greedy=Search.Solve(e,1000,DateTime.UtcNow.AddSeconds(2),5);
             Check(greedy.Status=="solved"&&!greedy.Optimal);e.Replay(greedy.Moves);
             var exact=Search.Solve(e,1000,DateTime.UtcNow.AddSeconds(2));

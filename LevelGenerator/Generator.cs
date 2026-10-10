@@ -14,7 +14,6 @@ public sealed partial class Generator(GenerateOptions options)
     private readonly Stopwatch watch = new();
     private Action reportProgress = () => { };
     private const int StallLimit = 150;
-    private static readonly string[] Palette = ["red","blue","yellow","green"];
     // Up to four cells; the catalog adds every rotation and mirror image (so J, Z and the like).
     private static readonly Cell[][] Shapes =
     [
@@ -131,8 +130,8 @@ public sealed partial class Generator(GenerateOptions options)
         if (pieces == null) return null;
         var template = new Level { Seed=options.Seed,Board=board,Blocks=pieces.ToArray() };
         var engine = new Engine(template);
-        var state = new State(Enumerable.Repeat(-1,pieces.Count).ToArray(),pieces.Select(p=>p.Colors.Length).ToArray());
-        for (int i=0;i<pieces.Count;i++) if (pieces[i].Colors.Length==0)
+        var state = new State(Enumerable.Repeat(-1,pieces.Count).ToArray(),pieces.Select(p=>p.Types.Length).ToArray());
+        for (int i=0;i<pieces.Count;i++) if (pieces[i].Types.Length==0)
         {
             var used=engine.Occupied(state);
             var fits=Enumerable.Range(0,board.Width*board.Height).Where(p=>engine.Fits(i,p,used)).ToArray();
@@ -178,12 +177,12 @@ public sealed partial class Generator(GenerateOptions options)
         {
             if (!engine.Fits(i,goal,used)) continue;
             restored.Positions[i]=goal;
-            if (engine.Exit(restored,i,goal,engine.Pieces[i].Colors[layer])==null) continue;
+            if (engine.Exit(restored,i,goal,engine.Pieces[i].Types[layer])==null) continue;
             var reachable=engine.Reachable(restored,i);
             if (reachable.Count==0) continue;
             // Bias insertion away from the boundary to keep gate approaches free
             // for later inverse insertions. Exploration still includes all poses.
-            var interiorPoses=reachable.Where(p=>engine.Exit(restored,i,p,engine.Pieces[i].Colors[layer])==null).ToArray();
+            var interiorPoses=reachable.Where(p=>engine.Exit(restored,i,p,engine.Pieces[i].Types[layer])==null).ToArray();
             if(interiorPoses.Length==0)continue;
             int pos=interiorPoses.OrderByDescending(p=>Interior(engine,p)+random.NextDouble()*3).First();
             restored.Positions[i]=pos;
@@ -204,9 +203,9 @@ public sealed partial class Generator(GenerateOptions options)
         {
             if (state.Positions[i]<0) continue;
             var p=engine.Pieces[i];
-            if (p.Colors.Length>0 && engine.Exit(state,i,state.Positions[i],p.Colors[state.Layers[i]])!=null) continue;
+            if (p.Types.Length>0 && engine.Exit(state,i,state.Positions[i],p.Types[state.Layers[i]])!=null) continue;
             var reachable=engine.Reachable(state,i).Where(pos=>pos!=state.Positions[i] &&
-                (p.Colors.Length==0 || engine.Exit(state,i,pos,p.Colors[state.Layers[i]])==null)).ToArray();
+                (p.Types.Length==0 || engine.Exit(state,i,pos,p.Types[state.Layers[i]])==null)).ToArray();
             if (reachable.Length==0) continue;
             previous=state.Copy();previous.Positions[i]=reachable[random.Next(reachable.Length)];
             forward=new Move(p.Id,engine.Decode(state.Positions[i]));return true;
@@ -233,8 +232,8 @@ public sealed partial class Generator(GenerateOptions options)
         {
             var reachable=engine.Reachable(initial,i);
             if(reachable.Count>1)mobile++;
-            if(level.Blocks[i].Colors.Length==0)continue;
-            int exits=reachable.Count(p=>engine.Exit(initial,i,p,level.Blocks[i].Colors[0])!=null);
+            if(level.Blocks[i].Types.Length==0)continue;
+            int exits=reachable.Count(p=>engine.Exit(initial,i,p,level.Blocks[i].Types[0])!=null);
             if(exits>0)direct++;
             exitPoses+=exits;
         }
@@ -251,8 +250,8 @@ public sealed partial class Generator(GenerateOptions options)
         var baseEngine=new Engine(level);
         level.Solution=Search.Improve(baseEngine,level.Solution,30000,1.5).Moves;
         string last=level.Solution[^1].Block;
-        var gray=level with { Blocks=level.Blocks.Select(p=>p.Id==last?p with {Colors=[]}:p).ToArray(),Solution=level.Solution[..^1] };
-        if (MeetsComposition(gray)) level=gray;
+        var neutral=level with { Blocks=level.Blocks.Select(p=>p.Id==last?p with {Types=[]}:p).ToArray(),Solution=level.Solution[..^1] };
+        if (MeetsComposition(neutral)) level=neutral;
         new Engine(level).Replay(level.Solution);
 
         // Insert one extra peel after the first full removal. A return drop restores
@@ -264,12 +263,12 @@ public sealed partial class Generator(GenerateOptions options)
             var s=frames[t];if(s.Events==0)continue;
             for(int i=0;i<level.Blocks.Length&&!layered;i++)
             {
-                var p=level.Blocks[i];if(s.Positions[i]<0||p.Colors.Length==0)continue;
+                var p=level.Blocks[i];if(s.Positions[i]<0||p.Types.Length==0)continue;
                 foreach(int pos in engine.Reachable(s,i))
                 {
-                    string? color=level.Board.Gates.Select(g=>g.Color).Distinct().FirstOrDefault(color=>color!=p.Colors[0]&&engine.Exit(s,i,pos,color)!=null);
-                    if(color==null)continue;
-                    var blocks=level.Blocks.ToArray();blocks[i]=p with {Colors=[color,..p.Colors]};
+                    string? type=level.Board.Gates.Select(g=>g.Type).Distinct().FirstOrDefault(type=>type!=p.Types[0]&&engine.Exit(s,i,pos,type)!=null);
+                    if(type==null)continue;
+                    var blocks=level.Blocks.ToArray();blocks[i]=p with {Types=[type,..p.Types]};
                     var moves=level.Solution.Take(t).Concat([new Move(p.Id,engine.Decode(pos)),new Move(p.Id,engine.Decode(s.Positions[i]))]).Concat(level.Solution.Skip(t)).ToArray();
                     var candidate=level with {Blocks=blocks,Solution=moves};
                     if (!MeetsComposition(candidate)) continue;
@@ -323,7 +322,8 @@ public sealed partial class Generator(GenerateOptions options)
         {
             int size=i%2==0?w:h;
             int length=Math.Min(size,random.Next(2,4));
-            gates.Add(new($"g{i+1}",(Side)i,random.Next(size-length+1),length,Palette[i]));
+            // One gate per side, using the first shared block types.
+            gates.Add(new($"g{i+1}",(Side)i,random.Next(size-length+1),length,BlockTypes.All[i%BlockTypes.All.Count].Id));
         }
         var walls=new HashSet<Cell>();
         if (w>=5 && h>=5)

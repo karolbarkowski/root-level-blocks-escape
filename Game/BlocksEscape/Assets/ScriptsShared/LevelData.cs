@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BlocksEscape.Levels
 {
-    // Minimal JsonUtility mirror of the block-puzzle/v1 format (see LevelGenerator/FORMAT.md).
+    // Minimal JsonUtility mirror of the block-puzzle/v2 format (see LevelGenerator/FORMAT.md).
     // Only the fields the game and editor tools need; unknown fields are ignored.
     [Serializable]
     public class LevelData
@@ -17,7 +18,34 @@ namespace BlocksEscape.Levels
 
         public bool IsEnclosed => board != null && board.boundaryMode == "enclosed";
 
-        public static LevelData Parse(string json) => JsonUtility.FromJson<LevelData>(json);
+        // Cells a gate occupies. Enclosed gates sit on their drawn line; legacy rectangular gates
+        // belong to the board edge and lie one cell outside it.
+        public IEnumerable<Vector2Int> GateCells(GateData gate)
+        {
+            bool enclosed = IsEnclosed;
+            for (int n = gate.start; n < gate.start + gate.length; n++)
+            {
+                switch (gate.side)
+                {
+                    case "top": yield return new Vector2Int(n, enclosed ? gate.line : -1); break;
+                    case "bottom": yield return new Vector2Int(n, enclosed ? gate.line : board.height); break;
+                    case "left": yield return new Vector2Int(enclosed ? gate.line : -1, n); break;
+                    default: yield return new Vector2Int(enclosed ? gate.line : board.width, n); break;
+                }
+            }
+        }
+
+        public const string CurrentFormat = "block-puzzle/v2";
+
+        public static LevelData Parse(string json)
+        {
+            var level = JsonUtility.FromJson<LevelData>(json);
+            if (level?.format != CurrentFormat)
+                throw new ArgumentException(level?.format == "block-puzzle/v1"
+                    ? "This is a block-puzzle/v1 level with colors; convert it with LevelGenerator.Tools migrate."
+                    : $"Unsupported level format '{level?.format}'.");
+            return level;
+        }
     }
 
     [Serializable]
@@ -44,7 +72,7 @@ namespace BlocksEscape.Levels
         public string side; // outward direction: top, right, bottom, left
         public int start;
         public int length;
-        public string color;
+        public string type; // block type id (see BlockTypeSet)
         public int line; // enclosed mode only: column for left/right, row for top/bottom
     }
 
@@ -54,7 +82,7 @@ namespace BlocksEscape.Levels
         public string id;
         public CellData[] shape;
         public CellData position;
-        public string[] colors; // outside to inside; empty = permanent gray
+        public string[] types; // block type ids, outside to inside; empty = neutral blocker
         public string axis;     // free, horizontal, vertical
         public int frozenFor;
     }

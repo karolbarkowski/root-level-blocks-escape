@@ -131,7 +131,7 @@
       "line": 2,
       "start": 6,
       "length": 3,
-      "color": "red"
+      "type": "animal3"
     },
     {
       "id": "blue-right",
@@ -139,7 +139,7 @@
       "line": 6,
       "start": 6,
       "length": 3,
-      "color": "blue"
+      "type": "cow"
     }
   ]
 }

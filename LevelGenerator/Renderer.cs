@@ -7,11 +7,9 @@ namespace BlockPuzzle;
 public static class Renderer
 {
     private static string Escape(string s)=>WebUtility.HtmlEncode(s);
-    private static string Color(string c)=>c switch
-    {
-        "red"=>"#e96b62","blue"=>"#638dda","yellow"=>"#eec659","green"=>"#65b18d",
-        "purple"=>"#b186c9","orange"=>"#e5a45e","cyan"=>"#64c5cc",_=>"#c79bbc"
-    };
+    private const string NeutralColor="#92999e";
+    private static string Color(string type)=>BlockTypes.Get(type).Color;
+    private static string Name(string type)=>BlockTypes.Get(type).Name;
     public static string Svg(Engine e,State s)
     {
         const int cell=48,pad=28;
@@ -29,15 +27,15 @@ public static class Renderer
             int y=g.Side switch { Side.Top=>pad-10,Side.Bottom=>pad+e.Board.Height*cell,_=>pad+g.Start*cell };
             if (g.Line.HasValue) { if (horizontal) y=pad+g.Line.Value*cell; else x=pad+g.Line.Value*cell; }
             int thickness=g.Line.HasValue?cell:10;
-            b.Append($"<rect x='{x}' y='{y}' width='{(horizontal?g.Length*cell:thickness)}' height='{(horizontal?thickness:g.Length*cell)}' rx='3' fill='{Color(g.Color)}'><title>{Escape(g.Id)}: {Escape(g.Color)}; exits {g.Side}</title></rect>");
+            b.Append($"<rect x='{x}' y='{y}' width='{(horizontal?g.Length*cell:thickness)}' height='{(horizontal?thickness:g.Length*cell)}' rx='3' fill='{Color(g.Type)}'><title>{Escape(g.Id)}: {Escape(Name(g.Type))}; exits {g.Side}</title></rect>");
         }
         for(int i=0;i<e.Pieces.Length;i++)
         {
             if(s.Positions[i]<0)continue;
             var p=e.Pieces[i];var a=e.Decode(s.Positions[i]);
-            string color=p.Colors.Length==0?"#92999e":Color(p.Colors[s.Layers[i]]);
+            string color=p.Types.Length==0?NeutralColor:Color(p.Types[s.Layers[i]]);
             bool frozen=s.Events<p.FrozenFor;
-            b.Append($"<g><title>{Escape(p.Id)}: {Escape(p.Colors.Length==0?"permanent blocker":string.Join(" → ",p.Colors.Skip(s.Layers[i])))}; {p.Axis}; frozen for {Math.Max(0,p.FrozenFor-s.Events)} more events</title>");
+            b.Append($"<g><title>{Escape(p.Id)}: {Escape(p.Types.Length==0?"neutral blocker":string.Join(" → ",p.Types.Skip(s.Layers[i]).Select(Name)))}; {p.Axis}; frozen for {Math.Max(0,p.FrozenFor-s.Events)} more events</title>");
             var shape=p.Shape.ToHashSet();
             foreach(var c in p.Shape)
             {
@@ -49,7 +47,7 @@ public static class Renderer
             var label=p.Shape[0];int lx=pad+(a.X+label.X)*cell+24,ly=pad+(a.Y+label.Y)*cell+19;
             b.Append($"<text x='{lx}' y='{ly}' text-anchor='middle' font-family='system-ui,sans-serif' font-size='12' font-weight='700' fill='#172735'>{Escape(p.Id)}</text>");
             string mark=(p.Axis switch {Axis.Horizontal=>"↔",Axis.Vertical=>"↕",_=>""})+(frozen?$" ❄{p.FrozenFor-s.Events}":"");
-            if(p.Colors.Length-s.Layers[i]>1)mark+=$" /{p.Colors.Length-s.Layers[i]}";
+            if(p.Types.Length-s.Layers[i]>1)mark+=$" /{p.Types.Length-s.Layers[i]}";
             b.Append($"<text x='{lx}' y='{ly+18}' text-anchor='middle' font-family='system-ui,sans-serif' font-size='13' fill='#172735'>{Escape(mark)}</text></g>");
         }
         return b.Append("</svg>").ToString();
@@ -75,8 +73,8 @@ public static class Renderer
         <input id="step" type="range" min="0" value="0" aria-label="Solution step"><p id="caption" aria-live="polite"></p></section><aside>
         <p>Move through the solution one drop at a time. Each step may include a drag around corners.</p>
         <dl><dt>Board</dt><dd>BOARD_SIZE</dd><dt>Solution</dt><dd>MOVE_COUNT drops</dd><dt>Seed</dt><dd>SEED_VALUE</dd></dl>
-        <p>↔ / ↕ restrict movement.<br>❄ is the remaining freeze counter.<br>/2 means two color layers remain.<br>Gray blocks stay on the board.</p>
-        <p>Coordinates start at (0, 0) in the top-left corner. Hover over a piece for its color stack.</p>
+        <p>↔ / ↕ restrict movement.<br>❄ is the remaining freeze counter.<br>/2 means two type layers remain.<br>Gray (neutral) blocks stay on the board.</p>
+        <p>Coordinates start at (0, 0) in the top-left corner. Hover over a piece for its type stack.</p>
         <details><summary>Generation measurements</summary><pre>METRICS</pre></details></aside></div></main>
         <script>const data=DATA_VALUE;let index=0,timer=null;
         const board=document.getElementById('board'),slider=document.getElementById('step'),caption=document.getElementById('caption');

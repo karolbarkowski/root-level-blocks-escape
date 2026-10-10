@@ -1,0 +1,6 @@
+{
+  "name": "com.rootlevel.blocktypes",
+  "version": "1.0.0",
+  "displayName": "Block Types",
+  "description": "The block types shared by the level generator, the layout editor and the game (block-types.json)."
+}

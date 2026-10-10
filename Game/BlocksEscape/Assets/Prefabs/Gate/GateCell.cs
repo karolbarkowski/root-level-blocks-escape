@@ -1,9 +1,11 @@
+using BlocksEscape.Levels;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BlocksEscape
 {
     // One cell of a gate. The gate mesh uses white materials (threshold, glass, arrow);
-    // this tints the threshold and glass with the gate color through property blocks,
+    // this tints the threshold and glass with the color of the gate's block type through property blocks,
     // so every gate shares the same materials. Local +Z is the gate's outward (exit) direction.
     [ExecuteAlways]
     [DisallowMultipleComponent]
@@ -16,21 +18,21 @@ namespace BlocksEscape
         static readonly int ColorId = Shader.PropertyToID("_Color");
 
         [SerializeField] string gateId;
-        [SerializeField] string colorName;
+        [SerializeField, FormerlySerializedAs("colorName")] string blockType;
         [SerializeField] Color color = new Color(0.6f, 0.6f, 0.6f);
         [SerializeField, Range(0f, 1f)] float glassAlpha = 0.45f;
 
         MaterialPropertyBlock _block;
 
         public string GateId => gateId;
-        public string ColorName => colorName;
+        public string BlockTypeId => blockType;
         public Color Color => color;
 
-        public void Setup(string id, string levelColor, Color displayColor)
+        public void Setup(string id, BlockType type)
         {
             gateId = id;
-            colorName = levelColor;
-            color = displayColor;
+            blockType = type.Id;
+            color = type.Color;
             ApplyColor();
         }
 

@@ -1,8 +1,18 @@
-import { SIDES, COLORS, clone, cellKey, sizeFor, edgeCell, blank, parseLayout, validate, gateAt, paint, nextId, resize, serialize, History, enclosed, geometry, gateCells } from './model.js';
+import { SIDES, parseTypes, clone, cellKey, sizeFor, edgeCell, blank, parseLayout, validate, gateAt, paint, nextId, resize, serialize, History, enclosed, geometry, gateCells } from './model.js';
 
 const $ = id => document.getElementById(id);
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const STORE = 'block-studio.layout.v1';
+const STORE = 'block-studio.layout.v2'; // v1 drafts used gate colors
+let TYPES = [];
+try {
+  const response = await fetch('./block-types.json');
+  if (!response.ok) throw new Error();
+  TYPES = parseTypes(await response.text());
+} catch { /* Reported once the editor is up; every gate then shows as an unknown type. */ }
+const typeOf = id => TYPES.find(t => t.id === id);
+const typeName = id => typeOf(id)?.name ?? `${id} (unknown)`;
+const typeOptions = current => (current && !typeOf(current) ? [{ id: current, name: typeName(current) }] : []).concat(TYPES)
+  .map(t => `<option value="${escape(t.id)}">${escape(t.name)}</option>`).join('');
 let documentState = { name: 'untitled-layout', layout: blank() }, restored = false;
 try {
   const stored = JSON.parse(localStorage.getItem(STORE));
@@ -13,12 +23,8 @@ let doc = clone(history.current), tool = 'wall', selected = -1, stroke = null, p
 const board = () => doc.layout;
 const svg = $('board'), C = 40, P = 36, E = 15;
 const names = { wall: 'Draw walls', erase: 'Erase', gate: 'Place gates', select: 'Select' };
-const hints = { wall: 'Drag across cells to paint walls. Hold Shift to erase.', erase: 'Drag to erase walls. Click a gate to remove it.', gate: 'Drag along an outer edge to set a gate’s span.', select: 'Click a colored gate to edit its properties.' };
-function color(value) {
-  if (Object.hasOwn(COLORS, value)) return COLORS[value];
-  let hash = 0; for (const c of value) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
-  return `hsl(${hash % 360} 42% 65%)`;
-}
+const hints = { wall: 'Drag across cells to paint walls. Hold Shift to erase.', erase: 'Drag to erase walls. Click a gate to remove it.', gate: 'Drag along an outer edge to set a gate’s span.', select: 'Click a gate to edit its properties.' };
+const color = id => typeOf(id)?.color ?? '#c79bbc';
 function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').hidden = true, 4200); }
 function saveDraft() {
   try { localStorage.setItem(STORE, JSON.stringify(doc)); $('save-status').textContent = 'Draft saved in this browser'; }
@@ -58,9 +64,9 @@ function renderBoard() {
   }
   b.gates.forEach((g, i) => {
     const rect = gateRect(g); if (rect.width <= 0 || rect.height <= 0) return;
-    html += `<rect class="board-gate ${i === selected ? 'selected' : ''}" ${attrs(rect)} rx="4" fill="${color(g.color)}" data-gate="${i}" role="button" tabindex="0" aria-label="${escape(g.id)}: ${escape(g.color)} gate, ${g.side}, start ${g.start}, length ${g.length}"><title>${escape(g.id)} · ${escape(g.color)} · ${g.side} ${g.start}–${g.start + g.length - 1}</title></rect>`;
+    html += `<rect class="board-gate ${i === selected ? 'selected' : ''}" ${attrs(rect)} rx="4" fill="${color(g.type)}" data-gate="${i}" role="button" tabindex="0" aria-label="${escape(g.id)}: ${escape(typeName(g.type))} gate, ${g.side}, start ${g.start}, length ${g.length}"><title>${escape(g.id)} · ${escape(typeName(g.type))} · ${g.side} ${g.start}–${g.start + g.length - 1}</title></rect>`;
     if (enclosed(b)) html += `<text class="gate-label gate-direction" text-anchor="middle" x="${rect.x + rect.width / 2}" y="${rect.y + rect.height / 2 + 6}">${{ top: '↑', right: '→', bottom: '↓', left: '←' }[g.side]}</text>`;
-    else if (g.length >= 2 && ['top', 'bottom'].includes(g.side)) html += `<text class="gate-label" text-anchor="middle" x="${rect.x + rect.width / 2}" y="${rect.y + 11}">${escape(g.color.length > 12 ? g.color.slice(0, 11) + '…' : g.color)}</text>`;
+    else if (g.length >= 2 && ['top', 'bottom'].includes(g.side)) html += `<text class="gate-label" text-anchor="middle" x="${rect.x + rect.width / 2}" y="${rect.y + 11}">${escape(typeName(g.type).length > 12 ? typeName(g.type).slice(0, 11) + '…' : typeName(g.type))}</text>`;
   });
   if (preview) html += `<rect class="preview-gate" ${attrs(gateRect(preview))} rx="3"/>`;
   svg.innerHTML = html;
@@ -76,7 +82,7 @@ function fitBoard() {
   } else $('board-wrap').style.width = `${(b.width * C + P * 2) * Number(zoom) / 100}px`;
 }
 function render() {
-  const b = board(), report = validate(b);
+  const b = board(), report = validate(b, TYPES);
   if (selected >= b.gates.length) selected = -1;
   focusCell = { x: Math.min(focusCell.x, b.width - 1), y: Math.min(focusCell.y, b.height - 1) };
   $('filename').value = doc.name; $('width').value = b.width; $('height').value = b.height;
@@ -91,11 +97,12 @@ function render() {
   $('validation-messages').innerHTML = [...report.errors.map(e => `<p class="validation-message error">${escape(e)}</p>`), ...report.warnings.map(w => `<p class="validation-message warning">${escape(w)}</p>`)].join('') || '<p class="validation-message">Walls and gates are compatible with the generator.</p>';
   $('export-button').disabled = report.errors.length > 0;
   $('export-button').title = report.errors.length ? 'Fix the layout errors before exporting' : 'Download layout JSON (Ctrl+S)';
-  $('gate-list').innerHTML = b.gates.length ? b.gates.map((g, i) => `<button class="gate-row ${selected === i ? 'selected' : ''}" data-gate-row="${i}" aria-label="Edit ${escape(g.id)}"><span class="color-dot" style="--gate-color:${color(g.color)}"></span><span class="gate-description"><strong>${escape(g.id || 'Unnamed gate')}</strong><small>${escape(g.color)} · ${g.side} · ${g.length} ${g.length === 1 ? 'cell' : 'cells'}</small></span><span class="arrow" aria-hidden="true">›</span></button>`).join('') : '<div class="empty-gates"><strong>No gates yet</strong>Choose Place gates, then draw a span in the boundary.</div>';
+  $('gate-list').innerHTML = b.gates.length ? b.gates.map((g, i) => `<button class="gate-row ${selected === i ? 'selected' : ''}" data-gate-row="${i}" aria-label="Edit ${escape(g.id)}"><span class="color-dot" style="--gate-color:${color(g.type)}"></span><span class="gate-description"><strong>${escape(g.id || 'Unnamed gate')}</strong><small>${escape(typeName(g.type))} · ${g.side} · ${g.length} ${g.length === 1 ? 'cell' : 'cells'}</small></span><span class="arrow" aria-hidden="true">›</span></button>`).join('') : '<div class="empty-gates"><strong>No gates yet</strong>Choose Place gates, then draw a span in the boundary.</div>';
   $('gate-inspector').hidden = selected < 0;
   if (selected >= 0) {
     const g = b.gates[selected];
-    for (const key of ['id', 'side', 'color', 'start', 'length']) $(`gate-${key}`).value = g[key];
+    $('gate-type').innerHTML = typeOptions(g.type);
+    for (const key of ['id', 'side', 'type', 'start', 'length']) $(`gate-${key}`).value = g[key];
     $('gate-line').value = g.line ?? 0;
   }
   renderBoard();
@@ -124,9 +131,9 @@ function paintTo(cell) {
   stroke.last = cell; renderBoard();
 }
 function placeGate(side, start, length = 1, line) {
-  const chosen = $('paint-color').value.trim();
-  if (!chosen) { toast('Choose a color name first.'); return; }
-  const next = clone(doc), g = { id: nextId(board()), side, start, length, color: chosen };
+  const chosen = $('paint-type').value;
+  if (!chosen) { toast('Choose a block type first.'); return; }
+  const next = clone(doc), g = { id: nextId(board()), side, start, length, type: chosen };
   if (enclosed(board())) {
     g.line = line;
     const cells = new Set(gateCells(board(), g).map(cellKey));
@@ -137,7 +144,7 @@ function placeGate(side, start, length = 1, line) {
   const before = validate(board()).errors, after = validate(next.layout).errors;
   const added = after.filter(error => !before.includes(error));
   if (added.length && !enclosed(board())) { toast(added[0]); return; }
-  selected = next.layout.gates.length - 1; commit(next, `Added ${chosen} gate · ${length} ${length === 1 ? 'cell' : 'cells'}`);
+  selected = next.layout.gates.length - 1; commit(next, `Added ${typeName(chosen)} gate · ${length} ${length === 1 ? 'cell' : 'cells'}`);
 }
 svg.addEventListener('pointerdown', event => {
   if (event.button !== 0 && event.button !== 2) return;
@@ -212,10 +219,12 @@ svg.addEventListener('keydown', event => {
   }
 });
 document.querySelectorAll('[data-tool]').forEach(button => button.addEventListener('click', () => setTool(button.dataset.tool)));
-$('swatches').innerHTML = Object.entries(COLORS).map(([name, value]) => `<button class="swatch" data-color="${name}" style="--swatch:${value}" aria-label="${name}" aria-pressed="${name === 'red'}" title="${name}"></button>`).join('');
-function updateSwatches() { document.querySelectorAll('[data-color]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.color === $('paint-color').value))); }
-$('swatches').addEventListener('click', event => { const button = event.target.closest('[data-color]'); if (button) { $('paint-color').value = button.dataset.color; updateSwatches(); setTool('gate'); } });
-$('paint-color').addEventListener('input', updateSwatches);
+$('swatches').innerHTML = TYPES.map(t => `<button class="swatch" data-type="${escape(t.id)}" style="--swatch:${t.color}" aria-label="${escape(t.name)}" title="${escape(t.name)}"></button>`).join('');
+$('paint-type').innerHTML = typeOptions();
+function updateSwatches() { document.querySelectorAll('[data-type]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.type === $('paint-type').value))); }
+$('swatches').addEventListener('click', event => { const button = event.target.closest('[data-type]'); if (button) { $('paint-type').value = button.dataset.type; updateSwatches(); setTool('gate'); } });
+$('paint-type').addEventListener('change', updateSwatches);
+updateSwatches();
 $('filename').addEventListener('change', () => { doc.name = $('filename').value.trim().replace(/\.json$/i, '') || 'untitled-layout'; commit(); });
 $('zoom').addEventListener('change', fitBoard); new ResizeObserver(fitBoard).observe($('canvas-scroll'));
 $('resize-form').addEventListener('submit', event => {
@@ -269,7 +278,7 @@ $('boundary-mode').onchange = () => {
 };
 function exportFile() {
   try {
-    const text = serialize(board());
+    const text = serialize(board(), TYPES);
     const safe = (doc.name.replace(/[<>:"/\\|?*\u0000-\u001f]/g, '-').replace(/[. ]+$/, '').replace(/\.json$/i, '') || 'layout') + '.json';
     const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
     const link = document.createElement('a'); link.href = url; link.download = safe; document.body.append(link); link.click(); link.remove();
@@ -281,7 +290,7 @@ $('gate-list').onclick = event => { const button = event.target.closest('[data-g
 $('add-gate').onclick = () => { setTool('gate'); toast(enclosed(board()) ? 'Choose an exit direction, then drag across wall or empty cells.' : 'Drag along an outer edge.'); };
 $('gate-form').onsubmit = event => {
   event.preventDefault(); if (selected < 0) return;
-  doc.layout.gates[selected] = { id: $('gate-id').value.trim(), side: $('gate-side').value, start: Number($('gate-start').value), length: Number($('gate-length').value), color: $('gate-color').value.trim() };
+  doc.layout.gates[selected] = { id: $('gate-id').value.trim(), side: $('gate-side').value, start: Number($('gate-start').value), length: Number($('gate-length').value), type: $('gate-type').value };
   if (enclosed(board())) {
     doc.layout.gates[selected].line = Number($('gate-line').value);
     const cells = new Set(gateCells(board(), doc.layout.gates[selected]).map(cellKey));
@@ -307,5 +316,7 @@ window.addEventListener('keydown', event => {
   else if (!input && event.key === 'Delete') deleteGate();
   else if (event.key === 'Escape') { cancelStroke(); selectGate(-1); }
 });
-render(); setTool('wall'); if (restored) toast('Restored your last browser draft'); else saveDraft();
+render(); setTool('wall');
+if (!TYPES.length) toast('Block types could not be loaded. Start the editor with start.ps1 so /block-types.json is served.');
+else if (restored) toast('Restored your last browser draft'); else saveDraft();
 

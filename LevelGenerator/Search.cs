@@ -45,7 +45,7 @@ public static class Search
     {
         var initial = engine.Initial();
         var start = initial.Key();
-        int total = engine.Pieces.Sum(p => p.Colors.Length);
+        int total = engine.Pieces.Sum(p => p.Types.Length);
         var queue = new PriorityQueue<(State State,int G), (int F,int H,long Tie)>();
         long tie = 0;
         var costs = new Dictionary<string,int> { [start] = 0 };

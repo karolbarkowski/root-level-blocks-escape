@@ -1,10 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { blank as emptyCanvas, parseLayout, validate, paint, resize, serialize, History, gateAt, edgeCell, nextId, geometry, gateCells } from '../model.js';
+import { blank as emptyCanvas, parseTypes, parseLayout, validate, paint, resize, serialize, History, gateAt, edgeCell, nextId, geometry, gateCells } from '../model.js';
 
 const blank = (width = 6, height = 6) => ({ width, height, walls: [], gates: [] });
-const gate = (values = {}) => ({ id: 'gate-1', side: 'top', start: 0, length: 2, color: 'red', ...values });
+const types = parseTypes(await readFile(new URL('../../Shared/BlockTypes/block-types.json', import.meta.url), 'utf8'));
+const gate = (values = {}) => ({ id: 'gate-1', side: 'top', start: 0, length: 2, type: types[0].id, ...values });
 const enclosedExample = () => readFile(new URL('../examples/enclosed-layout.json', import.meta.url), 'utf8').then(text => parseLayout(text).board);
 test('new canvas has no implicit playable rectangle', () => {
   const b = emptyCanvas(); assert.equal(b.boundaryMode, 'enclosed');
@@ -77,7 +78,7 @@ test('invalid imported geometry is preserved for repair', () => {
   assert.throws(() => serialize(b));
 });
 test('negative spans and blank strings cannot export', () => {
-  for (const g of [gate({ length: -3 }), gate({ start: -1 }), gate({ id: ' ' }), gate({ color: '' })]) {
+  for (const g of [gate({ length: -3 }), gate({ start: -1 }), gate({ id: ' ' }), gate({ type: '' })]) {
     const b = blank(); b.gates = [g]; assert.throws(() => serialize(b));
   }
 });
@@ -110,8 +111,17 @@ test('duplicate walls can be repaired with eraser; IDs avoid collisions', () => 
   paint(b, { x: 0, y: 0 }, true); assert.deepEqual(validate(b).errors, []);
   b.gates = [gate(), gate({ id: 'gate-2', side: 'bottom' })]; assert.equal(nextId(b), 'gate-3');
 });
-test('custom colors are preserved as exact names, not CSS values', () => {
-  const b = blank(); b.gates = [gate({ color: 'Ocean blue' })];
-  assert.equal(JSON.parse(serialize(b)).gates[0].color, 'Ocean blue');
+test('gate types come from the shared block type list', async () => {
+  assert.ok(types.length > 0 && new Set(types.map(t => t.id)).size === types.length);
+  const b = blank(); b.gates = [gate({ type: types[1].id })];
+  assert.equal(JSON.parse(serialize(b, types)).gates[0].type, types[1].id);
+  b.gates = [gate({ type: 'no-such-type' })];
+  assert.ok(validate(b, types).errors.some(e => e.includes('unknown block type'))); assert.throws(() => serialize(b, types));
+  for (const file of ['../examples/enclosed-layout.json', '../verification/exported-layout.json'])
+    assert.deepEqual(validate(parseLayout(await readFile(new URL(file, import.meta.url), 'utf8')).board, types).errors, []);
+});
+test('old color layouts are rejected with a migration hint', () => {
+  const old = { ...blank(), gates: [{ id: 'g', side: 'top', start: 0, length: 1, color: 'red' }] };
+  assert.throws(() => parseLayout(JSON.stringify(old)), /migrate/);
 });
 
