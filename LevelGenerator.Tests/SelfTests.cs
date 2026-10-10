@@ -250,6 +250,30 @@ public static class SelfTests
             int rated=(int)generated.Analysis["difficulty"];
             Check(rated>first.Score,$"generated level {rated} not above trivial {first.Score}");
         });
+        Test("genre composition uses larger blocks and caps specials",()=>
+        {
+            var layout=new Layout(8,9,[],[new("p",Side.Top,1,2,"purple",0),new("r",Side.Top,5,2,"red",0),new("y",Side.Left,2,2,"yellow",0),
+                new("o",Side.Right,2,2,"orange",7),new("g",Side.Right,5,2,"green",7),new("r2",Side.Bottom,1,2,"red",8)],BoundaryMode.Enclosed);
+            var walls=new List<Cell>();
+            for(int x=0;x<8;x++)for(int y=0;y<9;y++)
+                if((x is 0 or 7 || y is 0 or 8)&&!layout.Gates.Any(g=>Geometry.GateCells(layout,g).Contains(new(x,y))))walls.Add(new(x,y));
+            layout=layout with {Walls=walls.ToArray()};
+            var level=new Generator(new(FixedLayout:layout,Seed:5,MinOpening:2)).Run(_=>{}).Levels[0];
+            double average=level.Blocks.Average(p=>p.Shape.Length);
+            int cap=1+level.Blocks.Length/8;
+            Check(average>=2.3,$"average block size {average:F2}");
+            Check(level.Blocks.Count(p=>p.FrozenFor>0)<=cap&&level.Blocks.Count(p=>p.Axis!=Axis.Free)<=cap,"too many specials");
+        });
+        Test("weighted search solves without claiming optimality and never lengthens a witness",()=>
+        {
+            var e=Make(4,4,[new("a",[new(0,0)],new(0,0),["red"]),new("b",[new(0,0)],new(3,3),["red"])],[new("r",Side.Top,0,4,"red")]);
+            var greedy=Search.Solve(e,1000,DateTime.UtcNow.AddSeconds(2),5);
+            Check(greedy.Status=="solved"&&!greedy.Optimal);e.Replay(greedy.Moves);
+            var exact=Search.Solve(e,1000,DateTime.UtcNow.AddSeconds(2));
+            Check(exact.Optimal&&exact.Moves.Length<=greedy.Moves.Length);
+            var (moves,result)=Search.Improve(e,exact.Moves,1000,1);
+            Check(result.Optimal&&moves.Length==exact.Moves.Length);
+        });
         Console.WriteLine($"{count} tests passed.");
     }
 }

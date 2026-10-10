@@ -1,6 +1,6 @@
 {
   "width": 9,
-  "height": 12,
+  "height": 13,
   "boundaryMode": "enclosed",
   "walls": [
     {
@@ -32,47 +32,47 @@
       "y": 1
     },
     {
-      "x": 1,
-      "y": 4
-    },
-    {
-      "x": 2,
-      "y": 4
-    },
-    {
-      "x": 6,
-      "y": 4
-    },
-    {
-      "x": 7,
-      "y": 4
-    },
-    {
       "x": 0,
-      "y": 6
-    },
-    {
-      "x": 1,
-      "y": 6
-    },
-    {
-      "x": 2,
-      "y": 6
-    },
-    {
-      "x": 6,
-      "y": 6
-    },
-    {
-      "x": 7,
-      "y": 6
+      "y": 4
     },
     {
       "x": 8,
+      "y": 4
+    },
+    {
+      "x": 0,
+      "y": 5
+    },
+    {
+      "x": 1,
+      "y": 5
+    },
+    {
+      "x": 7,
+      "y": 5
+    },
+    {
+      "x": 8,
+      "y": 5
+    },
+    {
+      "x": 1,
+      "y": 6
+    },
+    {
+      "x": 7,
       "y": 6
     },
     {
       "x": 0,
+      "y": 7
+    },
+    {
+      "x": 1,
+      "y": 7
+    },
+    {
+      "x": 7,
       "y": 7
     },
     {
@@ -81,31 +81,39 @@
     },
     {
       "x": 0,
-      "y": 10
+      "y": 8
     },
     {
       "x": 8,
-      "y": 10
+      "y": 8
     },
     {
       "x": 0,
       "y": 11
     },
     {
-      "x": 1,
+      "x": 8,
       "y": 11
+    },
+    {
+      "x": 0,
+      "y": 12
+    },
+    {
+      "x": 1,
+      "y": 12
     },
     {
       "x": 4,
-      "y": 11
+      "y": 12
     },
     {
       "x": 7,
-      "y": 11
+      "y": 12
     },
     {
       "x": 8,
-      "y": 11
+      "y": 12
     }
   ],
   "gates": [
@@ -142,44 +150,28 @@
       "line": 8
     },
     {
-      "id": "purple-1",
-      "side": "left",
-      "start": 5,
-      "length": 1,
-      "color": "purple",
-      "line": 2
-    },
-    {
-      "id": "orange-1",
-      "side": "right",
-      "start": 5,
-      "length": 1,
-      "color": "orange",
-      "line": 6
-    },
-    {
       "id": "green-1",
       "side": "left",
-      "start": 8,
+      "start": 9,
       "length": 2,
       "color": "green",
       "line": 0
     },
     {
-      "id": "orange-2",
+      "id": "orange-1",
       "side": "right",
-      "start": 8,
+      "start": 9,
       "length": 2,
       "color": "orange",
       "line": 8
     },
     {
-      "id": "purple-2",
+      "id": "purple-1",
       "side": "bottom",
       "start": 2,
       "length": 2,
       "color": "purple",
-      "line": 11
+      "line": 12
     },
     {
       "id": "red-2",
@@ -187,7 +179,7 @@
       "start": 5,
       "length": 2,
       "color": "red",
-      "line": 11
+      "line": 12
     }
   ]
 }

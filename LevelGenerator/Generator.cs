@@ -3,8 +3,8 @@ using System.Diagnostics;
 namespace BlockPuzzle;
 
 public sealed record GenerateOptions(int Seed = 42, int Width = 6, int Height = 6,
-    decimal Coverage = 80, decimal SingleCellRatio = .4m, int MaxCandidates = 1,
-    int MinOpening = 4, bool Specials = true, Layout? FixedLayout = null, string Method = "anneal");
+    decimal Coverage = 80, decimal SingleCellRatio = .2m, int MaxCandidates = 1,
+    int MinOpening = 3, bool Specials = true, Layout? FixedLayout = null, string Method = "anneal", decimal BlockSize = 2.8m);
 public sealed record GenerationResult(List<Level> Levels, int Attempts, int Constructed, int Evaluated, double Seconds);
 internal sealed record Candidate(Level Level, double Score, DepthResult Opening, double Density);
 
@@ -13,12 +13,15 @@ public sealed partial class Generator(GenerateOptions options)
     private readonly Random random = new(options.Seed);
     private readonly Stopwatch watch = new();
     private Action reportProgress = () => { };
+    private const int StallLimit = 150;
     private static readonly string[] Palette = ["red","blue","yellow","green"];
+    // Up to four cells; the catalog adds every rotation and mirror image (so J, Z and the like).
     private static readonly Cell[][] Shapes =
     [
         [new(0,0)], [new(0,0),new(1,0)], [new(0,0),new(1,0),new(2,0)],
-        [new(0,0),new(1,0),new(0,1),new(1,1)],
         [new(0,0),new(0,1),new(1,1)],
+        [new(0,0),new(1,0),new(2,0),new(3,0)],
+        [new(0,0),new(1,0),new(0,1),new(1,1)],
         [new(0,0),new(0,1),new(0,2),new(1,2)],
         [new(1,0),new(2,0),new(0,1),new(1,1)],
         [new(0,0),new(1,0),new(2,0),new(1,1)]
@@ -28,21 +31,23 @@ public sealed partial class Generator(GenerateOptions options)
     {
         if (options.Width is <2 or >20 || options.Height is <2 or >20 || options.Coverage <= 0 || options.Coverage > 100 ||
             options.SingleCellRatio < 0 || options.SingleCellRatio > 1 || options.MaxCandidates < 1 ||
-            options.MinOpening < 2 || options.MinOpening > 12 || options.Method is not ("anneal" or "random"))
-            throw new ArgumentException("Use coverage in (0,100], single-cell-ratio in [0,1], maxCandidates >= 1 and min-opening in [2,12].");
+            options.MinOpening < 2 || options.MinOpening > 12 || options.Method is not ("anneal" or "random") ||
+            options.BlockSize < 1 || options.BlockSize > 4)
+            throw new ArgumentException("Use coverage in (0,100], single-cell-ratio in [0,1], block-size in [1,4], maxCandidates >= 1 and min-opening in [2,12].");
         if (options.FixedLayout != null) GetCatalog(options.FixedLayout);
         watch.Restart();
         var levels = new List<Level>();
         var exported = new HashSet<string>();
         Candidate? current = null;
-        int attempts=0, constructed=0, evaluated=0;
-        double lastLog=0;
+        int attempts=0, constructed=0, evaluated=0, chainSteps=0, stall=0, bestOpening=0;
+        double lastLog=0, chainBest=double.MinValue;
         log($"Starting generation: coverage >= {options.Coverage}%, 1x1 ratio {options.SingleCellRatio}, {options.MaxCandidates} verified candidates; no time limit.");
         reportProgress = () =>
         {
             cancellation.ThrowIfCancellationRequested();
             if (watch.Elapsed.TotalSeconds-lastLog < 10) return;
-            log($"{watch.Elapsed.TotalSeconds:F0}s: {attempts} attempts, {evaluated} evaluated, {levels.Count}/{options.MaxCandidates} saved.");
+            // The best forced opening so far tells whether --min-opening is reachable on this layout.
+            log($"{watch.Elapsed.TotalSeconds:F0}s: {attempts} attempts, {evaluated} evaluated, {levels.Count}/{options.MaxCandidates} saved; best opening {bestOpening} (need {options.MinOpening}).");
             lastLog=watch.Elapsed.TotalSeconds;
         };
         try
@@ -50,14 +55,19 @@ public sealed partial class Generator(GenerateOptions options)
             while (levels.Count < options.MaxCandidates)
             {
                 reportProgress(); attempts++;
-                bool fresh=options.Method!="anneal" || current==null || attempts%20==0;
+                // Keep annealing one board until it stops improving; large boards need long chains
+                // to shuffle every block away from its exit.
+                bool fresh=options.Method!="anneal" || current==null || stall>=StallLimit;
+                if (fresh) { chainSteps=0; stall=0; chainBest=double.MinValue; }
                 var level=fresh ? Construct() : Mutate(current!.Level);
-                if (level==null) continue;
+                if (level==null) { stall++; continue; }
                 constructed++;
                 var candidate=Evaluate(level); evaluated++;
-                // Reheat every 200 attempts; an unbounded run has no time-based cooling schedule.
-                double temperature=Math.Max(.1,5*(1-(attempts%200)/200.0));
+                // Reheat every 200 steps of a chain; an unbounded run has no time-based cooling schedule.
+                double temperature=Math.Max(.1,5*(1-(chainSteps++%200)/200.0));
                 if (fresh || current==null || candidate.Score>current.Score || random.NextDouble()<Math.Exp((candidate.Score-current.Score)/temperature)) current=candidate;
+                if (candidate.Score>chainBest) { chainBest=candidate.Score; stall=0; } else stall++;
+                bestOpening=Math.Max(bestOpening,candidate.Opening.LowerBound);
                 if (candidate.Opening.LowerBound<options.MinOpening || candidate.Opening.Status=="unreachable") continue;
                 var finished=FinalizeCandidate(candidate,attempts);
                 if (finished==null || !MeetsComposition(finished) || !exported.Add(Signature(finished))) continue;
@@ -81,8 +91,8 @@ public sealed partial class Generator(GenerateOptions options)
         if(c.Opening.LowerBound<options.MinOpening)return null;
         var engine = new Engine(c.Level);
         c.Level.Solution = Search.Shorten(engine,c.Level.Solution);
-        var solved=Search.Solve(engine,100000,DateTime.UtcNow.AddSeconds(5));
-        if(solved.Status=="solved")c.Level.Solution=solved.Moves;
+        var (improved,solved)=Search.Improve(engine,c.Level.Solution,100000,8);
+        c.Level.Solution=Search.Shorten(engine,improved);
         engine.Replay(c.Level.Solution);
         var opening=Search.Opening(engine,engine.Initial(),12,50000,DateTime.UtcNow.AddSeconds(2));
         if(opening.LowerBound<c.Opening.LowerBound)opening=c.Opening;
@@ -103,7 +113,7 @@ public sealed partial class Generator(GenerateOptions options)
             ["floorCells"] = engine.Geometry.FloorCount,
             ["coveredCells"] = c.Level.Blocks.Sum(p=>p.Shape.Length),
             ["coverageRequested"] = options.Coverage,
-            ["singleCellRatioRequested"] = options.SingleCellRatio,
+            ["singleCellRatioRequested"] = options.SingleCellRatio, ["blockSizeRequested"] = options.BlockSize,
             ["blockCount"] = c.Level.Blocks.Length,
             ["singleCellCount"] = c.Level.Blocks.Count(p=>p.Shape.Length==1),
             ["singleCellRatioActual"] = (double)c.Level.Blocks.Count(p=>p.Shape.Length==1)/c.Level.Blocks.Length,
@@ -139,7 +149,9 @@ public sealed partial class Generator(GenerateOptions options)
             bool restored=false;
             if (!complete && random.NextDouble()<.75)
             {
-                var order=Enumerable.Range(0,pieces.Count).Where(i=>state.Layers[i]>0).OrderBy(_=>random.Next()).ToArray();
+                // Restore large pieces first, while there is still room to bring them in through a gate.
+                var order=Enumerable.Range(0,pieces.Count).Where(i=>state.Layers[i]>0)
+                    .OrderByDescending(i=>pieces[i].Shape.Length+random.NextDouble()*1.5).ToArray();
                 foreach (int i in order)
                     if (TryRestore(engine,state,i,out var previous,out var forward))
                     { state=previous!; undo.Add(forward!); restored=true; break; }
@@ -237,8 +249,7 @@ public sealed partial class Generator(GenerateOptions options)
         // the same forward rules, then the opening is measured again from scratch.
         var level=original with { Solution=Search.Shorten(new Engine(original),original.Solution),Analysis=[] };
         var baseEngine=new Engine(level);
-        var optimal=Search.Solve(baseEngine,30000,DateTime.UtcNow.AddSeconds(1));
-        if(optimal.Status=="solved")level.Solution=optimal.Moves;
+        level.Solution=Search.Improve(baseEngine,level.Solution,30000,1.5).Moves;
         string last=level.Solution[^1].Block;
         var gray=level with { Blocks=level.Blocks.Select(p=>p.Id==last?p with {Colors=[]}:p).ToArray(),Solution=level.Solution[..^1] };
         if (MeetsComposition(gray)) level=gray;
@@ -274,24 +285,31 @@ public sealed partial class Generator(GenerateOptions options)
             }
         }
 
-        // Freeze late-used pieces. The counter is global and layers count too.
+        // Specials are an occasional twist in the genre, so cap them instead of applying them
+        // to every eligible block. Freeze late-used pieces; the counter is global and layers count too.
+        int cap=1+level.Blocks.Length/8, frozen=0, directional=0;
         engine=new Engine(level);frames=engine.Replay(level.Solution);
-        for(int i=0;i<level.Blocks.Length;i++)
+        foreach(int i in Enumerable.Range(0,level.Blocks.Length).OrderBy(_=>random.Next()))
         {
+            if(frozen>=cap)break;
             var p=level.Blocks[i];int first=Array.FindIndex(level.Solution,m=>m.Block==p.Id);
             if(first<0||frames[first].Events==0)continue;
             var blocks=level.Blocks.ToArray();blocks[i]=p with {FrozenFor=Math.Min(3,frames[first].Events)};
             var candidate=level with {Blocks=blocks};
-            try {new Engine(candidate).Replay(candidate.Solution);level=candidate;}catch(ArgumentException) { }
+            try {new Engine(candidate).Replay(candidate.Solution);level=candidate;frozen++;}catch(ArgumentException) { }
         }
-        // Try both axis restrictions; corner-turning witnesses are rejected.
-        for(int i=0;i<level.Blocks.Length;i++)
+        // Try both axis restrictions; corner-turning witnesses are rejected. Prefer pieces that
+        // actually move in the solution, so the arrow matters.
+        var moved=level.Solution.Select(m=>m.Block).ToHashSet();
+        foreach(int i in Enumerable.Range(0,level.Blocks.Length).OrderBy(i=>(moved.Contains(level.Blocks[i].Id)?0:1)+random.NextDouble()))
         {
-            foreach(var axis in new[]{Axis.Horizontal,Axis.Vertical})
+            if(directional>=cap)break;
+            if(level.Blocks[i].Shape.Length==1 && random.NextDouble()<.5)continue;
+            foreach(var axis in new[]{Axis.Horizontal,Axis.Vertical}.OrderBy(_=>random.Next()))
             {
                 var blocks=level.Blocks.ToArray();blocks[i]=blocks[i] with {Axis=axis};
                 var candidate=level with {Blocks=blocks};
-                try {new Engine(candidate).Replay(candidate.Solution);level=candidate;break;}catch(ArgumentException) { }
+                try {new Engine(candidate).Replay(candidate.Solution);level=candidate;directional++;break;}catch(ArgumentException) { }
             }
         }
         new Engine(level).Replay(level.Solution);

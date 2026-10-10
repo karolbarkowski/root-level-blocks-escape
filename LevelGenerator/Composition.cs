@@ -18,7 +18,8 @@ public sealed partial class Generator
         if (floor==0 || colors.Length==0) throw new ArgumentException("Generation needs playable floor and at least one gate color.");
         var choices=new List<ShapeChoice>();
         var seen=new HashSet<string>();
-        foreach(var source in Shapes) for(int rotation=0;rotation<4;rotation++)
+        foreach(var original in Shapes) foreach(var source in new[]{original,original.Select(c=>new Cell(-c.X,c.Y)).ToArray()})
+        for(int rotation=0;rotation<4;rotation++)
         {
             var shape=Rotate(source,rotation);
             if (!seen.Add(string.Join(";",shape.OrderBy(c=>c.Y).ThenBy(c=>c.X)))) continue;
@@ -61,7 +62,14 @@ public sealed partial class Generator
         Catalog catalog;
         try { catalog=GetCatalog(board); }
         catch(ArgumentException) when(options.FixedLayout==null) {return null;}
-        var plan=catalog.Plans[random.Next(catalog.Plans.Count)];
+        // Prefer block counts near area / block-size: the genre uses fewer, larger pieces.
+        // A Gaussian weight keeps neighbouring counts possible when an ideal plan fails to construct.
+        double ideal=catalog.Plans[0].Area/(double)options.BlockSize;
+        var weights=catalog.Plans.Select(p=>Math.Exp(-Math.Pow(p.Count-ideal,2)/2)).ToArray();
+        double pick=random.NextDouble()*weights.Sum();
+        int planIndex=0;
+        while(planIndex<weights.Length-1 && (pick-=weights[planIndex])>0) planIndex++;
+        var plan=catalog.Plans[planIndex];
         var chosen=new List<ShapeChoice>();
         for(int i=0;i<plan.Singles;i++) chosen.Add(catalog.Shapes.First(c=>c.Shape.Length==1));
         int remaining=plan.Count-plan.Singles, area=plan.Area-plan.Singles;

@@ -40,7 +40,8 @@ public static class Search
 
     // Remaining layers is admissible: at most one is cleared by each drop.
     // Unlike Manhattan distance, it respects arbitrarily long, turning drags.
-    public static SolveResult Solve(Engine engine, int maxStates, DateTime deadline)
+    // A weight above 1 trades optimality for speed (weighted A*); only weight 1 proves a shortest solution.
+    public static SolveResult Solve(Engine engine, int maxStates, DateTime deadline, double weight = 1)
     {
         var initial = engine.Initial();
         var start = initial.Key();
@@ -49,7 +50,7 @@ public static class Search
         long tie = 0;
         var costs = new Dictionary<string,int> { [start] = 0 };
         var parents = new Dictionary<string,(string Previous,Move Move)>();
-        queue.Enqueue((initial,0),(total,total,tie++));
+        queue.Enqueue((initial,0),((int)Math.Ceiling(weight*total),total,tie++));
         while (queue.TryDequeue(out var node,out _))
         {
             if (DateTime.UtcNow >= deadline) return new("timeBudget",[],costs.Count,false);
@@ -60,7 +61,7 @@ public static class Search
                 var moves = new List<Move>();
                 while (key != start) { var p = parents[key]; moves.Add(p.Move); key = p.Previous; }
                 moves.Reverse();
-                return new("solved",moves.ToArray(),costs.Count,true);
+                return new("solved",moves.ToArray(),costs.Count,weight<=1);
             }
             foreach (var edge in engine.Successors(node.State))
             {
@@ -70,10 +71,25 @@ public static class Search
                 if (costs.Count >= maxStates) return new("stateBudget",[],costs.Count,false);
                 costs[nextKey] = g; parents[nextKey] = (key,edge.Move);
                 int h = total-edge.State.Events;
-                queue.Enqueue((edge.State,g),(g+h,h,tie++));
+                queue.Enqueue((edge.State,g),(g+(int)Math.Ceiling(weight*h),h,tie++));
             }
         }
         return new("unsolvable",[],costs.Count,false);
+    }
+
+    // Best solution within budget: exact A* first, then weighted A* if the witness is still long.
+    // Weighted search expands far fewer nodes per depth, so it gets a larger state budget.
+    public static (Move[] Moves, SolveResult Result) Improve(Engine engine, Move[] witness, int maxStates, double seconds)
+    {
+        var exact = Solve(engine, maxStates, DateTime.UtcNow.AddSeconds(seconds * .5));
+        if (exact.Status == "solved") return (exact.Moves, exact);
+        // Higher weights behave almost like greedy best-first search: fast, rarely shortest.
+        foreach (double weight in new[] { 2.0, 20.0 })
+        {
+            var greedy = Solve(engine, maxStates * 4, DateTime.UtcNow.AddSeconds(seconds * .25), weight);
+            if (greedy.Status == "solved" && greedy.Moves.Length < witness.Length) return (greedy.Moves, exact);
+        }
+        return (witness, exact);
     }
 
     public static Move[] Shorten(Engine engine, Move[] witness)
