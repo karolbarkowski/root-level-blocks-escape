@@ -27,7 +27,7 @@ This restores packages from nuget.org, builds the solution in Release and runs t
 1. Draw a layout in the [layout editor](#layout-editor) and save the export to `LevelGenerator/layouts/`.
 2. Generate levels, from `LevelGenerator/`:
    ```powershell
-   dotnet bin/Release/net10.0/LevelGenerator.dll generate --layout layouts/simple.json --coverage 80 --maxCandidates 3 --out levels
+   dotnet bin/Release/net10.0/LevelGenerator.dll generate --layout layouts/classic_6x7.json --maxCandidates 3 --out levels
    ```
 3. Sort `levels/` by name to see them in difficulty order. Open the `.html` files to watch the solution replay.
 
@@ -40,8 +40,9 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 | `--layout` | Fixed walls/gates JSON, including its canvas size | generated layout |
 | `--width`, `--height` | Canvas size without a layout; 2–20 | 6 |
 | `--coverage` | Minimum % of playable floor occupied at the start; (0, 100] | 80 |
-| `--single-cell-ratio` | Share of blocks that are 1×1; 0–1 | 0.4 |
-| `--min-opening` | Minimum drops before anything can be removed; 2–12 | 4 |
+| `--single-cell-ratio` | Share of blocks that are 1×1; 0–1 | 0.2 |
+| `--block-size` | Target average cells per block; 1–4. Lower means more, smaller blocks | 2.8 |
+| `--min-opening` | Minimum drops before anything can be removed; 2–12 | 3 |
 | `--maxCandidates` | Levels to save before stopping (alias `--max-candidates`) | 1 |
 | `--specials` | Add frozen, layered, directional and gray blocks: true/false | true |
 | `--method` | `anneal` or `random` | anneal |
@@ -49,29 +50,31 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 | `--out` | Output folder | output |
 
 - Coverage rounds up to whole cells and counts only playable floor (not walls, gates or outside space). 80% of 38 cells means at least 31.
-- With N blocks, round(N × ratio) are 1×1, halves rounded up. Block count and larger shapes are chosen automatically.
-- Every gate color appears on at least one block's outer layer. Special blocks never break coverage, the 1×1 count or color representation.
-- Every exported solution is checked by replay. It is the shortest solution only when the solver proves that within its per-level budget, which large boards rarely allow.
+- With N blocks, round(N × ratio) are 1×1, halves rounded up. The block count is steered towards covered area ÷ `--block-size`. Shapes are picked from 1–4-cell pieces in every rotation and mirror image. Targets above 3 force nearly every block to 4 cells, which barely move in narrow layouts.
+- Every gate color appears on at least one block's outer layer.
+- Specials stay occasional, as in the genre: one gray blocker, one layered block, and at most 1 + blocks ÷ 8 frozen and 1 + blocks ÷ 8 directional blocks. They never break coverage, the 1×1 count or color representation.
+- Every exported solution is checked by replay. The solver first tries to prove a shortest solution. If its budget runs out, a faster weighted search finds a short one instead, and `analysis.solutionOptimal` is false.
+- If a run seems stuck, check the progress line, e.g. `best opening 2 (need 3)`. It means the layout can't reach `--min-opening`; lower it.
 - Seeds help experiments, but machine speed affects bounded searches; the saved JSON is the reproducible artifact.
 
 `run.json` in the output folder records the invocation, saved files, attempts, timing and whether the run completed. Each level's `analysis` holds composition, solver status, opening bounds (`opening`, `firstTwoFullRemovals`) and the difficulty rating.
 
 ### Sample layouts
 
-`LevelGenerator/layouts/` contains eight layouts sized after boards in the genre: compact 6×7-style boards with 2-cell gates, two per side, up to irregular 9×11 shapes with towers, recessed gates and corridors. They're listed roughly from easiest to hardest.
+`LevelGenerator/layouts/` contains eight layouts sized after boards in the genre. They range from compact 6×7-style boards with 2-cell gates, two per side, to irregular 9×11 shapes with towers, recessed gates and corridors. With the defaults, levels have about 12 blocks on 6×7, averaging 2.4–3 cells, with two or three special blocks.
 
-| Layout | Floor cells | Gates / colors | Shape | Sample difficulty |
-|---|---:|---:|---|---:|
-| `starter_4x5` | 20 | 4 / 4 | rectangle, one gate per side | 228 |
-| `classic_5x6` | 30 | 5 / 4 | rectangle | 232 |
-| `notched_6x8` | 44 | 6 / 6 | cut corners | 266 |
-| `classic_6x7` | 42 | 8 / 5 | rectangle, two 2-cell gates per side | 338 |
-| `cross_8x8` | 48 | 8 / 7 | plus shape, four recessed corner gates | 326 |
-| `hourglass_7x9` | 58 | 10 / 7 | 3-wide waist with recessed side gates | 473 |
-| `pillars_7x7` | 45 | 8 / 7 | interior pillars forming lanes | 547 |
-| `fortress_9x11` | 77 | 10 / 7 | two towers, side gates, bottom corridor | 736 |
+| Layout | Floor cells | Gates / colors | Shape | Sample difficulty | Time per level |
+|---|---:|---:|---|---:|---:|
+| `starter_4x5` | 20 | 4 / 4 | rectangle, one gate per side | 303–589 | ~1 s |
+| `classic_5x6` | 30 | 5 / 4 | rectangle | 189–328 | ~1 s |
+| `classic_6x7` | 42 | 8 / 5 | rectangle, two 2-cell gates per side | 166–262 | ~1 s |
+| `notched_6x8` | 44 | 6 / 6 | cut corners | 480–568 | ~6 s |
+| `cross_8x8` | 48 | 8 / 7 | plus shape, four recessed corner gates | 269–343 | ~2 s |
+| `hourglass_7x11` | 71 | 8 / 7 | two rooms joined by a 5-wide waist | 289–372 | ~6 s |
+| `pillars_7x7` | 45 | 8 / 7 | interior pillars forming lanes | ~340 | seconds to minutes |
+| `fortress_9x11` | 77 | 10 / 7 | two towers, side gates, bottom corridor | ~350 | seconds to minutes |
 
-Sample difficulties come from one level each with default options and `--seed 1`. Each layout generated a verified level in 1–15 seconds.
+Sample difficulties come from two levels each with `--seed 3`. Pillars and fortress times vary most with the seed: narrow lanes leave few ways to keep blocks away from their exits. The starter scores are high because its tiny board leaves almost no free space.
 
 ### Difficulty and file names
 
@@ -92,7 +95,7 @@ The score doesn't rely on a shortest solution:
 | 10% | Special mechanics: kinds used and share of special blocks |
 | 10% | The player's moves per color layer when it succeeds |
 
-The same level always gets the same score. In local tests, plain 5×5 boards scored about 30–60, typical boards with specials 170–360, and a crowded 7×7 board with a seven-drop forced opening 788. The weights in `LevelGenerator/Difficulty.cs` are first estimates; calibrate them against playtest data. Every input is stored in `analysis.difficultyFeatures`, and `rate` (below) re-scores and renames existing files after a change.
+The same level always gets the same score. With the default settings, the sample layouts score about 170–590 (table above). Higher scores need bigger, more crowded boards or a deeper `--min-opening`; a crowded 7×7 board with a seven-drop forced opening scored 788. The weights in `LevelGenerator/Difficulty.cs` are first estimates; calibrate them against playtest data. Every input is stored in `analysis.difficultyFeatures`, and `rate` (below) re-scores and renames existing files after a change.
 
 ## Level tools
 
@@ -143,7 +146,7 @@ Code: `model.js` holds pure layout logic and validation, `app.js` the UI, `serve
 ## Testing
 
 ```powershell
-dotnet LevelGenerator.Tests/bin/Release/net10.0/LevelGenerator.Tests.dll   # 29 self-tests; build.ps1 runs them too
+dotnet LevelGenerator.Tests/bin/Release/net10.0/LevelGenerator.Tests.dll   # 31 self-tests; build.ps1 runs them too
 cd LayoutEditor; node --test tests/*.test.mjs                               # 19 editor tests
 .\LevelGenerator.Tests\benchmark.ps1 -Seconds 15                            # random vs anneal
 ```

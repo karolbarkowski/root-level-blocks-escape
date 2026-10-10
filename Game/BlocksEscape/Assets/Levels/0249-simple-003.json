@@ -1,0 +1,692 @@
+{
+  "format": "block-puzzle/v1",
+  "rules": "grid-drag-drop/v1",
+  "seed": 42,
+  "board": {
+    "width": 8,
+    "height": 8,
+    "walls": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 3,
+        "y": 0
+      },
+      {
+        "x": 4,
+        "y": 0
+      },
+      {
+        "x": 6,
+        "y": 0
+      },
+      {
+        "x": 7,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 3
+      },
+      {
+        "x": 7,
+        "y": 3
+      },
+      {
+        "x": 0,
+        "y": 4
+      },
+      {
+        "x": 7,
+        "y": 4
+      },
+      {
+        "x": 0,
+        "y": 7
+      },
+      {
+        "x": 1,
+        "y": 7
+      },
+      {
+        "x": 3,
+        "y": 7
+      },
+      {
+        "x": 4,
+        "y": 7
+      },
+      {
+        "x": 6,
+        "y": 7
+      },
+      {
+        "x": 7,
+        "y": 7
+      }
+    ],
+    "gates": [
+      {
+        "id": "gate-1",
+        "side": "right",
+        "start": 1,
+        "length": 2,
+        "color": "blue",
+        "line": 7
+      },
+      {
+        "id": "gate-2",
+        "side": "right",
+        "start": 5,
+        "length": 2,
+        "color": "red",
+        "line": 7
+      },
+      {
+        "id": "gate-3",
+        "side": "left",
+        "start": 5,
+        "length": 2,
+        "color": "yellow",
+        "line": 0
+      },
+      {
+        "id": "gate-4",
+        "side": "left",
+        "start": 1,
+        "length": 2,
+        "color": "green",
+        "line": 0
+      },
+      {
+        "id": "gate-5",
+        "side": "top",
+        "start": 2,
+        "length": 1,
+        "color": "purple",
+        "line": 0
+      },
+      {
+        "id": "gate-6",
+        "side": "top",
+        "start": 5,
+        "length": 1,
+        "color": "purple",
+        "line": 0
+      },
+      {
+        "id": "gate-7",
+        "side": "bottom",
+        "start": 2,
+        "length": 1,
+        "color": "orange",
+        "line": 7
+      },
+      {
+        "id": "gate-8",
+        "side": "bottom",
+        "start": 5,
+        "length": 1,
+        "color": "orange",
+        "line": 7
+      }
+    ],
+    "boundaryMode": "enclosed"
+  },
+  "blocks": [
+    {
+      "id": "b1",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 2
+      },
+      "colors": [
+        "yellow"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b2",
+      "shape": [
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 5
+      },
+      "colors": [
+        "yellow"
+      ],
+      "axis": "horizontal",
+      "frozenFor": 0
+    },
+    {
+      "id": "b3",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 3,
+        "y": 4
+      },
+      "colors": [
+        "yellow"
+      ],
+      "axis": "free",
+      "frozenFor": 2
+    },
+    {
+      "id": "b4",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 4
+      },
+      "colors": [
+        "green"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b5",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 4
+      },
+      "colors": [
+        "orange",
+        "yellow"
+      ],
+      "axis": "free",
+      "frozenFor": 1
+    },
+    {
+      "id": "b6",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 1
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b7",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 3,
+        "y": 6
+      },
+      "colors": [
+        "yellow"
+      ],
+      "axis": "horizontal",
+      "frozenFor": 3
+    },
+    {
+      "id": "b8",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 5
+      },
+      "colors": [
+        "purple"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b9",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 5,
+        "y": 6
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b10",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 4,
+        "y": 2
+      },
+      "colors": [
+        "blue"
+      ],
+      "axis": "horizontal",
+      "frozenFor": 3
+    },
+    {
+      "id": "b11",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 4,
+        "y": 3
+      },
+      "colors": [
+        "yellow"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b12",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 6,
+        "y": 3
+      },
+      "colors": [
+        "orange"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b13",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 3
+      },
+      "colors": [
+        "green"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b14",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 5,
+        "y": 1
+      },
+      "colors": [
+        "green"
+      ],
+      "axis": "horizontal",
+      "frozenFor": 3
+    },
+    {
+      "id": "b15",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 4,
+        "y": 1
+      },
+      "colors": [
+        "red"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    },
+    {
+      "id": "b16",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 6,
+        "y": 5
+      },
+      "colors": [],
+      "axis": "horizontal",
+      "frozenFor": 0
+    },
+    {
+      "id": "b17",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 6,
+        "y": 2
+      },
+      "colors": [
+        "orange"
+      ],
+      "axis": "free",
+      "frozenFor": 3
+    }
+  ],
+  "solution": [
+    {
+      "block": "b1",
+      "to": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "block": "b4",
+      "to": {
+        "x": 1,
+        "y": 3
+      }
+    },
+    {
+      "block": "b8",
+      "to": {
+        "x": 1,
+        "y": 4
+      }
+    },
+    {
+      "block": "b2",
+      "to": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "block": "b5",
+      "to": {
+        "x": 2,
+        "y": 6
+      }
+    },
+    {
+      "block": "b3",
+      "to": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "block": "b5",
+      "to": {
+        "x": 1,
+        "y": 6
+      }
+    },
+    {
+      "block": "b7",
+      "to": {
+        "x": 1,
+        "y": 6
+      }
+    },
+    {
+      "block": "b11",
+      "to": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "block": "b12",
+      "to": {
+        "x": 2,
+        "y": 5
+      }
+    },
+    {
+      "block": "b17",
+      "to": {
+        "x": 2,
+        "y": 6
+      }
+    },
+    {
+      "block": "b9",
+      "to": {
+        "x": 6,
+        "y": 2
+      }
+    },
+    {
+      "block": "b10",
+      "to": {
+        "x": 5,
+        "y": 2
+      }
+    },
+    {
+      "block": "b6",
+      "to": {
+        "x": 5,
+        "y": 2
+      }
+    },
+    {
+      "block": "b8",
+      "to": {
+        "x": 2,
+        "y": 1
+      }
+    },
+    {
+      "block": "b15",
+      "to": {
+        "x": 6,
+        "y": 6
+      }
+    },
+    {
+      "block": "b1",
+      "to": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "block": "b4",
+      "to": {
+        "x": 1,
+        "y": 2
+      }
+    },
+    {
+      "block": "b13",
+      "to": {
+        "x": 1,
+        "y": 2
+      }
+    },
+    {
+      "block": "b14",
+      "to": {
+        "x": 1,
+        "y": 1
+      }
+    }
+  ],
+  "analysis": {
+    "difficulty": 249,
+    "difficultyFeatures": {
+      "openingLowerBound": 4,
+      "firstTwoFullRemovalsLowerBound": 6,
+      "blocks": 17,
+      "colorLayers": 17,
+      "floorCells": 36,
+      "frozenBlocks": 12,
+      "extraLayers": 1,
+      "directionalBlocks": 5,
+      "grayBlocks": 1,
+      "mechanicTypes": 4,
+      "specialBlocks": 14,
+      "playerPlayouts": 24,
+      "playerSuccessRate": 1,
+      "playerProgress": 1,
+      "playerMeanSteps": 29.7,
+      "model": "heuristic-v2"
+    },
+    "method": "reverse construction \u002B simulated annealing",
+    "solvability": "verifiedByReplay",
+    "solutionOptimal": true,
+    "solverStatus": "solved",
+    "solverVisited": 904,
+    "solutionMoves": 20,
+    "opening": {
+      "exact": 4,
+      "lowerBound": 4,
+      "status": "exact",
+      "visited": 16
+    },
+    "firstTwoFullRemovals": {
+      "exact": 6,
+      "lowerBound": 6,
+      "status": "exact",
+      "visited": 73
+    },
+    "distinctBlocksBeforeFirstEventInWitness": 3,
+    "occupancy": 0.8056,
+    "score": 86.444,
+    "floorCells": 36,
+    "coveredCells": 29,
+    "coverageRequested": 80,
+    "singleCellRatioRequested": 0.4,
+    "blockCount": 17,
+    "singleCellCount": 7,
+    "singleCellRatioActual": 0.4117647058823529,
+    "minimumOpeningRequired": 4,
+    "seed": 42,
+    "attempts": 363,
+    "generationSeconds": 1.706
+  }
+}
