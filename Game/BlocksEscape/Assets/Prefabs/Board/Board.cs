@@ -26,6 +26,7 @@ namespace BlocksEscape
         [SerializeField] TextAsset level;
         [SerializeField] GameObject wallPrefab;
         [SerializeField] GateCell gatePrefab;
+        [SerializeField] Block[] blockPrefabs = Array.Empty<Block>(); // one per shape; rotations are matched, mirror images are not
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         public int XTiles
@@ -48,9 +49,13 @@ namespace BlocksEscape
 
         public GameObject WallPrefab => wallPrefab;
         public GateCell GatePrefab => gatePrefab;
+        public IReadOnlyList<Block> BlockPrefabs => blockPrefabs;
         public Transform Surface => surface;
         public Transform Content => content;
         public Vector2 Size => new Vector2(xTiles, yTiles) * GridUnits.CellSize;
+
+        // Raised after a level has been spawned.
+        public event Action Initialized;
 
         // Center of a level cell on the board surface, in the board's local space.
         public Vector3 CellToLocal(int x, int y) =>
@@ -58,7 +63,7 @@ namespace BlocksEscape
 
         public void Initialize() => Initialize(LevelData.Parse(level != null ? level.text : throw new InvalidOperationException("No level assigned.")));
 
-        // Clears previously spawned content, resizes the board to the level and spawns its walls and gates.
+        // Clears previously spawned content, resizes the board to the level and spawns its walls, gates and blocks.
         public void Initialize(LevelData data)
         {
             if (data?.board == null || data.board.width < 1 || data.board.height < 1 ||
@@ -102,6 +107,43 @@ namespace BlocksEscape
                     }
                 }
             }
+
+            var blocks = NewChild("Blocks", content);
+            foreach (var blockData in data.blocks ?? Array.Empty<BlockData>())
+            {
+                if (!TryFindBlockPrefab(blockData, out var prefab, out int quarterTurns, out var pivotCell))
+                {
+                    Debug.LogWarning($"No block prefab matches the shape of block {blockData.id}; it was skipped.", this);
+                    continue;
+                }
+
+                var block = Spawn(prefab.gameObject, blocks).GetComponent<Block>();
+                block.name = $"Block {blockData.id} ({prefab.name})";
+                var cell = new Vector2Int(blockData.position.x, blockData.position.y) + pivotCell;
+                block.transform.localPosition = CellToLocal(cell.x, cell.y) + Vector3.up * block.PivotHeight;
+                block.transform.localRotation = Quaternion.Euler(0f, quarterTurns * 90f, 0f);
+                block.Setup(blockData);
+                RecordPrefabInstanceChanges(block.transform);
+                RecordPrefabInstanceChanges(block);
+            }
+
+            Initialized?.Invoke();
+        }
+
+        bool TryFindBlockPrefab(BlockData data, out Block prefab, out int quarterTurns, out Vector2Int pivotCell)
+        {
+            foreach (var candidate in blockPrefabs)
+            {
+                if (candidate != null && candidate.TryMatch(data.shape, out quarterTurns, out pivotCell))
+                {
+                    prefab = candidate;
+                    return true;
+                }
+            }
+            prefab = null;
+            quarterTurns = 0;
+            pivotCell = default;
+            return false;
         }
 
         // Cells a gate occupies. Enclosed gates sit on their drawn line; legacy rectangular gates

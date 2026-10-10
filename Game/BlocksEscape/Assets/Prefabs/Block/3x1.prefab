@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.8762338
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000028306715
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.3664525
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -55,5 +55,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2285896941509135928}
   m_SourcePrefab: {fileID: 100100000, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
+--- !u!1 &2621182642346800707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: daeb32b9f565c6d4aae0cafa31ae3b8e, type: 3}
+  m_PrefabInstance: {fileID: 2927663461499210514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2285896941509135928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621182642346800707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11bf5e11f0c676b41acddf77634f1271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.Block
+  footprint:
+  - {x: 0, y: -2}
+  - {x: 0, y: -1}
+  - {x: 0, y: 0}
+  blockId: 
+  colors: []
+  axis: free
+  frozenFor: 0

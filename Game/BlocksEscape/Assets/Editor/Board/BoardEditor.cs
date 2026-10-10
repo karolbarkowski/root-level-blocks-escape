@@ -46,6 +46,8 @@ namespace BlocksEscape.EditorTools
                 EditorGUILayout.HelpBox("No wall prefab assigned; walls will be skipped.", MessageType.Warning);
             if (board.GatePrefab == null)
                 EditorGUILayout.HelpBox("No gate prefab assigned; gates will be skipped.", MessageType.Warning);
+            if (board.BlockPrefabs.Count == 0)
+                EditorGUILayout.HelpBox("No block prefabs assigned; blocks will be skipped.", MessageType.Warning);
 
             using (new EditorGUILayout.HorizontalScope())
             using (new EditorGUI.DisabledScope(isAsset || targets.Length > 1))
