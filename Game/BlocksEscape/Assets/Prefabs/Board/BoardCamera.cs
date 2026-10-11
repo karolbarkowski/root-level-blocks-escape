@@ -5,11 +5,16 @@ namespace BlocksEscape
     // Frames the board with a perspective camera looking down from the level's bottom edge,
     // tilted so block sides show slightly. Fits everything the board renders (surface, walls, gates, blocks)
     // with a margin, centered on screen, and re-frames when a level is initialized or the aspect ratio changes.
+    //
+    // After framing it publishes the board's vertical extent on screen as _TiltShiftBand (viewport y min, max),
+    // so the tilt-shift pass (Shaders/TiltShift.shader) keeps the whole board sharp and blurs only above and below it.
     [ExecuteAlways]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Camera))]
     public sealed class BoardCamera : MonoBehaviour
     {
+        static readonly int TiltShiftBandId = Shader.PropertyToID("_TiltShiftBand");
+
         [SerializeField] Board board;
         [SerializeField, Range(30f, 90f)] float pitch = 70f;      // 90 = straight down
         [SerializeField, Range(10f, 60f)] float fieldOfView = 30f; // lower = flatter, less perspective distortion
@@ -17,24 +22,34 @@ namespace BlocksEscape
 
         Camera _camera;
         float _framedAspect;
+        Board _subscribed;
 
         void OnEnable()
         {
             _camera = GetComponent<Camera>();
-            if (board != null) board.Initialized += Frame;
+            Subscribe();
             Frame();
         }
 
         void OnDisable()
         {
-            if (board != null) board.Initialized -= Frame;
+            if (_subscribed != null) _subscribed.Initialized -= Frame;
+            _subscribed = null;
         }
 
         void OnValidate()
         {
-            if (!isActiveAndEnabled) return;
-            OnDisable();
-            OnEnable();
+            if (!isActiveAndEnabled || _camera == null) return;
+            Subscribe();
+            Frame();
+        }
+
+        void Subscribe()
+        {
+            if (_subscribed == board) return;
+            if (_subscribed != null) _subscribed.Initialized -= Frame;
+            _subscribed = board;
+            if (_subscribed != null) _subscribed.Initialized += Frame;
         }
 
         void LateUpdate()
@@ -50,7 +65,8 @@ namespace BlocksEscape
             _camera.fieldOfView = fieldOfView;
 
             var rotation = board.transform.rotation * Quaternion.Euler(pitch, 0f, 0f);
-            var bounds = ContentBounds();
+            var content = ContentBounds();
+            var bounds = content;
             bounds.Expand(margin * 2f * GridUnits.CellSize);
 
             // In camera-aligned axes around the bounds center, a point (x, y, z) is in view when
@@ -62,8 +78,7 @@ namespace BlocksEscape
             var toCamera = Quaternion.Inverse(rotation);
             for (int i = 0; i < 8; i++)
             {
-                var corner = bounds.center + Vector3.Scale(bounds.extents, new Vector3((i & 1) * 2 - 1, (i & 2) - 1, (i & 4) / 2 - 1));
-                var p = toCamera * (corner - bounds.center);
+                var p = toCamera * (Corner(bounds, i) - bounds.center);
                 up = Mathf.Max(up, p.y - tanV * p.z);
                 down = Mathf.Max(down, -p.y - tanV * p.z);
                 right = Mathf.Max(right, p.x - tanH * p.z);
@@ -73,7 +88,20 @@ namespace BlocksEscape
             float cz = Mathf.Min(-(up + down) / (2f * tanV), -(right + left) / (2f * tanH));
             var local = new Vector3((right - left) * 0.5f, (up - down) * 0.5f, cz);
             transform.SetPositionAndRotation(bounds.center + rotation * local, rotation);
+
+            // The board's on-screen band, without the margin, for the tilt-shift pass.
+            float bandMin = float.MaxValue, bandMax = float.MinValue;
+            for (int i = 0; i < 8; i++)
+            {
+                float y = _camera.WorldToViewportPoint(Corner(content, i)).y;
+                bandMin = Mathf.Min(bandMin, y);
+                bandMax = Mathf.Max(bandMax, y);
+            }
+            Shader.SetGlobalVector(TiltShiftBandId, new Vector4(bandMin, bandMax, 0f, 0f));
         }
+
+        static Vector3 Corner(Bounds b, int i) =>
+            b.center + Vector3.Scale(b.extents, new Vector3((i & 1) * 2 - 1, (i & 2) - 1, (i & 4) / 2 - 1));
 
         Bounds ContentBounds()
         {
