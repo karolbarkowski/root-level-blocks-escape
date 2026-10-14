@@ -21,6 +21,19 @@ namespace BlocksEscape
         [SerializeField] int frozenFor;
         [SerializeField] int quarterTurns; // rotation on the board, see TryMatch
 
+        [Header("Status")]
+        [Tooltip("Centre of the face on top, in footprint coordinates (level x right, y down).")]
+        [SerializeField] Vector2 headCell;
+        [SerializeField] Material awakeMaterial;
+        [Tooltip("Same model with the eyes painted shut, shown while the block is frozen.")]
+        [SerializeField] Material sleepMaterial;
+
+        const string BubbleName = "Sleep Bubble", ArrowName = "Axis Arrow", TurnsName = "Turns";
+        Transform _bubble;
+        Vector3 _bubbleAnchor; // above the face, in block space; the bubble is offset from it on screen
+        Vector2 _bubbleOffset;
+        int _shownTurns = -1;
+
         float _pivotHeight = float.NaN; // cached in Play mode, where the mesh no longer changes
 
         public IReadOnlyList<Vector2Int> Footprint => footprint;
@@ -92,6 +105,111 @@ namespace BlocksEscape
             var min = new Vector2Int(int.MaxValue, int.MaxValue);
             foreach (var cell in cells) min = Vector2Int.Min(min, cell);
             return min;
+        }
+
+        // Shows the block's state: a frozen block sleeps (eyes shut) with a bubble over its head counting the layers that
+        // still have to leave the board before it wakes; an axis-locked block carries an arrow along its axis.
+        public void ShowStatus(int turnsToWake, string moveAxis, BlockStatusArt art)
+        {
+            var body = GetComponentInChildren<MeshRenderer>();
+            if (body == null) return;
+            if (awakeMaterial != null)
+            {
+                var materials = body.sharedMaterials;
+                materials[0] = turnsToWake > 0 && sleepMaterial != null ? sleepMaterial : awakeMaterial;
+                body.sharedMaterials = materials;
+            }
+            float top = body.bounds.max.y;
+
+            _bubble = transform.Find(BubbleName);
+            if (turnsToWake > 0 && art != null && art.SleepBubble != null)
+            {
+                if (_bubble == null)
+                {
+                    _bubble = Instantiate(art.SleepBubble, transform, false).transform;
+                    _bubble.name = BubbleName;
+                    _shownTurns = -1;
+                }
+                _bubble.localScale = Vector3.one * art.BubbleSize;
+                var head = transform.TransformPoint(FootprintToLocal(headCell));
+                _bubbleAnchor = transform.InverseTransformPoint(new Vector3(head.x, top + art.BubbleHeight, head.z));
+                _bubbleOffset = art.BubbleScreenOffset;
+                FaceCamera();
+                if (_shownTurns != turnsToWake)
+                {
+                    var number = DigitText.Build(_bubble, TurnsName, turnsToWake, art.Digits, art.DigitHeight, 0.06f);
+                    if (number != null) number.localPosition = art.DigitOffset;
+                    _shownTurns = turnsToWake;
+                }
+            }
+            else if (_bubble != null)
+            {
+                DestroyChild(_bubble);
+                _bubble = null;
+            }
+
+            var arrow = transform.Find(ArrowName);
+            bool locked = moveAxis == "horizontal" || moveAxis == "vertical";
+            if (locked && art != null && art.AxisArrow != null)
+            {
+                if (arrow == null)
+                {
+                    arrow = Instantiate(art.AxisArrow, transform, false).transform;
+                    arrow.name = ArrowName;
+                }
+                // On the cell farthest from the face; a one-cell block has only its face, so the arrow goes under the chin.
+                var cell = TailCell();
+                var local = FootprintToLocal(cell);
+                float scale = 1f;
+                if (footprint.Length == 1) { local += new Vector3(0f, 0f, -0.3f); scale = 0.6f; }
+                var p = transform.TransformPoint(local);
+                arrow.position = new Vector3(p.x, top - 0.02f, p.z);
+                // Level x is world x, level y runs along world z; the model points along x.
+                var board = transform.parent != null ? transform.parent.rotation : Quaternion.identity;
+                arrow.rotation = board * Quaternion.Euler(0f, moveAxis == "vertical" ? 90f : 0f, 0f);
+                arrow.localScale = Vector3.one * scale;
+            }
+            else if (arrow != null) DestroyChild(arrow);
+        }
+
+        void LateUpdate()
+        {
+            if (_bubble != null) FaceCamera();
+        }
+
+        // The bubble is a flat badge; turning it like the camera keeps it square on screen. Straight above the head it
+        // would cover the face from this steep camera, so it sits off to the side in screen terms (camera right and up).
+        void FaceCamera()
+        {
+            var cam = Camera.main;
+            if (cam == null || _bubble == null) return;
+            var view = cam.transform;
+            _bubble.rotation = view.rotation;
+            _bubble.position = transform.TransformPoint(_bubbleAnchor) + view.right * _bubbleOffset.x + view.up * _bubbleOffset.y;
+        }
+
+        Vector2 TailCell()
+        {
+            var tail = (Vector2)footprint[0];
+            float best = -1f;
+            foreach (var c in footprint)
+            {
+                float d = ((Vector2)c - headCell).sqrMagnitude;
+                if (d > best) { best = d; tail = c; }
+            }
+            return tail;
+        }
+
+        // Footprint coordinates (level x right, y down) to the block's local space, where level y grows towards -Z.
+        static Vector3 FootprintToLocal(Vector2 cell) => new Vector3(cell.x, 0f, -cell.y) * GridUnits.CellSize;
+
+        static void DestroyChild(Transform child)
+        {
+            // Destroy is deferred in Play mode: hide and detach it now, so it neither shows nor turns up in Find.
+            child.gameObject.SetActive(false);
+            child.SetParent(null, false);
+            if (Application.isPlaying) Destroy(child.gameObject);
+            else DestroyImmediate(child.gameObject);
         }
 
         // remaining are the block's types still on it, outermost first; the prefab was chosen for the outermost one.

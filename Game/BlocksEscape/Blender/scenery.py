@@ -24,6 +24,7 @@ PALETTE = [
     ("metal", "#BCC4CC"), ("metal_dark", "#848D96"), ("wing", "#F28C28"), ("dark", "#3A2618"),
     ("reed", "#6F9E3A"), ("soil", "#B98A5A"), ("lilac", "#C9B6F2"), ("red", "#E25A4A"),
     ("sign_face", "#F4CB90"), ("sign_frame", "#CC8E58"), ("letter_edge", "#6B3E22"),
+    ("sleep", "#BFDDF7"), ("sleep_rim", "#6F95C9"), ("sleep_z", "#3D5A8C"),
 ]
 GRID = 8; SW = 8  # 8x8 swatches of 8 px -> 64 px texture
 
@@ -348,6 +349,35 @@ def digits(col):
         made.append(join(f"Digit_{d}", [front, back], col))
     return made
 
+def sleep_bubble(col):
+    """Badge floating over a frozen animal: a soft blue disc standing up (front -Y, pivot at its centre), with
+    "z z" rising off its upper right; Block puts the turns-to-wake digits on its front."""
+    parts = []
+    rim = cylinder("sleep_rim", (0, 0.03, 0), 0.5, 0.1, verts=32, bevel=0.04, rot=(math.pi/2, 0, 0))
+    face = cylinder("sleep", (0, -0.02, 0), 0.43, 0.06, verts=32, bevel=0.025, rot=(math.pi/2, 0, 0))
+    parts += [rim, face]
+    for size, x, z in ((0.32, 0.5, 0.42), (0.24, 0.72, 0.68)):
+        zg = glyph("z", "sleep_z", 0.03, 0.03, 0.015, -0.02)
+        zg.scale = (size, size, size); zg.location = (x, 0, z)
+        parts.append(zg)
+    return join("SleepBubble", parts, col)
+
+def axis_arrow(col):
+    """Flat double-headed arrow along X lying on the ground plane (pivot at its centre, bottom at z = 0): cream on a
+    fatter dark-brown base, like the digits. Block lays it on top of axis-locked blocks."""
+    def arrow(color, grow, z, h):
+        L, head, shaft = 0.42 + grow, 0.16 + grow, 0.07 + grow
+        hw = 0.17 + grow
+        pts = [(-L, 0), (-L + head, hw), (-L + head, shaft), (L - head, shaft), (L - head, hw), (L, 0),
+               (L - head, -hw), (L - head, -shaft), (-L + head, -shaft), (-L + head, -hw)]
+        bm = bmesh.new(); verts = [bm.verts.new((x, y, 0)) for x, y in pts]
+        f = bm.faces.new(verts); r = bmesh.ops.extrude_face_region(bm, geom=[f])
+        for v in [e for e in r["geom"] if isinstance(e, bmesh.types.BMVert)]: v.co.z = h
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+        ob = mesh_object("arrow", bm); ob.location = (0, 0, z)
+        return finish(ob, color, smooth=False, bevel=min(0.02, h*0.45), bevel_segments=2)
+    return join("AxisArrow", [arrow("letter_edge", 0.045, 0.0, 0.05), arrow("cream", 0.0, 0.03, 0.05)], col)
+
 BUILDERS = {
     "Tree": lambda c: tree(c, 1), "Tree2": lambda c: _rename(tree(c, 11), "Tree2"),
     "Bush": lambda c: bush(c, 2), "Bush2": lambda c: bush(c, 12, "Bush2"),
@@ -360,7 +390,7 @@ BUILDERS = {
     "FlowersLilac": lambda c: flower_clump(c, "lilac", 35, "FlowersLilac"),
     "Grass": lambda c: grass(c, 6), "Grass2": lambda c: grass(c, 16, "Grass2"),
     "Pond": pond, "Barn": barn, "Bucket": bucket, "Tub": tub, "Butterfly": butterfly,
-    "Sign": sign, "BackButton": back_button,
+    "Sign": sign, "BackButton": back_button, "SleepBubble": sleep_bubble, "AxisArrow": axis_arrow,
 }
 
 def _rename(ob, name): ob.name = name; ob.data.name = name; return ob

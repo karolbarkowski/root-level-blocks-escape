@@ -97,3 +97,6 @@ MonoBehaviour:
   axis: free
   frozenFor: 0
   quarterTurns: 0
+  headCell: {x: 0, y: 0}
+  awakeMaterial: {fileID: 2100000, guid: 8993473c190f156499a07fdf85bb783a, type: 2}
+  sleepMaterial: {fileID: 2100000, guid: eb68049b60a1b784e828fde9988111be, type: 2}

@@ -88,6 +88,8 @@ namespace BlocksEscape.Levels
         public string Axis(int i) => string.IsNullOrEmpty(_pieces[i].data.axis) ? "free" : _pieces[i].data.axis;
         public bool IsFrozen(int i) => Events < _pieces[i].data.frozenFor;
         public bool CanMove(int i) => !_pieces[i].removed && !IsFrozen(i);
+        // Layers that still have to leave the board (anywhere) before block i thaws; 0 when it can move.
+        public int TurnsToWake(int i) => Mathf.Max(0, _pieces[i].data.frozenFor - Events);
 
         public int BlockAt(Vector2Int cell) => Inside(cell) ? _owner[Index(cell)] : -1;
 

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BlocksEscape
@@ -76,47 +75,8 @@ namespace BlocksEscape
 
         public void Rebuild()
         {
-            var root = transform.Find(NumberRootName);
-            if (root != null)
-            {
-                if (Application.isPlaying) Destroy(root.gameObject);
-                else DestroyImmediate(root.gameObject);
-            }
-            int value = Number;
-            if (value <= 0) return;
-
-            root = new GameObject(NumberRootName).transform;
-            root.SetParent(transform, false);
-            root.gameObject.hideFlags = HideFlags.DontSave; // rebuilt on load, never saved into the scene
-            root.localPosition = numberCenter;
-
-            var text = value.ToString();
-            var widths = new List<float>();
-            var spawned = new List<Transform>();
-            float scale = 1f, total = 0f;
-            foreach (char c in text)
-            {
-                var prefab = digits[c - '0'];
-                if (prefab == null) continue;
-                var digit = Instantiate(prefab, root, false).transform;
-                digit.gameObject.hideFlags = HideFlags.DontSave;
-                var bounds = digit.GetComponentInChildren<MeshFilter>().sharedMesh.bounds;
-                scale = digitHeight / Mathf.Max(bounds.size.y, 1e-4f);
-                widths.Add(bounds.size.x);
-                spawned.Add(digit);
-            }
-            for (int i = 0; i < widths.Count; i++) total += widths[i] * scale + (i > 0 ? spacing * digitHeight : 0f);
-
-            // Digits are modelled with their baseline at the origin; centre them on the panel both ways.
-            float x = -total * 0.5f;
-            for (int i = 0; i < spawned.Count; i++)
-            {
-                var bounds = spawned[i].GetComponentInChildren<MeshFilter>().sharedMesh.bounds;
-                float w = widths[i] * scale;
-                spawned[i].localScale = Vector3.one * scale;
-                spawned[i].localPosition = new Vector3(x + w * 0.5f - bounds.center.x * scale, -bounds.center.y * scale, 0f);
-                x += w + spacing * digitHeight;
-            }
+            var root = DigitText.Build(transform, NumberRootName, Number > 0 ? Number : -1, digits, digitHeight, spacing);
+            if (root != null) root.localPosition = numberCenter;
         }
     }
 }

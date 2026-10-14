@@ -158,7 +158,12 @@ class Face:
     def smile(s, cu, cv, r, w, c): s.put(s.arc(cu, cv, r, math.pi*1.15, math.pi*1.85, w), c)
     def blush(s, cv=.45, du=.33, c=hexc("#F28C8C"), alpha=.45):
         for sx in (-1, 1): s.put(s.e(.5+sx*du, cv, .07, .045), c, alpha, aa=.02)
+    sleeping = False  # set while baking the _Sleep albedo: eyes are painted shut
+    def closed_eye(s, cu, cv, r, c=EYE_DARK, w=.016):
+        """A shut, content eye: a downward arc like a smile, with a short lash at the outer end."""
+        s.put(s.arc(cu, cv + r*.45, r, math.pi*1.12, math.pi*1.88, w), c)
     def shiny_eye(s, cu, cv, ru, rv, c=EYE_DARK, hl=1.0):
+        if s.sleeping: s.closed_eye(cu, cv, ru*1.05); return
         s.put(s.e(cu, cv, ru, rv), c)
         s.put(s.e(cu - ru*.3, cv + rv*.3, ru*.33*hl, ru*.33*hl), WHITE)
         s.put(s.e(cu + ru*.3, cv - rv*.35, ru*.14*hl, ru*.14*hl), WHITE)
@@ -310,6 +315,7 @@ class Pig(Animal):
         f.smile(.5, .175, .05, .009, s.DARK)
         for sx in (-1, 1):  # sleepy eyes: heavy upper lid with a lash line
             cu, cv = .5+sx*.2, .64
+            if f.sleeping: f.closed_eye(cu, cv - .02, .09, hexc("#5A2A33")); continue
             eye = f.e(cu, cv, .095, .085)
             f.put(eye, WHITE)
             f.put(f.e(cu + sx*.01, cv - .025, .05, .05), EYE_DARK)
@@ -398,6 +404,7 @@ class Sheep(Animal):
             f.put(f.e(.5+du, .675 - abs(du)*.25, .072, .062), s.base)
         for sx in (-1, 1):  # big eyes looking to the side
             cu = .5 + sx*.115
+            if f.sleeping: f.closed_eye(cu, .46, .075, hexc("#F2EEE6")); continue
             f.put(f.e(cu, .47, .085, .09), WHITE)
             f.put(f.e(cu + .035, .455, .045, .052), EYE_DARK)
             f.put(f.e(cu + .025, .475, .014, .014), WHITE)
@@ -437,6 +444,7 @@ class Horse(Animal):
         f.smile(.5, .25, .075, .009, s.NOSE)
         for sx in (-1, 1):
             cu = .5 + sx*.18
+            if f.sleeping: f.closed_eye(cu, .64, .09, hexc("#F3E3CC")); continue
             f.put(f.e(cu, .66, .095, .105), WHITE)
             f.put(f.e(cu + .02, .645, .052, .062), EYE_DARK)
             f.put(f.e(cu + .005, .67, .016, .016), WHITE)
@@ -483,6 +491,7 @@ class Cat(Animal):
         f.blush(.44, .34, hexc("#F07C7C"), .45)
         for sx in (-1, 1):
             cu = .5 + sx*.18
+            if f.sleeping: f.closed_eye(cu, .6, .095); continue
             f.put(f.e(cu, .62, .1, .11), WHITE)
             f.put(f.e(cu, .61, .066, .082), EYE_DARK)
             f.put(f.e(cu - .025, .645, .022, .022), WHITE)
@@ -700,40 +709,44 @@ def build_blocks(A, row_y):
         ob.location = ((i % 6)*5.0 - (min(xs_)+max(xs_))/2, row_y - (i // 6)*5.0 - (min(ys_)+max(ys_))/2, 0)
         print(name, "tris", sum(len(p.vertices)-2 for p in me.polygons))
 
-    # bake
-    img = np.empty((TEX, TEX, 4), np.float32); img[..., :3] = A.base; img[..., 3] = 1
-    written = np.zeros((TEX, TEX), bool)
-    for si, (shape, tris) in enumerate(tris_by.items()):
-        g = G[shape]; fx, fy = g["face"]
-        pix, P = raster(tris)
-        colr = np.tile(A.base, (len(P), 1))
-        ctx = dict(face=g["face"], cells=g["cells"], tris=tris, rng=random.Random(A.seed + si), aa=1.5/D_SIDE,
-                   tail=tail_info(g["cells"], fx, fy))
-        A.pattern(P, colr, ctx)
-        top = P[:, 2] > B.HGT - B.R - .04
-        if top.any():
-            sub = colr[top]
-            A.face(Face(sub, P[top, 0] - fx, B.S/2 + (P[top, 1] - fy), B.S, 1.5/D_CAP))
-            if ctx["tail"] is not None: A.tail(P[top, 0], P[top, 1], sub, ctx, 1.5/D_CAP)
-            colr[top] = sub
-        img[pix[:, 0], pix[:, 1], :3] = colr; written[pix[:, 0], pix[:, 1]] = True
-    for key, (x0, y0, w, h) in pos.items():
-        sl = (slice(y0-PAD, y0+h+PAD), slice(x0-PAD, x0+w+PAD))
-        if isinstance(key, tuple) and key[0] == "sw":
-            img[sl][..., :3] = A.swatches[key[1]]; continue
-        if key == "ear":
-            ys, xs = np.mgrid[0:h+2*PAD, 0:w+2*PAD]; U = (xs - PAD + .5)/w; V = (ys - PAD + .5)/h
-            reg = np.tile(A.ear_base if A.ear_base is not None else A.base, ((h+2*PAD)*(w+2*PAD), 1))
-            blend(reg, ((np.sqrt(((U-.5)/.36)**2 + ((V-.5)/.33)**2) - 1)*.33).ravel(), A.ear_inner, 1.5/w)
-            img[sl][..., :3] = reg.reshape(h+2*PAD, w+2*PAD, 3); continue
-        reg = img[sl]; m = written[sl].copy()
-        for _ in range(PAD + 2):
-            for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)):
-                sm = np.roll(m, (dy, dx), (0, 1)); src = np.roll(reg, (dy, dx), (0, 1))
-                fill = sm & ~m; reg[fill] = src[fill]; m |= fill
-    out = os.path.join(GAME, "Blender", A.name, f"{A.name}_Albedo.png"); os.makedirs(os.path.dirname(out), exist_ok=True)
-    im = new_image(f"{A.name}_Albedo", img, out); del img
-    material(f"{A.name}_Mat", im)
+    # bake: once awake, once with the eyes shut (frozen blocks swap to the _Sleep texture; the atlas layout is the same)
+    for sleeping in (False, True):
+        Face.sleeping = sleeping
+        img = np.empty((TEX, TEX, 4), np.float32); img[..., :3] = A.base; img[..., 3] = 1
+        written = np.zeros((TEX, TEX), bool)
+        for si, (shape, tris) in enumerate(tris_by.items()):
+            g = G[shape]; fx, fy = g["face"]
+            pix, P = raster(tris)
+            colr = np.tile(A.base, (len(P), 1))
+            ctx = dict(face=g["face"], cells=g["cells"], tris=tris, rng=random.Random(A.seed + si), aa=1.5/D_SIDE,
+                       tail=tail_info(g["cells"], fx, fy))
+            A.pattern(P, colr, ctx)
+            top = P[:, 2] > B.HGT - B.R - .04
+            if top.any():
+                sub = colr[top]
+                A.face(Face(sub, P[top, 0] - fx, B.S/2 + (P[top, 1] - fy), B.S, 1.5/D_CAP))
+                if ctx["tail"] is not None: A.tail(P[top, 0], P[top, 1], sub, ctx, 1.5/D_CAP)
+                colr[top] = sub
+            img[pix[:, 0], pix[:, 1], :3] = colr; written[pix[:, 0], pix[:, 1]] = True
+        for key, (x0, y0, w, h) in pos.items():
+            sl = (slice(y0-PAD, y0+h+PAD), slice(x0-PAD, x0+w+PAD))
+            if isinstance(key, tuple) and key[0] == "sw":
+                img[sl][..., :3] = A.swatches[key[1]]; continue
+            if key == "ear":
+                ys, xs = np.mgrid[0:h+2*PAD, 0:w+2*PAD]; U = (xs - PAD + .5)/w; V = (ys - PAD + .5)/h
+                reg = np.tile(A.ear_base if A.ear_base is not None else A.base, ((h+2*PAD)*(w+2*PAD), 1))
+                blend(reg, ((np.sqrt(((U-.5)/.36)**2 + ((V-.5)/.33)**2) - 1)*.33).ravel(), A.ear_inner, 1.5/w)
+                img[sl][..., :3] = reg.reshape(h+2*PAD, w+2*PAD, 3); continue
+            reg = img[sl]; m = written[sl].copy()
+            for _ in range(PAD + 2):
+                for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+                    sm = np.roll(m, (dy, dx), (0, 1)); src = np.roll(reg, (dy, dx), (0, 1))
+                    fill = sm & ~m; reg[fill] = src[fill]; m |= fill
+        suffix = "_Sleep_Albedo" if sleeping else "_Albedo"
+        out = os.path.join(GAME, "Blender", A.name, f"{A.name}{suffix}.png"); os.makedirs(os.path.dirname(out), exist_ok=True)
+        im = new_image(f"{A.name}{suffix}", img, out); del img
+        if not sleeping: material(f"{A.name}_Mat", im)
+    Face.sleeping = False
     return col
 
 # ======================================================================= gate
@@ -894,6 +907,7 @@ def export(A):
     for ob in bpy.data.collections[f"{A.name}Blocks"].objects: export_fbx(ob, os.path.join(bdir, ob.name + ".fbx"))
     src = os.path.join(GAME, "Blender", A.name)
     shutil.copy(os.path.join(src, f"{A.name}_Albedo.png"), bdir)
+    shutil.copy(os.path.join(src, f"{A.name}_Sleep_Albedo.png"), bdir)
     if not A.has_gate: return
     for ob in bpy.data.collections[f"{A.name}Gate"].objects: export_fbx(ob, os.path.join(gdir, ob.name + ".fbx"))
     shutil.copy(os.path.join(src, f"{A.name}Gate_Albedo.png"), gdir)

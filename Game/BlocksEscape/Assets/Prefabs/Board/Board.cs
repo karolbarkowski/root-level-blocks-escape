@@ -34,6 +34,7 @@ namespace BlocksEscape
         [SerializeField, FormerlySerializedAs("blockTypeMaterials")] BlockTypeModels models; // block and gate prefabs per type
         [SerializeField] GameObject wallPrefab;
         [SerializeField] Material floorMaterial; // pen floor inside the fence; UVs are in cells
+        [SerializeField] BlockStatusArt statusArt; // sleep bubbles and axis arrows on blocks
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         BoardRules _rules;
@@ -159,6 +160,7 @@ namespace BlocksEscape
             NewChild(BlocksRootName, content);
             _blocks = new Block[rules.BlockCount];
             for (int i = 0; i < _blocks.Length; i++) SpawnBlock(i, rules.Anchor(i), rules.Data(i).types);
+            RefreshStatus();
 
             Initialized?.Invoke();
         }
@@ -282,12 +284,20 @@ namespace BlocksEscape
                     if (result == DropResult.Peeled) SpawnBlock(i, anchor, _rules.RemainingTypes(i));
                 }
             }
+            if (result != DropResult.Moved) RefreshStatus(); // a layer left: frozen blocks count down
             if (result != DropResult.Moved && _rules.Solved)
             {
                 Debug.Log("Level complete.", this);
                 Completed?.Invoke();
             }
             return result;
+        }
+
+        // Updates every block's frozen and axis markers from the rules.
+        void RefreshStatus()
+        {
+            for (int i = 0; i < _blocks.Length; i++)
+                if (_blocks[i] != null) _blocks[i].ShowStatus(_rules.TurnsToWake(i), _rules.Axis(i), statusArt);
         }
 
         // Matches the block's shape against the prefabs of its outermost remaining type.

@@ -19,6 +19,15 @@ namespace BlocksEscape.EditorTools
         const string FenceDir = "Assets/Prefabs/Wall/Fence";
         const string WallPath = "Assets/Prefabs/Wall/Wall.prefab";
 
+        // Face centre per shape, in footprint coordinates (level x right, y down); mirrors SHAPES in animals.py.
+        static readonly Dictionary<string, Vector2> HeadCells = new()
+        {
+            ["1x1"] = new Vector2(0, 0), ["2x1"] = new Vector2(0, -1), ["2x2"] = new Vector2(0.5f, -1),
+            ["3x1"] = new Vector2(0, -2), ["4x1"] = new Vector2(0, -3), ["Corner"] = new Vector2(0, -1),
+            ["CornerMirror"] = new Vector2(0, -1), ["L"] = new Vector2(0, -2), ["LMirror"] = new Vector2(0, -2),
+            ["S"] = new Vector2(1, -0.5f), ["SMirror"] = new Vector2(-1, -0.5f), ["T"] = new Vector2(0, -1),
+        };
+
         // Model folder -> block type id it is used for; null is the neutral (typeless) blocker.
         static readonly (string animal, string type)[] Animals =
         {
@@ -63,6 +72,9 @@ namespace BlocksEscape.EditorTools
         {
             string dir = $"{BlockRoot}/{animal}";
             var material = MakeMaterial($"{dir}/{animal}.mat", $"{dir}/{animal}_Albedo.png");
+            // Same atlas with the eyes shut (animals.py bakes both); shown on frozen blocks.
+            var sleepTexture = $"{dir}/{animal}_Sleep_Albedo.png";
+            var sleep = File.Exists(sleepTexture) ? MakeMaterial($"{dir}/{animal}_Sleep.mat", sleepTexture) : null;
             var outline = MakeOutlineMaterial($"{dir}/{animal}Outline.mat", $"{dir}/{animal}_Albedo.png");
             var blocks = new List<Object>();
             foreach (var path in Directory.GetFiles(dir, $"{animal}_*.fbx").Select(p => p.Replace('\\', '/')).OrderBy(p => p))
@@ -70,6 +82,12 @@ namespace BlocksEscape.EditorTools
                 var instance = Instantiate(path, material, outline);
                 var block = instance.AddComponent<Block>();
                 block.DetectFootprint();
+                var shape = Path.GetFileNameWithoutExtension(path).Substring(animal.Length + 1);
+                var blockSo = new SerializedObject(block);
+                blockSo.FindProperty("headCell").vector2Value = HeadCells.TryGetValue(shape, out var head) ? head : Vector2.zero;
+                blockSo.FindProperty("awakeMaterial").objectReferenceValue = material;
+                blockSo.FindProperty("sleepMaterial").objectReferenceValue = sleep;
+                blockSo.ApplyModifiedPropertiesWithoutUndo();
                 if (block.Footprint.Count == 0) Debug.LogError($"{path}: the mesh covers no cell.");
                 blocks.Add(Save(instance, Path.ChangeExtension(path, ".prefab")).GetComponent<Block>());
             }
