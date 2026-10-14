@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 01e8c432fce94ca49bdc475926a48f58, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 01e8c432fce94ca49bdc475926a48f58, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ec07c075f08bf934fb9eea47e1d3956e, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 01e8c432fce94ca49bdc475926a48f58, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c5853fc1e5141940b5f4b1bc32fb7e1, type: 2}
     - target: {fileID: 919132149155446097, guid: 01e8c432fce94ca49bdc475926a48f58, type: 3}
       propertyPath: m_Name
       value: HorseGate
@@ -140,9 +148,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 17bd6afa59a2edf42905c21122f90f32, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 17bd6afa59a2edf42905c21122f90f32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ec07c075f08bf934fb9eea47e1d3956e, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 17bd6afa59a2edf42905c21122f90f32, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c5853fc1e5141940b5f4b1bc32fb7e1, type: 2}
     - target: {fileID: 919132149155446097, guid: 17bd6afa59a2edf42905c21122f90f32, type: 3}
       propertyPath: m_Name
       value: HorseGate_Arch

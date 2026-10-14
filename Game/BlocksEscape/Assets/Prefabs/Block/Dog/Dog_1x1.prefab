@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 649d3bac56944d14c936166bbd3da53f, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 649d3bac56944d14c936166bbd3da53f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 8993473c190f156499a07fdf85bb783a, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 649d3bac56944d14c936166bbd3da53f, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2acf382e0b079414a94b8f78722a0e16, type: 2}
     - target: {fileID: 919132149155446097, guid: 649d3bac56944d14c936166bbd3da53f, type: 3}
       propertyPath: m_Name
       value: Dog_1x1

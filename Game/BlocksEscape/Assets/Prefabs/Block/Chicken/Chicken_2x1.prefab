@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 44b65726fb795af49af509fb6158410e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 44b65726fb795af49af509fb6158410e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 804194c8a3cd059439ce7a12a9b0eb80, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 44b65726fb795af49af509fb6158410e, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b177926b484bf794bb8ea58b4e4b85df, type: 2}
     - target: {fileID: 919132149155446097, guid: 44b65726fb795af49af509fb6158410e, type: 3}
       propertyPath: m_Name
       value: Chicken_2x1

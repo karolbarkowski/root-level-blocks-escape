@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: e80617bb514a5fd49aae6472b80b1e7f, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e80617bb514a5fd49aae6472b80b1e7f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 93894a55625f6b94ea4dab82625a26ab, type: 2}
+    - target: {fileID: -7511558181221131132, guid: e80617bb514a5fd49aae6472b80b1e7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: da68310801d2fac498e27c5475f3f071, type: 2}
     - target: {fileID: 919132149155446097, guid: e80617bb514a5fd49aae6472b80b1e7f, type: 3}
       propertyPath: m_Name
       value: Cow_LMirror

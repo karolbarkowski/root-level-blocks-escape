@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ac4d9903c125feb48b3480fb4b878a0e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ac4d9903c125feb48b3480fb4b878a0e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b90b8f72617e0824daea9454b6ffbe89, type: 2}
+    - target: {fileID: -7511558181221131132, guid: ac4d9903c125feb48b3480fb4b878a0e, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a7ab2cedfcbdd0c44ae0482377a532a9, type: 2}
     - target: {fileID: 919132149155446097, guid: ac4d9903c125feb48b3480fb4b878a0e, type: 3}
       propertyPath: m_Name
       value: Sheep_L

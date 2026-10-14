@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 31e2352ff4348594d831b6c68ee418bd, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 31e2352ff4348594d831b6c68ee418bd, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f4e622ba2dfd81148a34c95affe033a2, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 31e2352ff4348594d831b6c68ee418bd, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0001fdd28c4c5a04daf0c3a791be03cf, type: 2}
     - target: {fileID: 919132149155446097, guid: 31e2352ff4348594d831b6c68ee418bd, type: 3}
       propertyPath: m_Name
       value: PigGate
@@ -140,9 +148,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: a3b307a463f13b54c8ce953e72d77c94, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a3b307a463f13b54c8ce953e72d77c94, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f4e622ba2dfd81148a34c95affe033a2, type: 2}
+    - target: {fileID: -7511558181221131132, guid: a3b307a463f13b54c8ce953e72d77c94, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0001fdd28c4c5a04daf0c3a791be03cf, type: 2}
     - target: {fileID: 919132149155446097, guid: a3b307a463f13b54c8ce953e72d77c94, type: 3}
       propertyPath: m_Name
       value: PigGate_Arch

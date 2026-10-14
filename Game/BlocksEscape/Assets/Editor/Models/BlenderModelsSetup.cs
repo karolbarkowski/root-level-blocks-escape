@@ -63,10 +63,11 @@ namespace BlocksEscape.EditorTools
         {
             string dir = $"{BlockRoot}/{animal}";
             var material = MakeMaterial($"{dir}/{animal}.mat", $"{dir}/{animal}_Albedo.png");
+            var outline = MakeOutlineMaterial($"{dir}/{animal}Outline.mat", $"{dir}/{animal}_Albedo.png");
             var blocks = new List<Object>();
             foreach (var path in Directory.GetFiles(dir, $"{animal}_*.fbx").Select(p => p.Replace('\\', '/')).OrderBy(p => p))
             {
-                var instance = Instantiate(path, material);
+                var instance = Instantiate(path, material, outline);
                 var block = instance.AddComponent<Block>();
                 block.DetectFootprint();
                 if (block.Footprint.Count == 0) Debug.LogError($"{path}: the mesh covers no cell.");
@@ -79,9 +80,10 @@ namespace BlocksEscape.EditorTools
         {
             string dir = $"{GateRoot}/{animal}";
             var material = MakeMaterial($"{dir}/{animal}Gate.mat", $"{dir}/{animal}Gate_Albedo.png");
-            var instance = Instantiate($"{dir}/{animal}Gate_Tile.fbx", material);
+            var outline = MakeOutlineMaterial($"{dir}/{animal}GateOutline.mat", $"{dir}/{animal}Gate_Albedo.png");
+            var instance = Instantiate($"{dir}/{animal}Gate_Tile.fbx", material, outline);
             instance.name = $"{animal}Gate";
-            Instantiate($"{dir}/{animal}Gate_Arch.fbx", material).transform.SetParent(instance.transform, false);
+            Instantiate($"{dir}/{animal}Gate_Arch.fbx", material, outline).transform.SetParent(instance.transform, false);
             instance.AddComponent<GateCell>();
             return Save(instance, $"{dir}/{animal}Gate.prefab").GetComponent<GateCell>();
         }
@@ -126,8 +128,24 @@ namespace BlocksEscape.EditorTools
             return material;
         }
 
-        // Instance of an imported model (with its material) to build a prefab variant from.
-        static GameObject Instantiate(string modelPath, Material material)
+        // Second material for the inverted-hull outline (Shaders/Outline.shader), tinted from the same albedo.
+        // Width and tint are kept when the material already exists, so tuning in the inspector survives a rebuild.
+        static Material MakeOutlineMaterial(string path, string texturePath)
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (material == null)
+            {
+                material = new Material(Shader.Find("BlocksEscape/Outline"));
+                AssetDatabase.CreateAsset(material, path);
+            }
+            material.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath));
+            material.renderQueue = -1; // the shader's queue: between the ground and the pieces
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        // Instance of an imported model (with its material, plus an optional outline) to build a prefab variant from.
+        static GameObject Instantiate(string modelPath, Material material, Material outline = null)
         {
             if (AssetImporter.GetAtPath(modelPath) is ModelImporter importer &&
                 importer.materialImportMode != ModelImporterMaterialImportMode.None)
@@ -137,7 +155,8 @@ namespace BlocksEscape.EditorTools
                 importer.SaveAndReimport();
             }
             var instance = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(modelPath));
-            instance.GetComponent<MeshRenderer>().sharedMaterial = material;
+            // An extra material on a single-submesh renderer draws that mesh again, which is all the hull needs.
+            instance.GetComponent<MeshRenderer>().sharedMaterials = outline != null ? new[] { material, outline } : new[] { material };
             return instance;
         }
 

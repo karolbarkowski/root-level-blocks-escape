@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: af967bc9132f8bf47b023b5be38ff631, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: af967bc9132f8bf47b023b5be38ff631, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6076a5ae0c9395544946f2df72bb1d7e, type: 2}
+    - target: {fileID: -7511558181221131132, guid: af967bc9132f8bf47b023b5be38ff631, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f88935a259ed55e46883667433b811ea, type: 2}
     - target: {fileID: 919132149155446097, guid: af967bc9132f8bf47b023b5be38ff631, type: 3}
       propertyPath: m_Name
       value: SheepGate_Arch
@@ -115,9 +123,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 7de535a75824e0845ac95ed0cca05fd5, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7de535a75824e0845ac95ed0cca05fd5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6076a5ae0c9395544946f2df72bb1d7e, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 7de535a75824e0845ac95ed0cca05fd5, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f88935a259ed55e46883667433b811ea, type: 2}
     - target: {fileID: 919132149155446097, guid: 7de535a75824e0845ac95ed0cca05fd5, type: 3}
       propertyPath: m_Name
       value: SheepGate

@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 80e0010f9bf1ad6479d29b163c724ff3, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 80e0010f9bf1ad6479d29b163c724ff3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f25b3dc8a599df74aa10acdfb758759f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 80e0010f9bf1ad6479d29b163c724ff3, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc31cbdd28058ce459553f7e00c42875, type: 2}
     - target: {fileID: 919132149155446097, guid: 80e0010f9bf1ad6479d29b163c724ff3, type: 3}
       propertyPath: m_Name
       value: CowGate_Arch
@@ -115,9 +123,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0d8f5040a17e74f45b308ee14a325c5e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0d8f5040a17e74f45b308ee14a325c5e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f25b3dc8a599df74aa10acdfb758759f, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 0d8f5040a17e74f45b308ee14a325c5e, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc31cbdd28058ce459553f7e00c42875, type: 2}
     - target: {fileID: 919132149155446097, guid: 0d8f5040a17e74f45b308ee14a325c5e, type: 3}
       propertyPath: m_Name
       value: CowGate

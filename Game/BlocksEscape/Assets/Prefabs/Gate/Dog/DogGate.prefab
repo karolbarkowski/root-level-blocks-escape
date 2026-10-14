@@ -49,9 +49,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 9b2c8a5d52238d743a9b608d19f98612, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9b2c8a5d52238d743a9b608d19f98612, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5d529899eda2be54ba37bbb5a83b738d, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 9b2c8a5d52238d743a9b608d19f98612, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4384f17859509874081d7f09825907b3, type: 2}
     - target: {fileID: 919132149155446097, guid: 9b2c8a5d52238d743a9b608d19f98612, type: 3}
       propertyPath: m_Name
       value: DogGate
@@ -140,9 +148,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 2f4053756962d8d4ea3d3eb68e8f9cce, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2f4053756962d8d4ea3d3eb68e8f9cce, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5d529899eda2be54ba37bbb5a83b738d, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 2f4053756962d8d4ea3d3eb68e8f9cce, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4384f17859509874081d7f09825907b3, type: 2}
     - target: {fileID: 919132149155446097, guid: 2f4053756962d8d4ea3d3eb68e8f9cce, type: 3}
       propertyPath: m_Name
       value: DogGate_Arch
