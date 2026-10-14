@@ -35,6 +35,8 @@ namespace BlocksEscape
         [SerializeField] GameObject wallPrefab;
         [SerializeField] Material floorMaterial; // pen floor inside the fence; UVs are in cells
         [SerializeField] BlockStatusArt statusArt; // sleep bubbles and axis arrows on blocks
+        [Tooltip("How far each layer of a layered block steps in from the one below, per side, in cells.")]
+        [SerializeField, Range(0f, 0.25f)] float layerRim = 0.12f;
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         BoardRules _rules;
@@ -258,8 +260,32 @@ namespace BlocksEscape
             _blocks[i] = block;
             block.transform.localPosition = BlockLocalPosition(i, anchor);
             block.transform.localRotation = Quaternion.Euler(0f, quarterTurns * 90f, 0f);
+            if (remaining != null && remaining.Length > 1) block.StackLayers(SpawnLayers(blockData, anchor, remaining, block.transform.parent), layerRim);
             RecordPrefabInstanceChanges(block.transform);
             RecordPrefabInstanceChanges(block);
+        }
+
+        // One full-size model per remaining type, outermost first, posed where a block of that type would stand.
+        // Plain copies rather than prefab instances: they only exist to be stacked inside the block.
+        // Empty if any type lacks a model for the shape; the block then shows only its outer type.
+        List<GameObject> SpawnLayers(BlockData blockData, Vector2 anchor, string[] remaining, Transform parent)
+        {
+            var layers = new List<GameObject>();
+            foreach (var type in remaining)
+            {
+                if (!TryFindBlockPrefab(blockData, new[] { type }, out var prefab, out int turns, out var pivotCell))
+                {
+                    Debug.LogWarning($"No {type} block prefab matches the shape of block {blockData.id}; its layers are not shown.", this);
+                    foreach (var spawned in layers) DestroyObject(spawned);
+                    layers.Clear();
+                    break;
+                }
+                var layer = Object.Instantiate(prefab.gameObject, parent, false);
+                layer.transform.localPosition = LevelToLocal(anchor + pivotCell);
+                layer.transform.localRotation = Quaternion.Euler(0f, turns * 90f, 0f);
+                layers.Add(layer);
+            }
+            return layers;
         }
 
         static void DestroyObject(GameObject go)

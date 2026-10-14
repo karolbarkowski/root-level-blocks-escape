@@ -28,7 +28,7 @@ namespace BlocksEscape
         [Tooltip("Same model with the eyes painted shut, shown while the block is frozen.")]
         [SerializeField] Material sleepMaterial;
 
-        const string BubbleName = "Sleep Bubble", ArrowName = "Axis Arrow", TurnsName = "Turns";
+        const string BubbleName = "Sleep Bubble", ArrowName = "Axis Arrow", TurnsName = "Turns", LayersName = "Layers";
         Transform _bubble;
         Vector3 _bubbleAnchor; // above the face, in block space; the bubble is offset from it on screen
         Vector2 _bubbleOffset;
@@ -111,7 +111,7 @@ namespace BlocksEscape
         // still have to leave the board before it wakes; an axis-locked block carries an arrow along its axis.
         public void ShowStatus(int turnsToWake, string moveAxis, BlockStatusArt art)
         {
-            var body = GetComponentInChildren<MeshRenderer>();
+            var body = Body();
             if (body == null) return;
             if (awakeMaterial != null)
             {
@@ -170,6 +170,66 @@ namespace BlocksEscape
                 arrow.localScale = Vector3.one * scale;
             }
             else if (arrow != null) DestroyChild(arrow);
+        }
+
+        // Shows a block with several types as a stack of literal layers, outermost on top: one model per type, each
+        // squashed to 1/n of the height so the stack is as tall as a single block. Like a stepped cake, each layer is
+        // inset by rim (in cells, per side) from the one below, so every layer shows a ledge from above; the bottom one
+        // keeps the full footprint. layers are full-size models of this block's shape (top first) already posed on the
+        // board; they become children and lose their Block component.
+        public void StackLayers(IReadOnlyList<GameObject> layers, float rim)
+        {
+            var own = GetComponent<MeshRenderer>();
+            if (own == null || layers == null || layers.Count < 2) return;
+            float bottom = own.bounds.min.y, height = own.bounds.size.y;
+            int n = layers.Count;
+
+            var root = new GameObject(LayersName).transform;
+            root.SetParent(transform, false);
+            for (int k = 0; k < n; k++)
+            {
+                var layer = layers[k].transform;
+                layer.name = $"Layer {k} ({types[k]})";
+                var cells = Vector2.one; // the layer's footprint extent along its own x and z, in cells
+                if (layer.TryGetComponent<Block>(out var block))
+                {
+                    cells = block.Extent();
+                    DestroyImmediate(block); // a layer is only a model
+                }
+                layer.SetParent(root, true);
+                if (!layer.TryGetComponent<MeshRenderer>(out var mesh)) continue;
+                // Animals differ in height, so each is squashed to exactly its share, resting on the layer below;
+                // layer 0 ends up on top.
+                var scale = layer.localScale;
+                scale.y *= height / n / Mathf.Max(mesh.bounds.size.y, 1e-4f);
+                // The inset shrinks the layer about its centre seen from above, the same distance on every side. It is
+                // measured against the footprint, not the mesh, as ears and snouts make animals' bounds differ.
+                var center = mesh.bounds.center;
+                float inset = 2f * rim * (n - 1 - k);
+                scale.x *= Mathf.Max(0.1f, 1f - inset / cells.x);
+                scale.z *= Mathf.Max(0.1f, 1f - inset / cells.y);
+                layer.localScale = scale;
+                var shift = center - mesh.bounds.center;
+                layer.position += new Vector3(shift.x, bottom + (n - 1 - k) * height / n - mesh.bounds.min.y, shift.z);
+            }
+            own.enabled = false; // the stack stands in for the block's own model
+        }
+
+        // Footprint size in cells along the block's own x and y (level y runs along -Z).
+        Vector2 Extent()
+        {
+            var min = Min(footprint);
+            var max = new Vector2Int(int.MinValue, int.MinValue);
+            foreach (var cell in footprint) max = Vector2Int.Max(max, cell);
+            return max - min + Vector2Int.one;
+        }
+
+        // The model whose face is on top: the top layer of a stack, otherwise the block's own mesh.
+        MeshRenderer Body()
+        {
+            var layers = transform.Find(LayersName);
+            if (layers != null && layers.childCount > 0 && layers.GetChild(0).TryGetComponent<MeshRenderer>(out var top)) return top;
+            return GetComponentInChildren<MeshRenderer>();
         }
 
         void LateUpdate()
