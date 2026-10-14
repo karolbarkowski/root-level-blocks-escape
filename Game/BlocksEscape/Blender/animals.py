@@ -259,12 +259,12 @@ class Animal:
 # -------------------------------------------------------------- cow (same look as the approved cow)
 class Cow(Animal):
     name = "Cow"; type_id = "cow"; seed = 101
-    base = hexc("#F2EBE1"); ear_base = hexc("#F2EBE1"); ear_inner = hexc("#EDB3A6")
-    swatches = {"horn": hexc("#CDB99B"), "white": hexc("#F2EBE1")}
+    base = hexc("#F7F4EE"); ear_base = hexc("#F7F4EE"); ear_inner = hexc("#EDB3A6")
+    swatches = {"horn": hexc("#CDB99B"), "white": hexc("#F7F4EE")}
     def pattern(s, P, col, ctx):
         head = np.array([*ctx["face"], s.body.HGT])
-        sph = blobs(ctx["tris"], ctx["rng"], 1.0, .12, .22, keep=lambda c, r: np.linalg.norm(c - head) > r + .44)
-        blend(col, blob_sd(P, sph), hexc("#2A2522"), ctx["aa"])
+        sph = blobs(ctx["tris"], ctx["rng"], .75, .17, .28, keep=lambda c, r: np.linalg.norm(c - head) > r + .44)
+        blend(col, blob_sd(P, sph), hexc("#221E1C"), ctx["aa"])
     def face(s, f):
         f.blush(.47, .32)
         f.put(f.e(.5, .29, .30, .19), hexc("#C78A7E")); f.put(f.e(.5, .295, .285, .175), hexc("#E0A497"))
@@ -279,28 +279,28 @@ class Cow(Animal):
             on_top = not side_free(ctx, sx)
             c = (fx+sx*.5, fy+.16, H+s.body.BULGE_TOP+.015) if on_top else (fx+sx*.47*k, fy+.16, H-.12)
             a.blob(T(*c) @ Rz(sx*20) @ Ry(-sx*12), (.136, .072, .04), "ear", "white")
-    gate_base = hexc("#F2EBE1"); gate_print_col = hexc("#C27A6B"); gate_print_rim = hexc("#7E4A42")
+    gate_base = hexc("#F7F4EE"); gate_print_col = hexc("#C27A6B"); gate_print_rim = hexc("#7E4A42")
     def gate_pattern(s, X, Y, col, aa):
         sd = np.full(X.shape, 1e9); rng = random.Random(5)
-        for cx, cy, r in [(-.36, .30, .12), (.37, -.05, .13), (-.33, -.28, .10), (.33, .36, .08), (.40, -.40, .07)]:
+        for cx, cy, r in [(-.36, .30, .15), (.37, -.05, .16), (-.33, -.28, .13), (.33, .36, .10), (.40, -.40, .09)]:
             sd = np.minimum(sd, np.hypot(X-cx, Y-cy) - r)
             for _ in range(3):
                 an = rng.uniform(0, 2*math.pi); d = rng.uniform(.04, .08)
                 sd = np.minimum(sd, np.hypot(X-cx-d*math.cos(an), Y-cy-d*math.sin(an)) - r*rng.uniform(.5, .8))
-        blend(col, sd, hexc("#2A2522"), aa)
+        blend(col, sd, hexc("#221E1C"), aa)
     def gate_print(s, lx, ly, sc): return cloven(lx, ly, sc)
 
 # -------------------------------------------------------------- pig
 class Pig(Animal):
     name = "Pig"; type_id = "pig"; seed = 202
     body = Body(R=0.2, BULGE=0.03, BULGE_TOP=0.04)
-    base = hexc("#F4A3AE"); ear_base = hexc("#F4A3AE"); ear_inner = hexc("#E07E8E")
-    swatches = {"ear": hexc("#EE93A1")}
-    DARK = hexc("#C25E72"); SNOUT = hexc("#F9BCC4"); MUD = hexc("#8A5A36")
+    base = hexc("#F7A1B5"); ear_base = hexc("#F7A1B5"); ear_inner = hexc("#E2738F")
+    swatches = {"ear": hexc("#F093A8")}
+    DARK = hexc("#C2496A"); SNOUT = hexc("#FBC3CF"); MUD = hexc("#8A5A36")
     def pattern(s, P, col, ctx):
         # a soft lighter belly band low on the sides, plus a few mud splashes
         t = np.clip((0.42 - P[:, 2]) / 0.3, 0, 1)
-        col[:] = col*(1 - .25*t[:, None]) + hexc("#FAD0D6")*(.25*t[:, None])
+        col[:] = col*(1 - .25*t[:, None]) + hexc("#FCD6DF")*(.25*t[:, None])
         sph = blobs(ctx["tris"], ctx["rng"], .35, .05, .09, zmax=.38, sat=(1, 3))
         blend(col, blob_sd(P, sph), s.MUD, ctx["aa"], .85)
     def face(s, f):
@@ -315,7 +315,7 @@ class Pig(Animal):
             f.put(f.e(cu + sx*.01, cv - .025, .05, .05), EYE_DARK)
             f.put(f.e(cu + sx*.01 - .015, cv - .01, .014, .014), WHITE)
             lid = np.maximum(eye, (cv - .005)*f.S - f.Z)
-            f.put(lid, hexc("#EE93A1"))
+            f.put(lid, hexc("#F093A8"))
             f.put(f.arc(cu, cv - .005 + .11, .115, math.pi*1.27, math.pi*1.73, .011), hexc("#5A2A33"))
     def tail(s, x, y, col, ctx, aa):
         tc = ctx["tail"]; c = tc["c"] + tc["dir"]*.12
@@ -326,7 +326,7 @@ class Pig(Animal):
         for sx in (-1, 1):  # triangular ears flopping forward
             a.cone(T(fx+sx*.3, fy+.28, H-.01) @ Rz(sx*-12) @ Rx(-50) @ Ry(sx*18), "ear", segs=4, r1=.12, r2=.01, depth=.2,
                    scale=(1, .45, 1))
-    gate_base = hexc("#F4A3AE"); gate_print_col = hexc("#C25E72"); gate_print_rim = hexc("#8E3E50")
+    gate_base = hexc("#F7A1B5"); gate_print_col = hexc("#C2496A"); gate_print_rim = hexc("#8E3050")
     def gate_pattern(s, X, Y, col, aa):
         for cx, cy, r in [(-.34, .28, .07), (.36, -.12, .09), (-.3, -.33, .05), (.32, .34, .05)]:
             blend(col, np.hypot(X-cx, Y-cy) - r, s.MUD, aa, .85)
@@ -336,9 +336,9 @@ class Pig(Animal):
 class Chicken(Animal):
     name = "Chicken"; type_id = "chicken"; seed = 303
     body = Body(R=0.27, HGT=0.82, GAP=0.16, BULGE=0.03, BULGE_TOP=0.045)
-    base = hexc("#FFDA6B")
-    swatches = {"beak": hexc("#F5902C"), "comb": hexc("#E8443A")}
-    WING = hexc("#F5BE3C"); FOOT = hexc("#F5902C")
+    base = hexc("#FFD93B")
+    swatches = {"beak": hexc("#F07A1A"), "comb": hexc("#E8443A")}
+    WING = hexc("#F7BE1E"); FOOT = hexc("#F07A1A")
     def pattern(s, P, col, ctx):
         fx, fy = ctx["face"]; S = s.body.S; H = s.body.HGT
         for sx in (-1, 1):  # wings on the head cell's free sides
@@ -349,7 +349,7 @@ class Chicken(Animal):
             blend(col, sd, s.WING, ctx["aa"])
             for k in (-1, 0, 1):  # feather tips
                 sd2 = np.where(m, ell(P[:, 1], P[:, 2], fy - .05 + k*.1 - .02, H*.3, .06, .06), 1e9)
-                blend(col, sd2, hexc("#E9A92C"), ctx["aa"], .6)
+                blend(col, sd2, hexc("#E9A40F"), ctx["aa"], .6)
     def face(s, f):
         f.blush(.46, .3, hexc("#F59A7A"), .55)
         for sx in (-1, 1): f.shiny_eye(.5+sx*.17, .6, .055, .066, hl=1.2)
@@ -366,7 +366,7 @@ class Chicken(Animal):
         a.cone(T(fx, fy - .02, H - .02) @ Rx(35), "beak", segs=4, r1=.07, r2=.008, depth=.12, scale=(1, .8, 1))
         for dx, r, h in ((-.065, .05, -.02), (0, .065, .0), (.065, .05, -.02)):  # comb
             a.blob(T(fx + dx, fy + .2, H + h) @ Rx(-20), (r*.8, r, r*1.15), "comb", seg=6, rings=4)
-    gate_base = hexc("#F3D98B"); gate_print_col = hexc("#E07A1F"); gate_print_rim = hexc("#E07A1F")
+    gate_base = hexc("#FFE170"); gate_print_col = hexc("#E06A10"); gate_print_rim = hexc("#E06A10")
     def gate_pattern(s, X, Y, col, aa):
         rng = random.Random(7)
         for _ in range(26):  # straw
@@ -386,9 +386,9 @@ class Chicken(Animal):
 class Sheep(Animal):
     name = "Sheep"; type_id = "sheep"; seed = 404
     body = Body(R=0.2, BULGE=0.03, BULGE_TOP=0.04, SEGS=4, SCALLOP=0.03)
-    base = hexc("#FBF8F1"); ear_base = hexc("#5B5662"); ear_inner = hexc("#C9A3A6")
-    swatches = {"grey": hexc("#5B5662")}
-    SHADE = hexc("#DCD3C3"); HEAD = hexc("#5B5662")
+    base = hexc("#FBF8F1"); ear_base = hexc("#3F3A46"); ear_inner = hexc("#B98E93")
+    swatches = {"grey": hexc("#3F3A46")}
+    SHADE = hexc("#DCD3C3"); HEAD = hexc("#3F3A46")
     def pattern(s, P, col, ctx):
         wool(P, col, ctx["tris"], ctx["rng"], s.base, s.SHADE)
     def face(s, f):
@@ -401,8 +401,8 @@ class Sheep(Animal):
             f.put(f.e(cu, .47, .085, .09), WHITE)
             f.put(f.e(cu + .035, .455, .045, .052), EYE_DARK)
             f.put(f.e(cu + .025, .475, .014, .014), WHITE)
-        f.put(f.e(.5, .3, .05, .03), hexc("#3A363F"))
-        f.smile(.5, .27, .045, .008, hexc("#3A363F"))
+        f.put(f.e(.5, .3, .05, .03), hexc("#26222B"))
+        f.smile(.5, .27, .045, .008, hexc("#26222B"))
         f.blush(.33, .23, hexc("#C98A93"), .5)
     def accessories(s, a, ctx):
         fx, fy = ctx["face"]; H = s.body.HGT + s.body.BULGE_TOP
@@ -422,9 +422,9 @@ class Sheep(Animal):
 class Horse(Animal):
     name = "Horse"; type_id = "horse"; seed = 505
     body = Body(R=0.18, BULGE=0.028, BULGE_TOP=0.04)
-    base = hexc("#C87638"); ear_base = hexc("#C87638"); ear_inner = hexc("#EBC48E")
-    swatches = {"body": hexc("#C87638"), "mane": hexc("#5E331A")}
-    MANE = hexc("#5E331A"); MUZZLE = hexc("#EBC48E"); HOOF = hexc("#3E2616"); NOSE = hexc("#8A5530")
+    base = hexc("#6B3E26"); ear_base = hexc("#6B3E26"); ear_inner = hexc("#B98A66")
+    swatches = {"body": hexc("#6B3E26"), "mane": hexc("#2B1A12")}
+    MANE = hexc("#2B1A12"); MUZZLE = hexc("#EBC9A0"); HOOF = hexc("#D9B08A"); NOSE = hexc("#6A3E24")
     def pattern(s, P, col, ctx):
         fx, fy = ctx["face"]; S = s.body.S
         # mane along the left edge of the head's column, over the top and down the side
@@ -442,7 +442,7 @@ class Horse(Animal):
             f.put(f.e(cu + .005, .67, .016, .016), WHITE)
         for du, dv in ((-.07, .93), (.0, .97), (.06, .92)):  # forelock
             f.put(f.e(.5+du, dv, .07, .13), s.MANE)
-        f.blush(.45, .35, hexc("#E0905A"), .5)
+        f.blush(.45, .35, hexc("#E0907A"), .5)
     def tail(s, x, y, col, ctx, aa):
         tc = ctx["tail"]; d, p = tc["dir"], tc["perp"]; c = tc["c"] + d*.2
         for sx in (-1, 1):  # hooves at the far end
@@ -454,10 +454,10 @@ class Horse(Animal):
         fx, fy = ctx["face"]; H = s.body.HGT
         for sx in (-1, 1):
             a.cone(T(fx+sx*.27, fy+.3, H-.01) @ Ry(sx*20) @ Rx(-12), "body", segs=4, r1=.08, r2=.01, depth=.2, scale=(1, .55, 1))
-    gate_base = hexc("#D99A62"); gate_print_col = hexc("#6B6B70"); gate_print_rim = hexc("#3C3C40")
+    gate_base = hexc("#8A5A3E"); gate_print_col = hexc("#D8D8DC"); gate_print_rim = hexc("#9A9AA0")
     def gate_pattern(s, X, Y, col, aa):
         for k in range(-4, 5):  # wood-grain-ish lighter streaks
-            blend(col, np.abs(Y - k*.11 - .02*np.sin(X*9 + k)) - .012, hexc("#E3AC78"), aa, .7)
+            blend(col, np.abs(Y - k*.11 - .02*np.sin(X*9 + k)) - .012, hexc("#A0704F"), aa, .7)
     def gate_print(s, lx, ly, sc):
         r, w = .07*sc, .024*sc
         ring_sd = np.abs(np.hypot(lx, ly) - r) - w/2
@@ -467,9 +467,9 @@ class Horse(Animal):
 class Cat(Animal):
     name = "Cat"; type_id = "cat"; seed = 606
     body = Body(R=0.18, BULGE=0.028, BULGE_TOP=0.04)
-    base = hexc("#F39A42"); ear_base = hexc("#F39A42"); ear_inner = hexc("#F7B7B0")
-    swatches = {"body": hexc("#F39A42")}
-    STRIPE = hexc("#D06A22"); CREAM = hexc("#FCE3C2"); NOSE = hexc("#F08A9C"); DARK = hexc("#3A2418")
+    base = hexc("#F5892E"); ear_base = hexc("#F5892E"); ear_inner = hexc("#F7B7B0")
+    swatches = {"body": hexc("#F5892E")}
+    STRIPE = hexc("#C9561A"); CREAM = hexc("#FCE3C2"); NOSE = hexc("#F08A9C"); DARK = hexc("#3A2418")
     def pattern(s, P, col, ctx):
         fx, fy = ctx["face"]
         t = (fy - P[:, 1]) + .04*np.sin(P[:, 0]*9)
@@ -496,7 +496,7 @@ class Cat(Animal):
         tc = ctx["tail"]; d, p = tc["dir"], tc["perp"]; c = tc["c"]
         pts = [tuple(c + d*(.4 - .55*u) + p*(.14*math.sin(u*math.pi*1.3))) for u in np.linspace(0, 1, 24)]
         blend(col, poly_sd(x, y, pts, .06), s.STRIPE, aa)
-        blend(col, poly_sd(x, y, pts, .045), hexc("#E0812F"), aa)
+        blend(col, poly_sd(x, y, pts, .045), hexc("#E07422"), aa)
         for u in (.2, .45, .7, .95):  # tail rings
             q = np.array(pts[int(u*23)])
             blend(col, np.hypot(x - q[0], y - q[1]) - .035, s.STRIPE, aa)
@@ -505,7 +505,7 @@ class Cat(Animal):
         for sx in (-1, 1):
             a.cone(T(fx+sx*.28, fy+.27, H-.01) @ Ry(sx*16) @ Rx(-10), "body", segs=4, r1=.11, r2=.01, depth=.2,
                    scale=(1, .5, 1))
-    gate_base = hexc("#F5AE62"); gate_print_col = hexc("#B9561A"); gate_print_rim = hexc("#B9561A")
+    gate_base = hexc("#F7A050"); gate_print_col = hexc("#B9561A"); gate_print_rim = hexc("#B9561A")
     def gate_pattern(s, X, Y, col, aa):
         for k in range(-3, 4):
             sd = np.abs(Y - k*.15 - .03*np.sin(X*9)) - .025
@@ -516,9 +516,9 @@ class Cat(Animal):
 class Dog(Animal):
     name = "Dog"; type_id = "dog"; seed = 707
     body = Body(R=0.18, BULGE=0.028, BULGE_TOP=0.04)
-    base = hexc("#EACB9F"); ear_base = hexc("#7E4F2A"); ear_inner = hexc("#9B6A40")
-    swatches = {"ear": hexc("#7E4F2A")}
-    PATCH = hexc("#8A5A2E"); MUZZLE = hexc("#F8EBD5"); NOSE = hexc("#2A1C14"); TONGUE = hexc("#F0788A")
+    base = hexc("#7590BC"); ear_base = hexc("#4C6290"); ear_inner = hexc("#6278A4")
+    swatches = {"ear": hexc("#4C6290")}
+    PATCH = hexc("#4C6290"); MUZZLE = hexc("#E4E9EF"); NOSE = hexc("#22252E"); TONGUE = hexc("#F0788A")
     COLLAR = hexc("#D8433A"); TAG = hexc("#F2C14E")
     def pattern(s, P, col, ctx):
         fx, fy = ctx["face"]; head = np.array([fx, fy, s.body.HGT])
@@ -545,7 +545,7 @@ class Dog(Animal):
         for sx in (-1, 1): f.put(f.arc(.5+sx*.05, .335, .05, math.pi*1.05, math.pi*1.95, .008), s.NOSE)
         f.put(f.line([(.5, .42), (.5, .335)], .007), s.NOSE)
         f.put(f.e(.5, .44, .085, .06), s.NOSE)
-        f.put(f.e(.48, .46, .025, .015), hexc("#6A5A52"))
+        f.put(f.e(.48, .46, .025, .015), hexc("#5E6878"))
     def accessories(s, a, ctx):
         fx, fy = ctx["face"]; H = s.body.HGT
         for sx in (-1, 1):  # floppy ears hanging over the sides (or lying on top next to a neighbour cell)
@@ -553,7 +553,7 @@ class Dog(Animal):
                 a.blob(T(fx + sx*(s.body.S/2 + .07), fy + .12, H - .2) @ Ry(sx*72) @ Rx(10), (.22, .12, .04), "ear", "ear")
             else:
                 a.blob(T(fx + sx*.4, fy + .12, H + s.body.BULGE_TOP + .01) @ Rz(sx*-25) @ Ry(sx*-15), (.15, .09, .035), "ear", "ear")
-    gate_base = hexc("#EACB9F"); gate_print_col = hexc("#7E4F2A"); gate_print_rim = hexc("#7E4F2A")
+    gate_base = hexc("#7590BC"); gate_print_col = hexc("#34446A"); gate_print_rim = hexc("#34446A")
     def gate_pattern(s, X, Y, col, aa):
         for cx, cy, r in [(-.35, .3, .1), (.36, -.15, .12), (-.33, -.32, .08)]:
             blend(col, np.hypot(X-cx, Y-cy) - r, s.PATCH, aa)
@@ -563,7 +563,7 @@ class Dog(Animal):
 class HayBale(Animal):
     name = "HayBale"; type_id = ""; seed = 808; has_gate = False
     body = Body(R=0.11, BULGE=0.015, BULGE_TOP=0.02)
-    base = hexc("#E3BE5E")
+    base = hexc("#D9B867")
     def pattern(s, P, col, ctx):
         streak = np.sin(P[:, 0]*70 + np.sin(P[:, 1]*9)*3 + P[:, 2]*40) * np.sin(P[:, 1]*23 + P[:, 0]*5)
         col[:] = col * (1 + .08*streak[:, None])
@@ -571,7 +571,7 @@ class HayBale(Animal):
         for _ in range(int(len(ctx["cells"])*40)):  # loose straws
             c = np.array([rng.uniform(-1.5, 2.5), rng.uniform(-3.5, 1.5)]); a = rng.uniform(0, math.pi); L = rng.uniform(.04, .1)
             pts = [tuple(c - L*np.array([math.cos(a), math.sin(a)])), tuple(c + L*np.array([math.cos(a), math.sin(a)]))]
-            blend(col, poly_sd(P[:, 0], P[:, 1], pts, .006), hexc("#C9A043"), ctx["aa"], .7)
+            blend(col, poly_sd(P[:, 0], P[:, 1], pts, .006), hexc("#B8964A"), ctx["aa"], .7)
         twine = np.abs(np.mod(P[:, 1], .5) - .25) - .022   # two twine bands across every cell
         blend(col, twine, hexc("#8C4A22"), ctx["aa"])
 
