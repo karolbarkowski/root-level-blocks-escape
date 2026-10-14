@@ -131,7 +131,8 @@ namespace BlocksEscape
                     _shownTurns = -1;
                 }
                 _bubble.localScale = Vector3.one * art.BubbleSize;
-                var head = transform.TransformPoint(FootprintToLocal(headCell));
+                // Between the eyes: from the face centre towards the forehead, away from the body.
+                var head = transform.TransformPoint(FootprintToLocal(headCell + Forehead() * art.BubbleForward));
                 _bubbleAnchor = transform.InverseTransformPoint(new Vector3(head.x, top + art.BubbleHeight, head.z));
                 _bubbleOffset = art.BubbleScreenOffset;
                 FaceCamera();
@@ -157,12 +158,9 @@ namespace BlocksEscape
                     arrow = Instantiate(art.AxisArrow, transform, false).transform;
                     arrow.name = ArrowName;
                 }
-                // On the cell farthest from the face; a one-cell block has only its face, so the arrow goes under the chin.
-                var cell = TailCell();
-                var local = FootprintToLocal(cell);
-                float scale = 1f;
-                if (footprint.Length == 1) { local += new Vector3(0f, 0f, -0.3f); scale = 0.6f; }
-                var p = transform.TransformPoint(local);
+                // Centred on the block; on a one-cell block, which is all face, it is smaller.
+                var p = transform.TransformPoint(FootprintToLocal(Center()));
+                float scale = footprint.Length == 1 ? 0.6f : 1f;
                 arrow.position = new Vector3(p.x, top - 0.02f, p.z);
                 // Level x is world x, level y runs along world z; the model points along x.
                 var board = transform.parent != null ? transform.parent.rotation : Quaternion.identity;
@@ -246,6 +244,22 @@ namespace BlocksEscape
             var view = cam.transform;
             _bubble.rotation = view.rotation;
             _bubble.position = transform.TransformPoint(_bubbleAnchor) + view.right * _bubbleOffset.x + view.up * _bubbleOffset.y;
+        }
+
+        // Middle of the footprint, in footprint coordinates.
+        Vector2 Center()
+        {
+            var sum = Vector2.zero;
+            foreach (var c in footprint) sum += c;
+            return sum / footprint.Length;
+        }
+
+        // Unit direction from the face centre to the forehead, in footprint coordinates: away from the body. A one-cell
+        // block is all face, with its chin down the level (towards the camera), so its forehead is up the level.
+        Vector2 Forehead()
+        {
+            var away = headCell - TailCell();
+            return away.sqrMagnitude > 1e-4f ? away.normalized : Vector2.down;
         }
 
         Vector2 TailCell()

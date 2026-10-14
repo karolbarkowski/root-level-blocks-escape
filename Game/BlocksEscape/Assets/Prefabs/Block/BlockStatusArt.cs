@@ -14,11 +14,13 @@ namespace BlocksEscape
         [Tooltip("Bubble scale; the model is one cell across.")]
         [SerializeField, Min(0.1f)] float bubbleSize = 0.42f;
         [Tooltip("Height of the bubble's centre above the top of the block, in cells.")]
-        [SerializeField] float bubbleHeight = 0.3f;
-        [Tooltip("Shift from above the face along the screen (right, up), in cells, so the face stays visible.")]
-        [SerializeField] Vector2 bubbleScreenOffset = new Vector2(0.38f, 0.42f);
+        [SerializeField] float bubbleHeight = 0.05f;
+        [Tooltip("Shift from the face centre towards the forehead, in cells, so the bubble sits between the eyes.")]
+        [SerializeField] float bubbleForward = 0.05f;
+        [Tooltip("Further shift along the screen (right, up), in cells.")]
+        [SerializeField] Vector2 bubbleScreenOffset = Vector2.zero;
         [Tooltip("Digit height in the bubble's own units.")]
-        [SerializeField, Min(0.05f)] float digitHeight = 0.5f;
+        [SerializeField, Min(0.05f)] float digitHeight = 0.75f;
         [Tooltip("Centre of the number in the bubble's own space; -Z is its front.")]
         [SerializeField] Vector3 digitOffset = new Vector3(0f, 0f, -0.1f);
 
@@ -27,6 +29,7 @@ namespace BlocksEscape
         public GameObject[] Digits => digits;
         public float BubbleSize => bubbleSize;
         public float BubbleHeight => bubbleHeight;
+        public float BubbleForward => bubbleForward;
         public Vector2 BubbleScreenOffset => bubbleScreenOffset;
         public float DigitHeight => digitHeight;
         public Vector3 DigitOffset => digitOffset;

@@ -26,7 +26,8 @@ MonoBehaviour:
   - {fileID: 5560112993638155234, guid: 11e693a8515cd3346ab079b8f3890dae, type: 3}
   - {fileID: 7961560191940867009, guid: 817a74a982614ad4e8681c2e27b31974, type: 3}
   bubbleSize: 0.42
-  bubbleHeight: 0.3
-  bubbleScreenOffset: {x: 0.38, y: 0.42}
-  digitHeight: 0.5
+  bubbleHeight: 0.05
+  bubbleForward: 0.05
+  bubbleScreenOffset: {x: 0, y: 0}
+  digitHeight: 0.75
   digitOffset: {x: 0, y: 0, z: -0.1}
