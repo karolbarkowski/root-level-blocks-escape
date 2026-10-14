@@ -22,6 +22,7 @@ namespace BlocksEscape
         public const int MaxTiles = 20; // block-puzzle board limit
         const string LevelRootName = "Level"; // root of everything Initialize spawns
         const string BlocksRootName = "Blocks";
+        const string FloorName = "Floor";
 
         [SerializeField, Range(1, MaxTiles)] int xTiles = 8;
         [SerializeField, Range(1, MaxTiles)] int yTiles = 8;
@@ -32,6 +33,7 @@ namespace BlocksEscape
         [SerializeField] TextAsset blockTypes; // Packages/com.rootlevel.blocktypes/block-types.json
         [SerializeField, FormerlySerializedAs("blockTypeMaterials")] BlockTypeModels models; // block and gate prefabs per type
         [SerializeField] GameObject wallPrefab;
+        [SerializeField] Material floorMaterial; // pen floor inside the fence; UVs are in cells
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         BoardRules _rules;
@@ -114,14 +116,16 @@ namespace BlocksEscape
             YTiles = data.board.height;
 
             content = NewChild(LevelRootName, transform);
+
+            // Walls and gate cells form the fence line that each wall connects to.
+            var barriers = new HashSet<Vector2Int>();
+            foreach (var cell in data.board.walls ?? Array.Empty<CellData>()) barriers.Add(new Vector2Int(cell.x, cell.y));
+            foreach (var gate in data.board.gates ?? Array.Empty<GateData>()) barriers.UnionWith(data.GateCells(gate));
+            if (floorMaterial != null) BuildFloor(barriers);
+
             var walls = NewChild("Walls", content);
             if (wallPrefab != null)
             {
-                // Walls and gate cells form the fence line that each wall connects to.
-                var barriers = new HashSet<Vector2Int>();
-                foreach (var cell in data.board.walls ?? Array.Empty<CellData>()) barriers.Add(new Vector2Int(cell.x, cell.y));
-                foreach (var gate in data.board.gates ?? Array.Empty<GateData>()) barriers.UnionWith(data.GateCells(gate));
-
                 foreach (var cell in data.board.walls ?? Array.Empty<CellData>())
                 {
                     var wall = Spawn(wallPrefab, walls);
@@ -157,6 +161,83 @@ namespace BlocksEscape
             for (int i = 0; i < _blocks.Length; i++) SpawnBlock(i, rules.Anchor(i), rules.Data(i).types);
 
             Initialized?.Invoke();
+        }
+
+        // Pen floor: the cells the fence encloses, found by flooding the grid (plus a margin) from outside.
+        // Its edge runs through the fence cell centres like the rails do, with a triangle where a rail runs diagonally.
+        // If the fence doesn't close, the whole board is floored.
+        void BuildFloor(HashSet<Vector2Int> barriers)
+        {
+            int minX = -2, minY = -2, maxX = xTiles + 1, maxY = yTiles + 1;
+            var outside = new HashSet<Vector2Int> { new Vector2Int(minX, minY) };
+            var queue = new Queue<Vector2Int>(outside);
+            var steps = new[] { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
+            while (queue.Count > 0)
+            {
+                var cell = queue.Dequeue();
+                foreach (var step in steps)
+                {
+                    var next = cell + step;
+                    if (next.x < minX || next.y < minY || next.x > maxX || next.y > maxY) continue;
+                    if (!barriers.Contains(next) && outside.Add(next)) queue.Enqueue(next);
+                }
+            }
+
+            bool InGrid(Vector2Int c) => c.x >= 0 && c.y >= 0 && c.x < xTiles && c.y < yTiles;
+            bool open = true;
+            for (int y = 0; y < yTiles && open; y++)
+            for (int x = 0; x < xTiles && open; x++)
+            {
+                var c = new Vector2Int(x, y);
+                if (!barriers.Contains(c) && !outside.Contains(c)) open = false;
+            }
+            bool Inside(Vector2Int c) => !barriers.Contains(c) && (open ? InGrid(c) : !outside.Contains(c));
+
+            const float lift = 0.002f; // above the meadow, below everything standing on the board
+            var vertices = new List<Vector3>();
+            var triangles = new List<int>();
+            var corners = new Vector2Int[4];
+            var inPen = new bool[4];
+            for (int y = minY; y < maxY; y++)
+            for (int x = minX; x < maxX; x++)
+            {
+                // A square between four cell centres, corners in order around it.
+                corners[0] = new Vector2Int(x, y);
+                corners[1] = new Vector2Int(x + 1, y);
+                corners[2] = new Vector2Int(x + 1, y + 1);
+                corners[3] = new Vector2Int(x, y + 1);
+                int count = 0;
+                bool anyInside = false;
+                for (int k = 0; k < 4; k++)
+                {
+                    inPen[k] = Inside(corners[k]) || barriers.Contains(corners[k]);
+                    if (inPen[k]) count++;
+                    anyInside |= Inside(corners[k]);
+                }
+                if (!anyInside || count < 3) continue;
+
+                int first = vertices.Count;
+                for (int k = 0; k < 4; k++)
+                    if (inPen[k]) vertices.Add(LevelToLocal(corners[k]) + Vector3.up * lift);
+                triangles.Add(first); triangles.Add(first + 1); triangles.Add(first + 2);
+                if (count == 4) { triangles.Add(first); triangles.Add(first + 2); triangles.Add(first + 3); }
+            }
+
+            var uvs = new List<Vector2>(vertices.Count);
+            foreach (var v in vertices) uvs.Add(new Vector2(v.x, v.z) / GridUnits.CellSize);
+            var mesh = new Mesh { name = FloorName };
+            mesh.SetVertices(vertices);
+            mesh.SetUVs(0, uvs);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            var floor = new GameObject(FloorName, typeof(MeshFilter), typeof(MeshRenderer));
+            floor.transform.SetParent(content, false);
+            floor.GetComponent<MeshFilter>().sharedMesh = mesh;
+            var renderer = floor.GetComponent<MeshRenderer>();
+            renderer.sharedMaterial = floorMaterial;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
 
         // Spawns block i at the given anchor from the prefab set of its outermost remaining type.
@@ -249,6 +330,13 @@ namespace BlocksEscape
         {
             foreach (var root in LevelRoots())
             {
+                // The floor mesh is generated per level, so it goes with it.
+                var floor = root.transform.Find(FloorName);
+                if (floor != null && floor.TryGetComponent<MeshFilter>(out var filter) && filter.sharedMesh != null)
+                {
+                    if (Application.isPlaying) Destroy(filter.sharedMesh);
+                    else DestroyImmediate(filter.sharedMesh);
+                }
                 if (Application.isPlaying) Destroy(root);
                 else DestroyImmediate(root);
             }
