@@ -5,7 +5,8 @@ namespace BlocksEscape
 {
     // Drag and drop of blocks with mouse or touch. A held block lifts slightly and follows the pointer,
     // colliding with the grid through BlockSlider. On release it snaps to the nearest cell with a short animation,
-    // then Board.Drop applies the rules (a matching gate next to it removes it).
+    // then Board.Drop applies the rules (a matching gate next to it removes it). While a block is held, the gates of
+    // its outer type glow, fading in and out over the lift time.
     [RequireComponent(typeof(Board))]
     [DisallowMultipleComponent]
     public sealed class BlockDragger : MonoBehaviour
@@ -32,6 +33,9 @@ namespace BlocksEscape
         Vector2Int _snapTo;
         float _snapProgress;
 
+        string _glowType; // outer type of the held (or last held) block, whose gates glow
+        float _glow;      // 0..1
+
         void Awake() => _board = GetComponent<Board>();
 
         public bool IsHolding => _held >= 0;
@@ -39,6 +43,7 @@ namespace BlocksEscape
         void Update()
         {
             if (_snapping >= 0) AnimateSnap();
+            UpdateGlow();
             var pointer = Pointer.current;
             if (pointer == null) return;
             var screen = pointer.position.ReadValue();
@@ -88,6 +93,18 @@ namespace BlocksEscape
             _position = rules.Anchor(i);
             _grabOffset = _position - grabbed;
             _lift = 0f;
+            var types = rules.RemainingTypes(i);
+            var type = types != null && types.Length > 0 ? types[0] : null;
+            if (type != _glowType) { _board.GlowGates(_glowType, 0f); _glowType = type; _glow = 0f; }
+        }
+
+        void UpdateGlow()
+        {
+            if (_glowType == null) return;
+            float target = _held >= 0 ? 1f : 0f;
+            if (Mathf.Approximately(_glow, target)) return;
+            _glow = Mathf.MoveTowards(_glow, target, Time.deltaTime / liftTime);
+            _board.GlowGates(_glowType, EaseOut(_glow));
         }
 
         void Drag(Vector2 screen)

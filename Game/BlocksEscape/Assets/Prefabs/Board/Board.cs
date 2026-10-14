@@ -37,10 +37,13 @@ namespace BlocksEscape
         [SerializeField] BlockStatusArt statusArt; // sleep bubbles and axis arrows on blocks
         [Tooltip("How far each layer of a layered block steps in from the one below, per side, in cells.")]
         [SerializeField, Range(0f, 0.25f)] float layerRim = 0.12f;
+        [Tooltip("Glow over the gates a held block fits (Shaders/GateGlow.shader).")]
+        [SerializeField] Material gateGlow;
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         BoardRules _rules;
         Block[] _blocks = Array.Empty<Block>(); // spawned block per level block index; null when skipped or removed
+        readonly List<GateCell> _gates = new();
 
         public int XTiles
         {
@@ -146,14 +149,15 @@ namespace BlocksEscape
                 var prefab = models != null ? models.GateOf(type.Id) : null;
                 if (prefab == null) continue;
                 var gateRoot = NewChild($"Gate {gate.id} ({type.Name}, {gate.side})", gates);
-                var rotation = Quaternion.Euler(0f, OutwardYaw(gate.side), 0f);
                 foreach (var cell in data.GateCells(gate))
                 {
+                    // Unrotated whatever the side, so the face on the tile is upright like the blocks' faces.
                     var gateCell = Spawn(prefab.gameObject, gateRoot).GetComponent<GateCell>();
                     gateCell.name = $"Gate Cell {cell.x},{cell.y}";
                     gateCell.transform.localPosition = CellToLocal(cell.x, cell.y);
-                    gateCell.transform.localRotation = rotation;
+                    gateCell.transform.localRotation = Quaternion.identity;
                     gateCell.Setup(gate.id, type);
+                    _gates.Add(gateCell);
                     RecordPrefabInstanceChanges(gateCell.transform);
                     RecordPrefabInstanceChanges(gateCell);
                 }
@@ -326,6 +330,13 @@ namespace BlocksEscape
                 if (_blocks[i] != null) _blocks[i].ShowStatus(_rules.TurnsToWake(i), _rules.Axis(i), statusArt);
         }
 
+        // Lights the gates of the given block type at amount (0..1) and puts out every other gate.
+        public void GlowGates(string type, float amount)
+        {
+            foreach (var gate in _gates)
+                if (gate != null) gate.SetGlow(gate.BlockTypeId == type ? amount : 0f, gateGlow);
+        }
+
         // Matches the block's shape against the prefabs of its outermost remaining type.
         bool TryFindBlockPrefab(BlockData data, string[] remaining, out Block prefab, out int quarterTurns, out Vector2Int pivotCell)
         {
@@ -342,15 +353,6 @@ namespace BlocksEscape
             pivotCell = default;
             return false;
         }
-
-        // Yaw that turns a gate cell's local +Z to the gate's outward side. Level "top" is the board's +Z edge.
-        static float OutwardYaw(string side) => side switch
-        {
-            "top" => 0f,
-            "right" => 90f,
-            "bottom" => 180f,
-            _ => 270f,
-        };
 
         // Every spawned level root under the board. Normally just Content, but an undo can restore an old root
         // without its reference; those are found by name so they are never left behind as a duplicate level.
@@ -378,6 +380,7 @@ namespace BlocksEscape
             }
             content = null;
             _rules = null;
+            _gates.Clear();
             _blocks = Array.Empty<Block>();
         }
 

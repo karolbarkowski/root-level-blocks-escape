@@ -9,7 +9,7 @@ namespace BlocksEscape.EditorTools
 {
     // Turns the models exported by Game/BlocksEscape/Blender/animals.py into prefabs and registers them in BlockTypeModels:
     // Prefabs/Block/<Animal>/<Animal>_<Shape>.fbx + <Animal>_Albedo.png,
-    // Prefabs/Gate/<Animal>/<Animal>Gate_Tile.fbx + <Animal>Gate_Arch.fbx + <Animal>Gate_Albedo.png, and the wall fence
+    // Prefabs/Gate/<Animal>/<Animal>Gate_Tile.fbx + <Animal>Gate_Albedo.png, and the wall fence
     // Prefabs/Wall/Fence/Fence_Post.fbx + Fence_Rail.fbx + Fence_RailDiag.fbx + Fence_Albedo.png into Prefabs/Wall/Wall.prefab.
     static class BlenderModelsSetup
     {
@@ -101,7 +101,6 @@ namespace BlocksEscape.EditorTools
             var outline = MakeOutlineMaterial($"{dir}/{animal}GateOutline.mat", $"{dir}/{animal}Gate_Albedo.png");
             var instance = Instantiate($"{dir}/{animal}Gate_Tile.fbx", material, outline);
             instance.name = $"{animal}Gate";
-            Instantiate($"{dir}/{animal}Gate_Arch.fbx", material, outline).transform.SetParent(instance.transform, false);
             instance.AddComponent<GateCell>();
             return Save(instance, $"{dir}/{animal}Gate.prefab").GetComponent<GateCell>();
         }

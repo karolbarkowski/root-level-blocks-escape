@@ -52,6 +52,10 @@ MonoBehaviour:
   blockTypes: {fileID: 4900000, guid: e66f266c680d62b4d8f81c845d41732f, type: 3}
   models: {fileID: 11400000, guid: be0d0d488cd9eac44a315907161a043e, type: 2}
   wallPrefab: {fileID: 4628146415705744266, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
+  floorMaterial: {fileID: 0}
+  statusArt: {fileID: 0}
+  layerRim: 0.12
+  gateGlow: {fileID: 2100000, guid: cd214650e3aba844aad7413913ac9e6a, type: 2}
   content: {fileID: 0}
 --- !u!114 &7127008223665992511
 MonoBehaviour:

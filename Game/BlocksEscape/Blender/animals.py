@@ -3,7 +3,8 @@
 #
 # Blender units: 1 m = 1 cell. Level footprint (x right, y down) maps to Blender cells (x, -y).
 # Pivot = bottom centre of footprint cell (0,0). The face lies on top; its up-direction is +Y.
-# Gate cells: pivot at the cell's floor centre, exit direction +Y (Unity +Z after export).
+# Gate cells: a flat tile, pivot at the cell's floor centre, painted with the animal's face (up-direction +Y, like
+# the blocks) in the block's colour inside a wooden rim.
 # Exports go to Assets/Prefabs/Block/<Animal>/ and Assets/Prefabs/Gate/<Animal>/; then run
 # "Blocks Escape/Animals/Build All Animal Prefabs" in Unity.
 import bpy, bmesh, math, random, os, numpy as np
@@ -750,21 +751,18 @@ def build_blocks(A, row_y):
     return col
 
 # ======================================================================= gate
+GATE_FACE = 0.8   # face span on the gate tile, inside the rim
 def build_gate(A, row_y):
-    SW = {"rim": (820, 20), "wood": (820, 80), "bell": (820, 140), "strap": (820, 200), "dark": (820, 260)}
-    SWC = {"rim": WOOD, "wood": WOOD, "bell": BELL, "strap": STRAP, "dark": EYE_DARK}
-    img = np.empty((GATE_TEX, GATE_TEX, 4), np.float32); img[..., :3] = A.gate_base; img[..., 3] = 1
+    SW = {"rim": (820, 20)}
+    SWC = {"rim": WOOD}
+    img = np.empty((GATE_TEX, GATE_TEX, 4), np.float32); img[..., :3] = A.base; img[..., 3] = 1
     for k, (x, y) in SW.items(): img[y-12:y+52, x-12:x+52, :3] = SWC[k]
     ys, xs = np.mgrid[0:TOP_PX, 0:TOP_PX]
     X = ((xs + .5)/TOP_PX - .5)*TILE; Y = ((ys + .5)/TOP_PX - .5)*TILE
-    reg = np.tile(A.gate_base, (TOP_PX*TOP_PX, 1)); Xf, Yf = X.ravel(), Y.ravel()
+    reg = np.tile(A.base, (TOP_PX*TOP_PX, 1)); Xf, Yf = X.ravel(), Y.ravel()
     aa = 1.5/(TOP_PX/TILE)
-    A.gate_pattern(Xf, Yf, reg, aa)
-    for px, py, sc, r in [(-.09, -.28, 1.15, .12), (.09, -.02, 1.25, -.1), (-.08, .25, 1.35, .08)]:
-        c, sn = math.cos(r), math.sin(r)
-        lx = (Xf-px)*c + (Yf-py)*sn; ly = -(Xf-px)*sn + (Yf-py)*c
-        sd = A.gate_print(lx, ly, sc)
-        blend(reg, sd - .008, A.gate_print_rim, aa); blend(reg, sd, A.gate_print_col, aa)
+    # The same face as on the animal's blocks, centred on the tile: matching a gate to its animal at a glance.
+    A.face(Face(reg, Xf, GATE_FACE/2 + Yf, GATE_FACE, aa))
     edge = TILE/2 - np.maximum(np.abs(Xf), np.abs(Yf))
     blend(reg, edge - .045, WOOD_D, aa*2); blend(reg, edge - .035, WOOD, aa)
     img[:TOP_PX, :TOP_PX, :3] = reg.reshape(TOP_PX, TOP_PX, 3)
@@ -774,9 +772,6 @@ def build_gate(A, row_y):
     col = collection(f"{A.name}Gate")
 
     def sw_uv(k): x, y = SW[k]; return Vector(((x + 20)/GATE_TEX, (y + 20)/GATE_TEX))
-    def paint(bm, uvl, verts, key):
-        for f in {f for v in verts for f in v.link_faces}:
-            for l in f.loops: l[uvl].uv = sw_uv(key)
     def finish(name, bm, smooth=True):
         me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
         for p in me.polygons: p.use_smooth = smooth
@@ -791,20 +786,7 @@ def build_gate(A, row_y):
             co = l.vert.co
             l[uvl].uv = (((co.x/TILE + .5)*TOP_PX/GATE_TEX, (co.y/TILE + .5)*TOP_PX/GATE_TEX) if f.normal.z > .3 else sw_uv("rim"))
     tile = finish(f"{A.name}Gate_Tile", bm)
-
-    bm = bmesh.new(); uvl = bm.loops.layers.uv.new("UVMap")
-    PY = 0; POST_H = .86   # on the cell's centre line, where the fence rails of neighbouring walls arrive
-    for sx in (-1, 1):
-        r = bmesh.ops.create_cone(bm, cap_ends=True, segments=6, radius1=.05, radius2=.045, depth=POST_H, matrix=T(sx*.46, PY, POST_H/2))
-        paint(bm, uvl, r["verts"], "wood")
-        r = bmesh.ops.create_cone(bm, cap_ends=True, segments=6, radius1=.055, radius2=.02, depth=.07, matrix=T(sx*.46, PY, POST_H + .035))
-        paint(bm, uvl, r["verts"], "wood")
-    r = bmesh.ops.create_cube(bm, size=1.0, matrix=T(0, PY, .78) @ Matrix.Diagonal((1.0, .06, .09, 1))); paint(bm, uvl, r["verts"], "wood")
-    r = bmesh.ops.create_cube(bm, size=1.0, matrix=T(0, PY, .705) @ Matrix.Diagonal((.035, .035, .07, 1))); paint(bm, uvl, r["verts"], "strap")
-    r = bmesh.ops.create_cone(bm, cap_ends=True, segments=8, radius1=.085, radius2=.05, depth=.13, matrix=T(0, PY, .605)); paint(bm, uvl, r["verts"], "bell")
-    r = bmesh.ops.create_uvsphere(bm, u_segments=6, v_segments=4, radius=.028, matrix=T(0, PY, .535)); paint(bm, uvl, r["verts"], "dark")
-    arch = finish(f"{A.name}Gate_Arch", bm, smooth=False)
-    for o in (tile, arch): o.location = (-4.0, row_y, 0)
+    tile.location = (-4.0, row_y, 0)
     return col
 
 # ======================================================================= fence (walls)
@@ -870,13 +852,15 @@ def export_fence():
     shutil.copy(os.path.join(GAME, "Blender", "Fence", "Fence_Albedo.png"), d)
 
 def rebuild_gates(do_export=True):
-    """Gate cells only (e.g. after changing the arch), for every animal with a gate."""
+    """Gate cells only (e.g. after changing the tile), for every animal with a gate."""
     for A in ANIMALS.values():
         if not A.has_gate: continue
         build_gate(A, ROWS[A.name] - 20)
         if not do_export: continue
         gdir = os.path.join(GAME, "Assets", "Prefabs", "Gate", A.name)
         for ob in bpy.data.collections[f"{A.name}Gate"].objects: export_fbx(ob, os.path.join(gdir, ob.name + ".fbx"))
+        import shutil
+        shutil.copy(os.path.join(GAME, "Blender", A.name, f"{A.name}Gate_Albedo.png"), gdir)
 
 # ======================================================================= export
 def export_fbx(ob, path):
