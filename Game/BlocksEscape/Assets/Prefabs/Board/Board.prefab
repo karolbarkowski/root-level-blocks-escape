@@ -50,22 +50,8 @@ MonoBehaviour:
   surface: {fileID: 0}
   level: {fileID: 4900000, guid: 3646e962d32aa9c4c82916428b538c73, type: 3}
   blockTypes: {fileID: 4900000, guid: e66f266c680d62b4d8f81c845d41732f, type: 3}
-  blockTypeMaterials: {fileID: 11400000, guid: be0d0d488cd9eac44a315907161a043e, type: 2}
+  models: {fileID: 11400000, guid: be0d0d488cd9eac44a315907161a043e, type: 2}
   wallPrefab: {fileID: 4628146415705744266, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
-  gatePrefab: {fileID: 2245886392166917937, guid: 8f7f5e75fa47c01489d01eebf6fe9de8, type: 3}
-  blockPrefabs:
-  - {fileID: 4929476258737232268, guid: 7c268ec088130fe4ba2fbbd895dceb15, type: 3}
-  - {fileID: 2954158799855188012, guid: f2ecbfb98649bad4599a62b6a3f01262, type: 3}
-  - {fileID: 8776094744480428838, guid: 0fc7320e9becc854ab87d3a3390df4ed, type: 3}
-  - {fileID: 2285896941509135928, guid: 68d16b56f03587a4ca7b16e487087c42, type: 3}
-  - {fileID: 2136355605395910054, guid: 1c73bf66e2cb0a549b17d9e93bff7b74, type: 3}
-  - {fileID: 3361890187840161579, guid: ce93f1cb615adf14e9e6842e33315c47, type: 3}
-  - {fileID: 1921559663387554852, guid: 6d635e8a90979644cb900d4aec1242c3, type: 3}
-  - {fileID: 2879768974962931807, guid: fd48707cf87e2154d8bcc8401da07421, type: 3}
-  - {fileID: 5093684915675090646, guid: 83a7a5f4486dffb4ab76c4b6246878b4, type: 3}
-  - {fileID: 7818571054279659160, guid: fd7a767e3347f354cb91417c02213389, type: 3}
-  - {fileID: 3430186866507224830, guid: edc32458189d24b498049ce30dcee2bf, type: 3}
-  - {fileID: 8287951012507678122, guid: 07a24b2f242209b43ba97c871dff3915, type: 3}
   content: {fileID: 0}
 --- !u!114 &7127008223665992511
 MonoBehaviour:

@@ -24,6 +24,8 @@ namespace BlocksEscape
         Vector2 _position;   // held block's anchor in level coordinates, fractional while dragging
         Vector2 _grabOffset; // anchor minus the grabbed point
         float _lift;         // 0..1
+        float _dragHeight;   // height of the plane the held block is dragged on, set on grab
+        string _axis;        // held block's movement axis, set on grab
 
         int _snapping = -1;
         Vector3 _snapFrom;
@@ -72,13 +74,16 @@ namespace BlocksEscape
             if (_snapping >= 0) FinishSnap();
             var rules = _board.Rules;
             // Aim at block tops first (they hide the floor behind them at this camera angle), then at the floor.
-            int i = -1;
-            foreach (float height in new[] { TopHeight(), 0f })
-                if (TryPointerToLevel(screen, height, out var point) && (i = rules.BlockAt(Vector2Int.RoundToInt(point))) >= 0) break;
+            float top = TopHeight();
+            int i = BlockUnder(screen, top);
+            if (i < 0) i = BlockUnder(screen, 0f);
             if (i < 0 || _board.BlockAt(i) == null || !rules.CanMove(i)) return;
-            if (!TryPointerToLevel(screen, DragHeight(), out var grabbed)) return;
+            float dragHeight = top + liftHeight;
+            if (!TryPointerToLevel(screen, dragHeight, out var grabbed)) return;
 
             _held = i;
+            _dragHeight = dragHeight;
+            _axis = rules.Axis(i);
             _slider = new BlockSlider(rules, i, cornerAssist);
             _position = rules.Anchor(i);
             _grabOffset = _position - grabbed;
@@ -87,12 +92,11 @@ namespace BlocksEscape
 
         void Drag(Vector2 screen)
         {
-            if (TryPointerToLevel(screen, DragHeight(), out var point))
+            if (TryPointerToLevel(screen, _dragHeight, out var point))
             {
                 var target = point + _grabOffset;
-                string axis = _board.Rules.Axis(_held);
-                if (axis == "horizontal") target.y = _position.y;
-                else if (axis == "vertical") target.x = _position.x;
+                if (_axis == "horizontal") target.y = _position.y;
+                else if (_axis == "vertical") target.x = _position.x;
                 _position = _slider.Slide(_position, target);
             }
             _lift = Mathf.MoveTowards(_lift, 1f, Time.deltaTime / liftTime);
@@ -145,7 +149,8 @@ namespace BlocksEscape
             return 0f;
         }
 
-        float DragHeight() => TopHeight() + liftHeight;
+        int BlockUnder(Vector2 screen, float height) =>
+            TryPointerToLevel(screen, height, out var point) ? _board.Rules.BlockAt(Vector2Int.RoundToInt(point)) : -1;
 
         static float EaseOut(float t) => 1f - (1f - t) * (1f - t) * (1f - t);
     }

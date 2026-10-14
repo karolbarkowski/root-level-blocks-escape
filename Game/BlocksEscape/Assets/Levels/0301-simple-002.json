@@ -85,7 +85,7 @@
         "side": "right",
         "start": 5,
         "length": 2,
-        "type": "animal3",
+        "type": "cat",
         "line": 7
       },
       {
@@ -93,7 +93,7 @@
         "side": "left",
         "start": 5,
         "length": 2,
-        "type": "animal4",
+        "type": "sheep",
         "line": 0
       },
       {
@@ -101,7 +101,7 @@
         "side": "left",
         "start": 1,
         "length": 2,
-        "type": "animal5",
+        "type": "chicken",
         "line": 0
       },
       {
@@ -125,7 +125,7 @@
         "side": "bottom",
         "start": 2,
         "length": 1,
-        "type": "animal6",
+        "type": "horse",
         "line": 7
       },
       {
@@ -133,7 +133,7 @@
         "side": "bottom",
         "start": 5,
         "length": 1,
-        "type": "animal6",
+        "type": "horse",
         "line": 7
       }
     ],
@@ -156,9 +156,7 @@
         "x": 4,
         "y": 6
       },
-      "types": [
-        "animal4"
-      ],
+      "types": ["sheep"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -178,10 +176,7 @@
         "x": 3,
         "y": 3
       },
-      "types": [
-        "cow",
-        "animal5"
-      ],
+      "types": ["cow", "chicken"],
       "axis": "free",
       "frozenFor": 1
     },
@@ -201,9 +196,7 @@
         "x": 1,
         "y": 4
       },
-      "types": [
-        "animal5"
-      ],
+      "types": ["chicken"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -223,9 +216,7 @@
         "x": 6,
         "y": 3
       },
-      "types": [
-        "animal3"
-      ],
+      "types": ["cat"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -245,9 +236,7 @@
         "x": 1,
         "y": 6
       },
-      "types": [
-        "animal3"
-      ],
+      "types": ["cat"],
       "axis": "horizontal",
       "frozenFor": 3
     },
@@ -263,9 +252,7 @@
         "x": 6,
         "y": 5
       },
-      "types": [
-        "animal4"
-      ],
+      "types": ["sheep"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -281,9 +268,7 @@
         "x": 3,
         "y": 2
       },
-      "types": [
-        "animal6"
-      ],
+      "types": ["horse"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -299,9 +284,7 @@
         "x": 3,
         "y": 6
       },
-      "types": [
-        "animal4"
-      ],
+      "types": ["sheep"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -321,9 +304,7 @@
         "x": 4,
         "y": 2
       },
-      "types": [
-        "cow"
-      ],
+      "types": ["cow"],
       "axis": "free",
       "frozenFor": 0
     },
@@ -343,9 +324,7 @@
         "x": 1,
         "y": 1
       },
-      "types": [
-        "animal4"
-      ],
+      "types": ["sheep"],
       "axis": "free",
       "frozenFor": 0
     },
@@ -365,9 +344,7 @@
         "x": 6,
         "y": 1
       },
-      "types": [
-        "pig"
-      ],
+      "types": ["pig"],
       "axis": "free",
       "frozenFor": 0
     },
@@ -383,9 +360,7 @@
         "x": 1,
         "y": 3
       },
-      "types": [
-        "animal6"
-      ],
+      "types": ["horse"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -401,9 +376,7 @@
         "x": 5,
         "y": 5
       },
-      "types": [
-        "animal3"
-      ],
+      "types": ["cat"],
       "axis": "horizontal",
       "frozenFor": 3
     },
@@ -423,9 +396,7 @@
         "x": 4,
         "y": 1
       },
-      "types": [
-        "cow"
-      ],
+      "types": ["cow"],
       "axis": "horizontal",
       "frozenFor": 0
     },
@@ -441,9 +412,7 @@
         "x": 5,
         "y": 4
       },
-      "types": [
-        "animal4"
-      ],
+      "types": ["sheep"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -459,9 +428,7 @@
         "x": 6,
         "y": 6
       },
-      "types": [
-        "animal5"
-      ],
+      "types": ["chicken"],
       "axis": "free",
       "frozenFor": 3
     },
@@ -481,9 +448,7 @@
         "x": 1,
         "y": 5
       },
-      "types": [
-        "animal5"
-      ],
+      "types": ["chicken"],
       "axis": "free",
       "frozenFor": 3
     },

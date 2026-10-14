@@ -9,27 +9,19 @@ namespace BlocksEscape
     // A block on the board. The prefab declares which cells its mesh covers (its footprint), so the board
     // can match a level shape to a prefab in any of four 90° rotations; mirror images are separate prefabs.
     // Footprint cells are in level coordinates (x right, y down) relative to the cell under the pivot,
-    // and the pivot must sit on that cell's center.
-    // The block is drawn with its outermost type's material when that type has one (see BlockTypeMaterials);
-    // otherwise the prefab's shared material is tinted with the type's color through a property block.
-    [ExecuteAlways]
+    // and the pivot must sit on that cell's center. Each prefab is a model made for one block type (see BlockTypeModels).
     [DisallowMultipleComponent]
     public sealed class Block : MonoBehaviour
     {
-        static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
-        static readonly int ColorId = Shader.PropertyToID("_Color");
-
         [SerializeField] Vector2Int[] footprint = { Vector2Int.zero };
         [SerializeField] string blockId;
         [SerializeField, FormerlySerializedAs("colors")] string[] types = Array.Empty<string>(); // outside to inside; empty = neutral
-        [SerializeField] Color color = BlockTypeSet.NeutralColor;
-        [SerializeField] Material material; // type material; null uses the prefab material, tinted
-        [SerializeField] Material prefabMaterial;
         [SerializeField] Vector2Int pivotCell; // shape cell under the pivot, relative to the level position
         [SerializeField] string axis = "free";
         [SerializeField] int frozenFor;
+        [SerializeField] int quarterTurns; // rotation on the board, see TryMatch
 
-        MaterialPropertyBlock _block;
+        float _pivotHeight = float.NaN; // cached in Play mode, where the mesh no longer changes
 
         public IReadOnlyList<Vector2Int> Footprint => footprint;
         public string BlockId => blockId;
@@ -39,16 +31,24 @@ namespace BlocksEscape
         public int FrozenFor => frozenFor;
 
         // Height from the pivot down to the bottom of the mesh, so the block can be lifted to rest on the board.
+        // Read every frame while dragging, so in Play mode it is measured once (the lookup allocates).
         public float PivotHeight
         {
             get
             {
-                var meshFilter = GetComponentInChildren<MeshFilter>();
-                if (meshFilter == null || meshFilter.sharedMesh == null) return 0f;
-                var bounds = meshFilter.sharedMesh.bounds;
-                var bottom = meshFilter.transform.TransformPoint(new Vector3(bounds.center.x, bounds.min.y, bounds.center.z));
-                return transform.position.y - bottom.y;
+                if (!Application.isPlaying) return MeasurePivotHeight();
+                if (float.IsNaN(_pivotHeight)) _pivotHeight = MeasurePivotHeight();
+                return _pivotHeight;
             }
+        }
+
+        float MeasurePivotHeight()
+        {
+            var meshFilter = GetComponentInChildren<MeshFilter>(true);
+            if (meshFilter == null || meshFilter.sharedMesh == null) return 0f;
+            var bounds = meshFilter.sharedMesh.bounds;
+            var bottom = meshFilter.transform.TransformPoint(new Vector3(bounds.center.x, bounds.min.y, bounds.center.z));
+            return transform.position.y - bottom.y;
         }
 
         // Finds the rotation that turns this footprint into a level shape (cells relative to the block position).
@@ -94,45 +94,15 @@ namespace BlocksEscape
             return min;
         }
 
-        public void Setup(BlockData data, Vector2Int pivot, BlockTypeSet blockTypes, BlockTypeMaterials typeMaterials)
+        // remaining are the block's types still on it, outermost first; the prefab was chosen for the outermost one.
+        public void Setup(BlockData data, string[] remaining, Vector2Int pivot, int turns)
         {
             blockId = data.id;
             pivotCell = pivot;
+            quarterTurns = turns;
             axis = string.IsNullOrEmpty(data.axis) ? "free" : data.axis;
             frozenFor = data.frozenFor;
-            SetTypes(data.types, blockTypes, typeMaterials);
-        }
-
-        // Changes the remaining types, e.g. after a gate peeled the outer one; the look follows the new outer type.
-        public void SetTypes(string[] remaining, BlockTypeSet blockTypes, BlockTypeMaterials typeMaterials)
-        {
             types = remaining ?? Array.Empty<string>();
-            color = blockTypes.ColorOf(types);
-            material = typeMaterials != null && types.Length > 0 ? typeMaterials.Get(types[0]) : null;
-            ApplyColor();
-        }
-
-        void OnEnable() => ApplyColor();
-
-        void OnValidate() => ApplyColor();
-
-        void ApplyColor()
-        {
-            var meshRenderer = GetComponentInChildren<MeshRenderer>();
-            if (meshRenderer == null) return;
-            if (prefabMaterial == null && meshRenderer.sharedMaterial != material) prefabMaterial = meshRenderer.sharedMaterial;
-            if (material != null)
-            {
-                meshRenderer.sharedMaterial = material;
-                meshRenderer.SetPropertyBlock(null);
-                return;
-            }
-            if (prefabMaterial != null) meshRenderer.sharedMaterial = prefabMaterial;
-            _block ??= new MaterialPropertyBlock();
-            _block.Clear();
-            _block.SetColor(BaseColorId, color);
-            _block.SetColor(ColorId, color);
-            meshRenderer.SetPropertyBlock(_block);
         }
 
 #if UNITY_EDITOR
@@ -141,7 +111,7 @@ namespace BlocksEscape
         [ContextMenu("Detect Footprint From Mesh")]
         public void DetectFootprint()
         {
-            var meshFilter = GetComponentInChildren<MeshFilter>();
+            var meshFilter = GetComponentInChildren<MeshFilter>(true);
             if (meshFilter == null || meshFilter.sharedMesh == null) return;
             var mesh = meshFilter.sharedMesh;
             var toBlock = transform.worldToLocalMatrix * meshFilter.transform.localToWorldMatrix;
