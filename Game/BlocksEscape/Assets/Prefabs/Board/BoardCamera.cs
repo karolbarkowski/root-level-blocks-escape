@@ -26,6 +26,9 @@ namespace BlocksEscape
 
         public Camera Camera => _camera;
 
+        // World bounds of everything the board renders, as of the last framing; scenery keeps clear of it.
+        public Bounds BoardBounds { get; private set; }
+
         Camera _camera;
         float _framedAspect;
         Board _subscribed;
@@ -72,6 +75,7 @@ namespace BlocksEscape
 
             var rotation = board.transform.rotation * Quaternion.Euler(pitch, 0f, 0f);
             var bounds = ContentBounds();
+            BoardBounds = bounds;
             bounds.Expand(margin * 2f * GridUnits.CellSize);
 
             // In camera-aligned axes around the bounds center, a point (x, y, z) is in view when
@@ -99,7 +103,23 @@ namespace BlocksEscape
             float cx = (right - left) * 0.5f;
             float cy = ((up + tanUp * cz) - (down + tanDown * cz)) * 0.5f;
             transform.SetPositionAndRotation(bounds.center + rotation * new Vector3(cx, cy, cz), rotation);
+            FitClipPlanes();
             Framed?.Invoke(this);
+        }
+
+        // The distance to the board changes with the level and the aspect ratio, so fixed clip planes cut the near side
+        // of the view (or the far trees) on some screens. Near stays small; far reaches past the ground at the top edge.
+        void FitClipPlanes()
+        {
+            var ground = new Plane(board.transform.up, board.transform.position);
+            float far = 0f;
+            foreach (var x in new[] { 0f, 0.5f, 1f })
+            {
+                var ray = _camera.ViewportPointToRay(new Vector3(x, 1f, 0f));
+                far = Mathf.Max(far, ground.Raycast(ray, out float d) ? d : 200f);
+            }
+            _camera.nearClipPlane = 0.3f;
+            _camera.farClipPlane = far + 10f; // trees and scenery stand up to a few cells above the ground
         }
 
         static Vector3 Corner(Bounds b, int i) =>
