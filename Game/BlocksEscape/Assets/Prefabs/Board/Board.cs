@@ -39,6 +39,7 @@ namespace BlocksEscape
         [SerializeField, Range(0f, 0.25f)] float layerRim = 0.12f;
         [Tooltip("Glow over the gates a held block fits (Shaders/GateGlow.shader).")]
         [SerializeField] Material gateGlow;
+        [SerializeField] BlockExitSettings exit = new();
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         BoardRules _rules;
@@ -301,6 +302,7 @@ namespace BlocksEscape
         // Drops block i at a whole-cell anchor: a matching gate peels its outer type or removes it from the board.
         public DropResult Drop(int i, Vector2Int anchor)
         {
+            var before = _rules.RemainingTypes(i);
             var result = _rules.Drop(i, anchor);
             var block = _blocks[i];
             if (block != null)
@@ -309,9 +311,21 @@ namespace BlocksEscape
                 if (result != DropResult.Moved)
                 {
                     // Removed blocks leave; peeled ones are respawned, as the new outer type may have its own models.
+                    // In Play mode the leaving block (for a peel, just its top layer) goes out through its gate first.
                     _blocks[i] = null;
-                    DestroyObject(block.gameObject);
-                    if (result == DropResult.Peeled) SpawnBlock(i, anchor, _rules.RemainingTypes(i));
+                    var gate = before.Length > 0 ? _rules.Exit(i, before[0]) : null;
+                    bool animate = Application.isPlaying && gate != null && exit.dissolve != null;
+                    if (result == DropResult.Peeled)
+                    {
+                        SpawnBlock(i, anchor, _rules.RemainingTypes(i));
+                        if (animate && _blocks[i] != null)
+                        {
+                            block.KeepTopLayerOnly();
+                            BlockGrow.Play(_blocks[i], 1f - 1f / before.Length, exit.slideTime * 0.6f);
+                        }
+                    }
+                    if (animate) PlayExit(block, gate);
+                    else DestroyObject(block.gameObject);
                 }
             }
             if (result != DropResult.Moved) RefreshStatus(); // a layer left: frozen blocks count down
@@ -321,6 +335,14 @@ namespace BlocksEscape
                 Completed?.Invoke();
             }
             return result;
+        }
+
+        void PlayExit(Block block, GateData gate)
+        {
+            var outward = BoardRules.Outward(gate.side); // level coordinates: y grows down the board, towards -Z
+            var direction = transform.TransformDirection(new Vector3(outward.x, 0f, -outward.y)) * GridUnits.CellSize;
+            var cells = _gates.FindAll(g => g != null && g.GateId == gate.id);
+            BlockExit.Play(block.gameObject, direction, cells, gateGlow, exit);
         }
 
         // Updates every block's frozen and axis markers from the rules.

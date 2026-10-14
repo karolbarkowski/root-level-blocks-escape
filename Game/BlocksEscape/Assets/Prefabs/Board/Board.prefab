@@ -56,6 +56,14 @@ MonoBehaviour:
   statusArt: {fileID: 0}
   layerRim: 0.12
   gateGlow: {fileID: 2100000, guid: cd214650e3aba844aad7413913ac9e6a, type: 2}
+  exit:
+    dissolve: {fileID: 2100000, guid: 392ec467d4b2fa34d923bcb3ec15a94c, type: 2}
+    sparkle: {fileID: 2100000, guid: cc4f66f2aa290254e8f60c5940c0cc2d, type: 2}
+    sparkleColor: {r: 0.65, g: 0.9, b: 1, a: 1}
+    slideTime: 0.22
+    dissolveTime: 0.55
+    rise: 0.45
+    flareFade: 0.3
   content: {fileID: 0}
 --- !u!114 &7127008223665992511
 MonoBehaviour:

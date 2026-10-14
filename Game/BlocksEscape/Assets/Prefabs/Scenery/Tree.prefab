@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7795978061664584964}
+  - component: {fileID: 1787176251733557120}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -29,10 +30,28 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 349825217239389467}
+  - {fileID: 3503310897281643183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &238810983529345776
+--- !u!114 &1787176251733557120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3107873676956698272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f214ebe5c83974ea2fcf21738c3715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.TapReaction
+  kind: 0
+  particles: {fileID: 2100000, guid: 3d3527b397d8b47439e1195af2bc09dd, type: 2}
+  particleColor: {r: 0.36, g: 0.62, b: 0.25, a: 1}
+  particleColor2: {r: 0.55, g: 0.75, b: 0.3, a: 1}
+  particleCount: 7
+  hopHeight: 0.6
+--- !u!1001 &3969074035354457412
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -93,8 +112,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f4cfe99887fae749bbde7ad956db916, type: 3}
---- !u!4 &349825217239389467 stripped
+--- !u!4 &3503310897281643183 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f4cfe99887fae749bbde7ad956db916, type: 3}
-  m_PrefabInstance: {fileID: 238810983529345776}
+  m_PrefabInstance: {fileID: 3969074035354457412}
   m_PrefabAsset: {fileID: 0}

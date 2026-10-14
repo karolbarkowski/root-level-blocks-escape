@@ -250,17 +250,28 @@ def barn(col):
     for x in (-1.6, 1.6):  # corner trims
         parts.append(box("barn_trim", (x, -1.3, 1.2), (0.18, 0.18, 2.45), bevel=0.04))
     parts.append(box("barn_trim", (0, -1.32, 0.12), (3.3, 0.12, 0.18), bevel=0.03))
-    # door with a white X
-    parts.append(box("barn_red", (0, -1.33, 0.8), (1.3, 0.1, 1.6), bevel=0.03))
-    for s in (-1, 1):
-        parts.append(box("barn_trim", (0, -1.4, 0.8), (1.75, 0.08, 0.12), bevel=0.02, rot=(0, s*math.atan(1.6/1.3), 0)))
+    # doorway: dark inside, framed; the two door leaves are separate pieces (barn_door) so they can swing open
+    parts.append(box("dark", (0, -1.31, 0.8), (1.3, 0.06, 1.6), bevel=0.02))
     for x in (-0.65, 0.65): parts.append(box("barn_trim", (x, -1.39, 0.8), (0.12, 0.08, 1.62), bevel=0.02))
     for z in (0.02, 1.58): parts.append(box("barn_trim", (0, -1.39, z), (1.42, 0.08, 0.12), bevel=0.02))
     # gable roof
     for s in (-1, 1):
         parts.append(box("roof", (s*0.95, 0, 2.85), (2.1, 2.9, 0.18), bevel=0.04, rot=(0, s*math.radians(38), 0)))
     parts.append(box("barn_trim", (0, 0, 3.5), (0.3, 2.95, 0.2), bevel=0.05))
-    return join("Barn", parts, col)
+    barn = join("Barn", parts, col)
+    for side, name in ((-1, "Barn_DoorL"), (1, "Barn_DoorR")): barn_door(col, name, side)
+    return barn
+
+def barn_door(col, name, side):
+    """One leaf of the barn's double door with its own white X, in barn coordinates; it hinges on its outer edge
+    (x = side*0.6). Exported as <Barn>_<Part>, which the Unity setup hangs on the barn instead of making a prefab."""
+    cx = side*0.31; parts = []
+    parts.append(box("barn_red", (cx, -1.36, 0.8), (0.58, 0.08, 1.5), bevel=0.02))
+    for d in (-1, 1):
+        parts.append(box("barn_trim", (cx, -1.41, 0.8), (1.5, 0.05, 0.09), bevel=0.015, rot=(0, d*math.atan(1.4/0.5), 0)))
+    for z in (0.1, 1.5): parts.append(box("barn_trim", (cx, -1.41, z), (0.58, 0.05, 0.09), bevel=0.015))
+    parts.append(box("barn_trim", (side*0.04, -1.41, 0.8), (0.07, 0.05, 1.5), bevel=0.015))  # meeting edge
+    return join(name, parts, col)
 
 def ring(color, loc, r, thickness, verts=24):
     bpy.ops.mesh.primitive_torus_add(major_radius=r, minor_radius=thickness, major_segments=verts, minor_segments=8,

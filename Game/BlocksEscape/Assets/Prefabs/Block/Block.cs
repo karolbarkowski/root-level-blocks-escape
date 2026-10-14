@@ -222,6 +222,19 @@ namespace BlocksEscape
             return max - min + Vector2Int.one;
         }
 
+        // For a peel: strips the leaving block down to its top layer, the type that goes, with no markers.
+        public void KeepTopLayerOnly()
+        {
+            foreach (var marker in new[] { BubbleName, ArrowName })
+            {
+                var child = transform.Find(marker);
+                if (child != null) DestroyChild(child);
+            }
+            var layers = transform.Find(LayersName);
+            if (layers == null) return;
+            for (int k = layers.childCount - 1; k >= 1; k--) DestroyChild(layers.GetChild(k));
+        }
+
         // The model whose face is on top: the top layer of a stack, otherwise the block's own mesh.
         MeshRenderer Body()
         {

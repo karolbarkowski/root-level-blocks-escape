@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2065081801839464231}
+  - component: {fileID: 4806679255480508846}
+  - component: {fileID: 5644620763653961181}
   m_Layer: 0
   m_Name: Butterfly
   m_TagString: Untagged
@@ -29,10 +31,46 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6843077805889111193}
+  - {fileID: 3982427283194012240}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &6448528491852604274
+--- !u!114 &4806679255480508846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3636411767772522021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f214ebe5c83974ea2fcf21738c3715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.TapReaction
+  kind: 6
+  particles: {fileID: 0}
+  particleColor: {r: 0, g: 0, b: 0, a: 0}
+  particleColor2: {r: 0, g: 0, b: 0, a: 0}
+  particleCount: 0
+  hopHeight: 0.6
+--- !u!114 &5644620763653961181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3636411767772522021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e12b229bcbcdfd4185afbfb1ec457e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ButterflyFlight
+  board: {fileID: 0}
+  restTime: {x: 7, y: 16}
+  flightTime: 6
+  altitude: 1.8
+  flapsPerSecond: 9
+  headingOffset: 180
+--- !u!1001 &3516983649547781563
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -93,8 +131,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d02b6e105063e6b43beba169ad2116b4, type: 3}
---- !u!4 &6843077805889111193 stripped
+--- !u!4 &3982427283194012240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d02b6e105063e6b43beba169ad2116b4, type: 3}
-  m_PrefabInstance: {fileID: 6448528491852604274}
+  m_PrefabInstance: {fileID: 3516983649547781563}
   m_PrefabAsset: {fileID: 0}
