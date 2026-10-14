@@ -4,21 +4,27 @@ namespace BlocksEscape
 {
     // Frames the board with a perspective camera looking down from the level's bottom edge,
     // tilted so block sides show slightly. Fits everything the board renders (surface, walls, gates, blocks)
-    // with a margin, centered on screen, and re-frames when a level is initialized or the aspect ratio changes.
-    //
-    // After framing it publishes the board's vertical extent on screen as _TiltShiftBand (viewport y min, max),
-    // so the tilt-shift pass (Shaders/TiltShift.shader) keeps the whole board sharp and blurs only above and below it.
+    // with a margin, centered between the reserved strips at the top and bottom of the screen (kept free for the level
+    // sign and scenery), and re-frames when a level is initialized or the aspect ratio changes.
+    // Raises Framed afterwards, so screen-anchored props (ScreenAnchor) can follow.
     [ExecuteAlways]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Camera))]
     public sealed class BoardCamera : MonoBehaviour
     {
-        static readonly int TiltShiftBandId = Shader.PropertyToID("_TiltShiftBand");
-
         [SerializeField] Board board;
         [SerializeField, Range(30f, 90f)] float pitch = 70f;      // 90 = straight down
         [SerializeField, Range(10f, 60f)] float fieldOfView = 30f; // lower = flatter, less perspective distortion
         [SerializeField, Min(0f)] float margin = 0.4f;             // in cells, around the framed content
+        [Tooltip("Screen height kept free above the board, 0..1.")]
+        [SerializeField, Range(0f, 0.45f)] float reserveTop = 0.18f;
+        [Tooltip("Screen height kept free below the board, 0..1.")]
+        [SerializeField, Range(0f, 0.45f)] float reserveBottom = 0.08f;
+
+        // Raised after every framing, with the camera already moved.
+        public static event System.Action<BoardCamera> Framed;
+
+        public Camera Camera => _camera;
 
         Camera _camera;
         float _framedAspect;
@@ -65,39 +71,35 @@ namespace BlocksEscape
             _camera.fieldOfView = fieldOfView;
 
             var rotation = board.transform.rotation * Quaternion.Euler(pitch, 0f, 0f);
-            var content = ContentBounds();
-            var bounds = content;
+            var bounds = ContentBounds();
             bounds.Expand(margin * 2f * GridUnits.CellSize);
 
             // In camera-aligned axes around the bounds center, a point (x, y, z) is in view when
-            // |x - cx| <= tanH (z - cz) and |y - cy| <= tanV (z - cz). Solving for the camera position (cx, cy, cz)
-            // that touches the frustum on both sides of the tighter axis keeps the content centered.
+            // -tanH (z - cz) <= x - cx <= tanH (z - cz) and -tanDown (z - cz) <= y - cy <= tanUp (z - cz), where tanUp and
+            // tanDown narrow the vertical frustum to the screen between the reserved strips. Solving for the camera
+            // position (cx, cy, cz) that touches the frustum on both sides of the tighter axis, and centering on the other,
+            // fits the content in that window.
             float tanV = Mathf.Tan(fieldOfView * 0.5f * Mathf.Deg2Rad);
             float tanH = tanV * _camera.aspect;
+            float bottom = Mathf.Min(reserveBottom, 0.9f - reserveTop);
+            float tanUp = tanV * (1f - 2f * reserveTop);   // viewport y (1 - reserveTop)
+            float tanDown = tanV * (1f - 2f * bottom);     // viewport y (bottom)
             float up = float.MinValue, down = float.MinValue, right = float.MinValue, left = float.MinValue;
             var toCamera = Quaternion.Inverse(rotation);
             for (int i = 0; i < 8; i++)
             {
                 var p = toCamera * (Corner(bounds, i) - bounds.center);
-                up = Mathf.Max(up, p.y - tanV * p.z);
-                down = Mathf.Max(down, -p.y - tanV * p.z);
+                up = Mathf.Max(up, p.y - tanUp * p.z);
+                down = Mathf.Max(down, -p.y - tanDown * p.z);
                 right = Mathf.Max(right, p.x - tanH * p.z);
                 left = Mathf.Max(left, -p.x - tanH * p.z);
             }
 
-            float cz = Mathf.Min(-(up + down) / (2f * tanV), -(right + left) / (2f * tanH));
-            var local = new Vector3((right - left) * 0.5f, (up - down) * 0.5f, cz);
-            transform.SetPositionAndRotation(bounds.center + rotation * local, rotation);
-
-            // The board's on-screen band, without the margin, for the tilt-shift pass.
-            float bandMin = float.MaxValue, bandMax = float.MinValue;
-            for (int i = 0; i < 8; i++)
-            {
-                float y = _camera.WorldToViewportPoint(Corner(content, i)).y;
-                bandMin = Mathf.Min(bandMin, y);
-                bandMax = Mathf.Max(bandMax, y);
-            }
-            Shader.SetGlobalVector(TiltShiftBandId, new Vector4(bandMin, bandMax, 0f, 0f));
+            float cz = Mathf.Min(-(up + down) / (tanUp + tanDown), -(right + left) / (2f * tanH));
+            float cx = (right - left) * 0.5f;
+            float cy = ((up + tanUp * cz) - (down + tanDown * cz)) * 0.5f;
+            transform.SetPositionAndRotation(bounds.center + rotation * new Vector3(cx, cy, cz), rotation);
+            Framed?.Invoke(this);
         }
 
         static Vector3 Corner(Bounds b, int i) =>

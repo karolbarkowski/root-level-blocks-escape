@@ -44,3 +44,6 @@ crashlytics-buildid.txt
 # The root .gitignore's NuGet rule would hide Unity's package manifest and per-package settings.
 !/[Pp]ackages/*
 !/[Pp]roject[Ss]ettings/[Pp]ackages/**
+
+# Blender backups
+*.blend1
