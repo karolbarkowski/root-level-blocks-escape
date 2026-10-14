@@ -40,6 +40,9 @@ namespace BlocksEscape
 
         public bool IsHolding => _held >= 0;
 
+        // Raised when the player picks up a block, with its index on the board.
+        public event System.Action<int> Grabbed;
+
         void Update()
         {
             if (_snapping >= 0) AnimateSnap();
@@ -96,6 +99,7 @@ namespace BlocksEscape
             var types = rules.RemainingTypes(i);
             var type = types != null && types.Length > 0 ? types[0] : null;
             if (type != _glowType) { _board.GlowGates(_glowType, 0f); _glowType = type; _glow = 0f; }
+            Grabbed?.Invoke(i);
         }
 
         void UpdateGlow()

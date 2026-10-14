@@ -4063,7 +4063,7 @@ MonoBehaviour:
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 26, y: 26}
-  m_LightCookieOffset: {x: 2.2386143, y: 18.266119}
+  m_LightCookieOffset: {x: 24.310574, y: 10.1294}
   m_SoftShadowQuality: 1
   m_RenderingLayersMask:
     serializedVersion: 0
@@ -10187,6 +10187,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2540788016857223096, guid: 95e501ccfee94cb4d85f62628784b540, type: 3}
   m_PrefabInstance: {fileID: 1329350711}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1338510741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1338510743}
+  - component: {fileID: 1338510742}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1338510742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338510741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb85e44e8f9e1c4593c7ef8390db5cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.SoundPlayer
+  sounds: {fileID: 11400000, guid: d7c8403c26d7c384eb8f6e927e03e9cb, type: 2}
+  board: {fileID: 1315129714}
+  dragger: {fileID: 1339515800}
+  musicVolume: 0.5
+  effectsVolume: 1
+  pickupChance: 0.1
+--- !u!4 &1338510743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338510741}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1339515797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1100000000000000001, guid: 841508309e574fc9b1721855ed82bb8e, type: 3}
@@ -15897,3 +15947,4 @@ SceneRoots:
   - {fileID: 756315918}
   - {fileID: 1315129712}
   - {fileID: 713964260}
+  - {fileID: 1338510743}
