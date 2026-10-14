@@ -64,12 +64,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e12b229bcbcdfd4185afbfb1ec457e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ButterflyFlight
-  board: {fileID: 0}
-  restTime: {x: 7, y: 16}
   flightTime: 6
-  altitude: 1.8
+  altitude: 1.2
   flapsPerSecond: 9
-  headingOffset: 180
+  headingOffset: 0
 --- !u!1001 &3516983649547781563
 PrefabInstance:
   m_ObjectHideFlags: 0

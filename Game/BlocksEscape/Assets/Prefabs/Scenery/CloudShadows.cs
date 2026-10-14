@@ -18,7 +18,7 @@ namespace BlocksEscape
         [Tooltip("Share of the sky covered by clouds.")]
         [SerializeField, Range(0f, 1f)] float coverage = 0.45f;
         [Tooltip("Drift in world units per second.")]
-        [SerializeField] Vector2 wind = new Vector2(0.35f, 0.15f);
+        [SerializeField] Vector2 wind = new Vector2(0.6f, 0.25f);
         [SerializeField, Range(32, 512)] int resolution = 128;
         [SerializeField] int seed = 7;
 

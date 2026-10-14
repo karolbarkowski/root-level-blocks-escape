@@ -2,27 +2,26 @@ using UnityEngine;
 
 namespace BlocksEscape
 {
-    // The butterfly rests on its spot, slowly opening and closing its wings, and every so often (or when tapped) flutters
-    // up, loops over the board and settles back. Flapping is a squash of the model across its wings, which reads as
+    // The butterfly sits still on its spot until tapped (TapReaction calls TakeOff); then it flutters up, loops over the
+    // meadow below the board and settles back. Flapping is a squash of the model across its wings, which reads as
     // wingbeats from the camera above. Animates the model (first child) so ScreenAnchor keeps owning the root.
     [DisallowMultipleComponent]
     public sealed class ButterflyFlight : MonoBehaviour
     {
-        [SerializeField] Board board;
-        [Tooltip("Seconds resting between flights.")]
-        [SerializeField] Vector2 restTime = new Vector2(7f, 16f);
+        [Tooltip("Where it flies, in viewport coordinates (0..1 across the screen, y up): the meadow below the board.")]
+        [SerializeField] Rect flightArea = new Rect(0.12f, 0.08f, 0.76f, 0.2f);
         [SerializeField, Min(1f)] float flightTime = 6f;
         [Tooltip("Height of the flight above the ground, in cells.")]
-        [SerializeField] float altitude = 1.8f;
+        [SerializeField] float altitude = 1.2f;
         [SerializeField] float flapsPerSecond = 9f;
         [Tooltip("Yaw that turns the model's head along +Z.")]
-        [SerializeField] float headingOffset = 180f;
+        [SerializeField] float headingOffset;
 
         Transform _model;
         Vector3 _restPosition, _restScale;
         Quaternion _restRotation;
         Vector3[] _path;
-        float _wait, _time = -1f;
+        float _time = -1f;
 
         void Start()
         {
@@ -30,27 +29,16 @@ namespace BlocksEscape
             _restPosition = _model.localPosition;
             _restRotation = _model.localRotation;
             _restScale = _model.localScale;
-            if (board == null) board = FindAnyObjectByType<Board>();
-            _wait = Random.Range(restTime.x * 0.5f, restTime.y);
         }
 
         public void TakeOff()
         {
-            if (_time < 0f && _model != null) _wait = 0f;
+            if (_time < 0f && _model != null) Begin();
         }
 
         void Update()
         {
-            if (_model == null) return;
-            if (_time < 0f)
-            {
-                // Resting: a slow, occasional fan of the wings.
-                float fan = Mathf.Pow(Mathf.Abs(Mathf.Sin(Time.time * 1.3f)), 8f);
-                _model.localScale = Vector3.Scale(_restScale, new Vector3(1f - 0.5f * fan, 1f, 1f));
-                _wait -= Time.deltaTime;
-                if (_wait <= 0f) Begin();
-                return;
-            }
+            if (_model == null || _time < 0f) return; // resting: still
 
             _time += Time.deltaTime;
             float u = Mathf.Clamp01(_time / flightTime);
@@ -70,22 +58,23 @@ namespace BlocksEscape
                 _model.localPosition = _restPosition;
                 _model.localRotation = _restRotation;
                 _model.localScale = _restScale;
-                _wait = Random.Range(restTime.x, restTime.y);
             }
         }
 
-        // A loop from the resting spot over two random points above the board and back, through a smooth curve.
+        // A loop from the resting spot over two random points in the flight area and back, through a smooth curve.
         void Begin()
         {
             var home = transform.TransformPoint(_restPosition);
-            Vector3 a = home, b = home;
-            if (board != null)
+            var cam = Camera.main;
+            var ground = new Plane(Vector3.up, home);
+            Vector3 Point()
             {
-                var size = board.Size;
-                Vector3 Point() => board.transform.TransformPoint(new Vector3(Random.Range(0.15f, 0.85f) * size.x, 0f, Random.Range(0.15f, 0.85f) * size.y));
-                a = Point();
-                b = Point();
+                if (cam == null) return home;
+                var ray = cam.ViewportPointToRay(new Vector3(Random.Range(flightArea.xMin, flightArea.xMax), Random.Range(flightArea.yMin, flightArea.yMax), 0f));
+                return ground.Raycast(ray, out float d) ? ray.GetPoint(d) : home;
             }
+            var a = Point();
+            var b = Point();
             _path = new[] { home, home, a, b, home, home };
             _time = 0f;
         }
