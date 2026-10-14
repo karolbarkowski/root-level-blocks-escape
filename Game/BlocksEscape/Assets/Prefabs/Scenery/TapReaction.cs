@@ -7,7 +7,8 @@ namespace BlocksEscape
     // flowers and grass wobble, animals hop, the pond ripples where it was touched, the barn swings its doors open and
     // shut, and a resting butterfly takes off. Animates the prop's model (its first child) from its resting pose, so the
     // root keeps the position and scale ScreenAnchor gives it. Idle props cost nothing but an early return. Taps are found
-    // with mesh colliders added in Play mode, which only cost anything when something raycasts.
+    // with box colliders fitted to each mesh, added in Play mode (meshes aren't readable in builds, so no mesh colliders).
+    // The project steps physics from script, so the colliders are synced to their props before each tap raycast.
     [DisallowMultipleComponent]
     public sealed class TapReaction : MonoBehaviour
     {
@@ -20,6 +21,8 @@ namespace BlocksEscape
         [SerializeField] Color particleColor = new Color(0.36f, 0.62f, 0.25f, 1f);
         [SerializeField] Color particleColor2 = new Color(0.55f, 0.75f, 0.3f, 1f);
         [SerializeField, Min(0)] int particleCount = 6;
+        [Tooltip("Scale of the tap area around the model; above 1 makes small props easier to hit with a finger.")]
+        [SerializeField, Min(1f)] float hitScale = 1f;
         [Tooltip("Hop height in the model's own units.")]
         [SerializeField] float hopHeight = 0.6f;
 
@@ -40,8 +43,12 @@ namespace BlocksEscape
             _model = transform.childCount > 0 ? transform.GetChild(0) : transform;
             _renderers = GetComponentsInChildren<Renderer>();
             foreach (var filter in GetComponentsInChildren<MeshFilter>())
-                if (filter.sharedMesh != null && filter.GetComponent<Collider>() == null)
-                    filter.gameObject.AddComponent<MeshCollider>().sharedMesh = filter.sharedMesh;
+            {
+                if (filter.sharedMesh == null || filter.GetComponent<Collider>() != null) continue;
+                var box = filter.gameObject.AddComponent<BoxCollider>();
+                box.center = filter.sharedMesh.bounds.center;
+                box.size = filter.sharedMesh.bounds.size * hitScale;
+            }
         }
 
         void OnDisable()
@@ -49,15 +56,29 @@ namespace BlocksEscape
             if (_time >= 0f) Finish();
         }
 
-        // The prop the ray meets first, if it answers taps.
+        // The prop under the tap. Boxes are looser than the models (the pond's spans its reeds and rim), so when the ray
+        // passes through several, the one with the smallest footprint wins: the butterfly on its rock beats the pond.
         public static TapReaction Under(Ray ray, out Vector3 point)
         {
             point = default;
-            if (!Physics.Raycast(ray, out var hit, 1000f)) return null;
-            var reaction = hit.collider.GetComponentInParent<TapReaction>();
-            if (reaction == null) return null;
-            point = reaction.kind == Kind.Ripple ? reaction.OnWater(ray) : hit.point;
-            return reaction;
+            Physics.SyncTransforms(); // ScreenAnchor moves props after load; script-stepped physics hasn't seen it
+            TapReaction best = null;
+            float bestArea = float.MaxValue;
+            foreach (var hit in Physics.RaycastAll(ray, 1000f))
+            {
+                var reaction = hit.collider.GetComponentInParent<TapReaction>();
+                if (reaction == null) continue;
+                // A prop ScreenAnchor hides (it would overlap the board on this screen) keeps its collider; ignore it.
+                if (hit.collider.TryGetComponent<Renderer>(out var shown) && (shown.forceRenderingOff || !shown.enabled)) continue;
+                var size = hit.collider.bounds.size;
+                float area = size.x * size.z;
+                if (area >= bestArea) continue;
+                best = reaction;
+                bestArea = area;
+                point = hit.point;
+            }
+            if (best != null && best.kind == Kind.Ripple) point = best.OnWater(ray);
+            return best;
         }
 
         public void Tap(Vector3 point)

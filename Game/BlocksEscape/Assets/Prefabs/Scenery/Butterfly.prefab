@@ -51,6 +51,7 @@ MonoBehaviour:
   particleColor: {r: 0, g: 0, b: 0, a: 0}
   particleColor2: {r: 0, g: 0, b: 0, a: 0}
   particleCount: 0
+  hitScale: 2.2
   hopHeight: 0.6
 --- !u!114 &5644620763653961181
 MonoBehaviour:
@@ -64,6 +65,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e12b229bcbcdfd4185afbfb1ec457e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ButterflyFlight
+  flightArea:
+    serializedVersion: 2
+    x: 0.12
+    y: 0.08
+    width: 0.76
+    height: 0.2
   flightTime: 6
   altitude: 1.2
   flapsPerSecond: 9

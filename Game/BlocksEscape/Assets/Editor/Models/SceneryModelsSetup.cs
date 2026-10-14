@@ -147,6 +147,8 @@ namespace BlocksEscape.EditorTools
             so.FindProperty("particleColor2").colorValue = b;
             so.FindProperty("particleCount").intValue = count;
             so.ApplyModifiedPropertiesWithoutUndo();
+            so.FindProperty("hitScale").floatValue = kind == TapReaction.Kind.TakeOff ? 2.2f : 1f; // the butterfly is tiny
+            so.ApplyModifiedPropertiesWithoutUndo();
             if (kind == TapReaction.Kind.TakeOff && root.GetComponent<ButterflyFlight>() == null) root.AddComponent<ButterflyFlight>();
         }
     }

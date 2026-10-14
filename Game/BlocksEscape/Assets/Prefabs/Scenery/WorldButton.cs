@@ -58,6 +58,7 @@ namespace BlocksEscape
             var cam = viewCamera != null ? viewCamera : Camera.main;
             if (cam == null) return false;
             var ray = cam.ScreenPointToRay(screen);
+            Physics.SyncTransforms(); // physics is stepped from script, so moved props' colliders lag until synced
             foreach (var c in GetComponentsInChildren<Collider>())
                 if (c.Raycast(ray, out _, 1000f)) return true;
             return false;
