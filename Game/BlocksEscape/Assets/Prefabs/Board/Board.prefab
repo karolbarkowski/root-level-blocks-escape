@@ -48,7 +48,7 @@ MonoBehaviour:
   xTiles: 10
   yTiles: 10
   surface: {fileID: 0}
-  level: {fileID: 4900000, guid: 3646e962d32aa9c4c82916428b538c73, type: 3}
+  level: {fileID: 4900000, guid: 521f35eb82e9de548b3fe243724592fb, type: 3}
   blockTypes: {fileID: 4900000, guid: e66f266c680d62b4d8f81c845d41732f, type: 3}
   models: {fileID: 11400000, guid: be0d0d488cd9eac44a315907161a043e, type: 2}
   wallPrefab: {fileID: 4628146415705744266, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}

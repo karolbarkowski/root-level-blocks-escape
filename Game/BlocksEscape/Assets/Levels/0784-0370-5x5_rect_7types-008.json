@@ -1,0 +1,459 @@
+{
+  "format": "block-puzzle/v2",
+  "rules": "grid-drag-drop/v1",
+  "seed": 42,
+  "board": {
+    "width": 7,
+    "height": 7,
+    "walls": [
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 3,
+        "y": 0
+      },
+      {
+        "x": 5,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 6,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 6,
+        "y": 3
+      },
+      {
+        "x": 0,
+        "y": 5
+      },
+      {
+        "x": 6,
+        "y": 5
+      },
+      {
+        "x": 1,
+        "y": 6
+      },
+      {
+        "x": 3,
+        "y": 6
+      },
+      {
+        "x": 5,
+        "y": 6
+      }
+    ],
+    "gates": [
+      {
+        "id": "sheep-1",
+        "side": "top",
+        "start": 2,
+        "length": 1,
+        "type": "sheep",
+        "line": 0
+      },
+      {
+        "id": "chicken-1",
+        "side": "top",
+        "start": 4,
+        "length": 1,
+        "type": "chicken",
+        "line": 0
+      },
+      {
+        "id": "horse-1",
+        "side": "right",
+        "start": 2,
+        "length": 1,
+        "type": "horse",
+        "line": 6
+      },
+      {
+        "id": "dog-1",
+        "side": "right",
+        "start": 4,
+        "length": 1,
+        "type": "dog",
+        "line": 6
+      },
+      {
+        "id": "cow-1",
+        "side": "bottom",
+        "start": 4,
+        "length": 1,
+        "type": "cow",
+        "line": 6
+      },
+      {
+        "id": "pig-1",
+        "side": "bottom",
+        "start": 2,
+        "length": 1,
+        "type": "pig",
+        "line": 6
+      },
+      {
+        "id": "cat-1",
+        "side": "left",
+        "start": 3,
+        "length": 2,
+        "type": "cat",
+        "line": 0
+      }
+    ],
+    "boundaryMode": "enclosed"
+  },
+  "blocks": [
+    {
+      "id": "b1",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 2
+      },
+      "types": [
+        "dog"
+      ],
+      "axis": "free",
+      "frozenFor": 2
+    },
+    {
+      "id": "b2",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        }
+      ],
+      "position": {
+        "x": 5,
+        "y": 2
+      },
+      "types": [
+        "cow"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b3",
+      "shape": [
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 3,
+        "y": 1
+      },
+      "types": [
+        "cat"
+      ],
+      "axis": "free",
+      "frozenFor": 2
+    },
+    {
+      "id": "b4",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 4
+      },
+      "types": [
+        "pig"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b5",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 3,
+        "y": 3
+      },
+      "types": [
+        "chicken"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b6",
+      "shape": [
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "position": {
+        "x": 1,
+        "y": 3
+      },
+      "types": [
+        "cat"
+      ],
+      "axis": "horizontal",
+      "frozenFor": 0
+    },
+    {
+      "id": "b7",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 2,
+        "y": 1
+      },
+      "types": [
+        "horse"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    },
+    {
+      "id": "b8",
+      "shape": [
+        {
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "position": {
+        "x": 4,
+        "y": 4
+      },
+      "types": [
+        "sheep"
+      ],
+      "axis": "free",
+      "frozenFor": 0
+    }
+  ],
+  "solution": [
+    {
+      "block": "b5",
+      "to": {
+        "x": 4,
+        "y": 3
+      }
+    },
+    {
+      "block": "b8",
+      "to": {
+        "x": 3,
+        "y": 5
+      }
+    },
+    {
+      "block": "b6",
+      "to": {
+        "x": 2,
+        "y": 3
+      }
+    },
+    {
+      "block": "b4",
+      "to": {
+        "x": 2,
+        "y": 4
+      }
+    },
+    {
+      "block": "b6",
+      "to": {
+        "x": 1,
+        "y": 3
+      }
+    },
+    {
+      "block": "b1",
+      "to": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    {
+      "block": "b7",
+      "to": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "block": "b3",
+      "to": {
+        "x": 1,
+        "y": 3
+      }
+    },
+    {
+      "block": "b5",
+      "to": {
+        "x": 4,
+        "y": 1
+      }
+    },
+    {
+      "block": "b2",
+      "to": {
+        "x": 4,
+        "y": 2
+      }
+    },
+    {
+      "block": "b1",
+      "to": {
+        "x": 4,
+        "y": 4
+      }
+    },
+    {
+      "block": "b7",
+      "to": {
+        "x": 4,
+        "y": 2
+      }
+    },
+    {
+      "block": "b8",
+      "to": {
+        "x": 2,
+        "y": 1
+      }
+    }
+  ],
+  "analysis": {
+    "difficulty": 370,
+    "difficultyFeatures": {
+      "openingLowerBound": 4,
+      "firstTwoFullRemovalsLowerBound": 5,
+      "blocks": 8,
+      "typeLayers": 8,
+      "floorCells": 25,
+      "frozenBlocks": 2,
+      "extraLayers": 0,
+      "directionalBlocks": 1,
+      "neutralBlocks": 0,
+      "mechanicTypes": 2,
+      "specialBlocks": 3,
+      "playerPlayouts": 24,
+      "playerSuccessRate": 0.583,
+      "playerProgress": 0.755,
+      "playerMeanSteps": 27.1,
+      "model": "heuristic-v2"
+    },
+    "method": "reverse construction \u002B simulated annealing",
+    "solvability": "verifiedByReplay",
+    "solutionOptimal": true,
+    "solverStatus": "solved",
+    "solverVisited": 3199,
+    "solutionMoves": 13,
+    "opening": {
+      "exact": 4,
+      "lowerBound": 4,
+      "status": "exact",
+      "visited": 39
+    },
+    "firstTwoFullRemovals": {
+      "exact": 5,
+      "lowerBound": 5,
+      "status": "exact",
+      "visited": 60
+    },
+    "distinctBlocksBeforeFirstEventInWitness": 3,
+    "occupancy": 0.8,
+    "score": 86.4,
+    "floorCells": 25,
+    "coveredCells": 20,
+    "coverageRequested": 80,
+    "singleCellRatioRequested": 0.2,
+    "blockSizeRequested": 2.8,
+    "blockCount": 8,
+    "singleCellCount": 2,
+    "singleCellRatioActual": 0.25,
+    "minimumOpeningRequired": 3,
+    "seed": 42,
+    "attempts": 17876,
+    "generationSeconds": 3.313
+  }
+}
