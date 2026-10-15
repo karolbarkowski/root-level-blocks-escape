@@ -9,8 +9,8 @@ namespace BlocksEscape
     // Runs the game in one scene: the main menu, the settings page and the levels share the meadow and its scenery.
     // In the menu the board is cleared and the menu planks lie where it was; starting a level hides them, builds the
     // level from the catalog and shows the level sign and back button. Each page is a GameObject whose children are the
-    // planks, top to bottom. A solved level is marked in Progress and, after the last block has left, the next level
-    // follows (the menu after the last one).
+    // planks, top to bottom. A solved level is marked in Progress and celebrated (Celebration) as the last block leaves;
+    // then the next level follows (the menu after the last one).
     //
     // Every switch is animated: what goes away pops out (PopTransition; the blocks shrink into the board with
     // BlockAppear), then what comes pops in, one after another. Buttons are ignored until a switch has finished.
@@ -56,8 +56,12 @@ namespace BlocksEscape
         [Tooltip("Seconds the blocks' pop-in takes to sweep from the top left corner of the board to the bottom right.")]
         [SerializeField, Min(0f)] float blockSweep = 0.35f;
 
-        [Tooltip("Seconds from solving a level to the next one, so the last block's exit plays out.")]
-        [SerializeField, Min(0f)] float nextLevelDelay = 1.5f;
+        [Header("Level solved")]
+        [SerializeField] Celebration celebration;
+        [Tooltip("Seconds from solving a level to the celebration, so the last block slides out through its gate first.")]
+        [SerializeField, Min(0f)] float celebrationDelay = 0.4f;
+        [Tooltip("Seconds from solving a level to the next one, so the celebration plays out.")]
+        [SerializeField, Min(0f)] float nextLevelDelay = 2.4f;
 
         Screen _screen;
         int _level = -1; // catalog index of the level being played
@@ -184,7 +188,9 @@ namespace BlocksEscape
 
         IEnumerator NextLevel()
         {
-            yield return Wait(nextLevelDelay);
+            yield return Wait(celebrationDelay);
+            if (celebration != null) celebration.Play();
+            yield return Wait(nextLevelDelay - celebrationDelay);
             yield return _level + 1 < catalog.Count ? ToLevel(_level + 1) : ToMenu();
         }
 

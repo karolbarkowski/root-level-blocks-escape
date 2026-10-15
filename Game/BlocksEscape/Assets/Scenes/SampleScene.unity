@@ -6069,6 +6069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 754807743}
   - component: {fileID: 754807742}
+  - component: {fileID: 754807744}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -6104,7 +6105,14 @@ MonoBehaviour:
   soundButton: {fileID: 227428823}
   firstPlank: {x: 0.5, y: 0.62}
   plankStep: 0.1
-  nextLevelDelay: 1.5
+  popInTime: 0.3
+  popOutTime: 0.16
+  popStagger: 0.05
+  blockPopTime: 0.25
+  blockSweep: 0.35
+  celebration: {fileID: 754807744}
+  celebrationDelay: 0.4
+  nextLevelDelay: 2.4
 --- !u!4 &754807743
 Transform:
   m_ObjectHideFlags: 0
@@ -6122,6 +6130,34 @@ Transform:
   - {fileID: 784342527}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &754807744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754807741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28db977e79994484cb67afc6364ae053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.Celebration
+  boardCamera: {fileID: 330585548}
+  sounds: {fileID: 1338510742}
+  levelSign: {fileID: 1449000551}
+  confetti: {fileID: 2100000, guid: 3d3527b397d8b47439e1195af2bc09dd, type: 2}
+  confettiColors:
+  - {r: 1, g: 0.45, b: 0.62, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0.8, b: 0.15, a: 1}
+  - {r: 0.62, g: 0.48, b: 0.95, a: 1}
+  - {r: 0.45, g: 0.75, b: 0.25, a: 1}
+  - {r: 0.96, g: 0.55, b: 0.1, a: 1}
+  - {r: 0.9, g: 0.3, b: 0.25, a: 1}
+  confettiCount: 110
+  confettiSize: 0.5
+  waveTime: 0.6
+  signHop: 0.18
 --- !u!1 &756315915
 GameObject:
   m_ObjectHideFlags: 0

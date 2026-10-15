@@ -3,7 +3,8 @@ using UnityEngine;
 namespace BlocksEscape
 {
     // Plays the game's sounds: the looping background music from the start, and now and then an animal's voice when the
-    // player picks up its block (a random clip from that block type's sounds, see GameSounds). Follows the player's
+    // player picks up its block (a random clip from that block type's sounds, see GameSounds), and the victory jingle
+    // when a level is solved (PlayVictory). Follows the player's
     // music and sound switches in GameSettings.
     [DisallowMultipleComponent]
     public sealed class SoundPlayer : MonoBehaviour
@@ -51,6 +52,11 @@ namespace BlocksEscape
             if (sounds == null || sounds.Music == null) return;
             _music.clip = sounds.Music;
             _music.Play();
+        }
+
+        public void PlayVictory()
+        {
+            if (GameSettings.SoundOn && sounds != null && sounds.Victory != null) _effects.PlayOneShot(sounds.Victory, effectsVolume);
         }
 
         void OnGrabbed(int block)

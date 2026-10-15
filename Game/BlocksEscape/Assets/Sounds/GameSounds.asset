@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GameSounds
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.GameSounds
   music: {fileID: 8300000, guid: a208173daf94cb94997cfc7cee4fe112, type: 3}
+  victory: {fileID: 8300000, guid: 3256048841d43ba4289e6793592db306, type: 3}
   blockTypes:
   - type: cat
     clips:

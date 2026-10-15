@@ -38,6 +38,37 @@ namespace BlocksEscape
             main.startSize = new ParticleSystem.MinMaxCurve(size * 0.7f, size * 1.2f);
         }
 
+        // Petals thrown up from the ground in a fountain, tumbling down in random colours from the list (a level solved).
+        public static ParticleSystem Confetti(Transform parent, Material material, Color[] colors)
+        {
+            var ps = Create("Confetti", parent, material);
+            var main = ps.main;
+            main.maxParticles = 150;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(1.4f, 2.1f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(7f, 11f);
+            main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+            main.gravityModifier = 0.9f;
+            var gradient = new Gradient { mode = GradientMode.Fixed };
+            int n = Mathf.Clamp(colors.Length, 1, 8);
+            var keys = new GradientColorKey[n];
+            for (int i = 0; i < n; i++) keys[i] = new GradientColorKey(colors[i], (i + 1f) / n);
+            gradient.SetKeys(keys, new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
+            main.startColor = new ParticleSystem.MinMaxGradient(gradient) { mode = ParticleSystemGradientMode.RandomColor };
+            var shape = ps.shape;
+            shape.enabled = true;
+            shape.shapeType = ParticleSystemShapeType.Cone;
+            shape.angle = 28f;
+            shape.rotation = new Vector3(-90f, 0f, 0f); // the cone opens along +Z; turn it to point up
+            var spin = ps.rotationOverLifetime;
+            spin.enabled = true;
+            spin.z = new ParticleSystem.MinMaxCurve(-6f, 6f);
+            var drag = ps.limitVelocityOverLifetime;
+            drag.enabled = true;
+            drag.drag = 1.6f;
+            Fade(ps, 0.03f, 0.75f);
+            return ps;
+        }
+
         // Rings spreading on water, lying flat.
         public static ParticleSystem Ripples(Transform parent, Material material, Color color)
         {

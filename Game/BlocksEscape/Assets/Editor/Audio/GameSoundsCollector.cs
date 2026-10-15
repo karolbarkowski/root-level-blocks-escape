@@ -7,7 +7,8 @@ using UnityEngine;
 namespace BlocksEscape.EditorTools
 {
     // Keeps Sounds/GameSounds.asset in step with the Sounds folder: whenever an audio file under Assets/Sounds is added,
-    // removed or moved, the music (Sounds/music) and each block type's clips (Sounds/<type id>) are collected again.
+    // removed or moved, the music (Sounds/music), the victory jingle (Sounds/victory.*) and each block type's clips
+    // (Sounds/<type id>) are collected again.
     // Also sets import settings: the music streams, the short animal calls load fully decompressed.
     sealed class GameSoundsCollector : AssetPostprocessor
     {
@@ -52,6 +53,7 @@ namespace BlocksEscape.EditorTools
             }
 
             AudioClip music = Clips(MusicFolder).FirstOrDefault();
+            AudioClip victory = Clips(Root).FirstOrDefault(c => c.name == "victory");
             var types = new List<GameSounds.TypeSounds>();
             foreach (var folder in AssetDatabase.GetSubFolders(Root).OrderBy(f => f))
             {
@@ -59,10 +61,10 @@ namespace BlocksEscape.EditorTools
                 var clips = Clips(folder);
                 if (clips.Length > 0) types.Add(new GameSounds.TypeSounds { type = Path.GetFileName(folder), clips = clips });
             }
-            sounds.Set(music, types.ToArray());
+            sounds.Set(music, victory, types.ToArray());
             EditorUtility.SetDirty(sounds);
             AssetDatabase.SaveAssets();
-            Debug.Log($"Collected sounds: music {(music != null ? music.name : "none")}, {types.Count} block types.", sounds);
+            Debug.Log($"Collected sounds: music {(music != null ? music.name : "none")}, victory {(victory != null ? "yes" : "none")}, {types.Count} block types.", sounds);
         }
 
         static AudioClip[] Clips(string folder) =>

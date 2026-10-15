@@ -100,6 +100,21 @@ namespace BlocksEscape
             Burst(point);
         }
 
+        // Reacts as if tapped at its natural spot (the middle of the pond's water), for the scenery's cheer when a level is
+        // solved (Celebration).
+        public void Cheer() => Tap(kind == Kind.Ripple ? _model.TransformPoint(new Vector3(0f, 0.045f, 0f)) : transform.position);
+
+        // Whether the prop is shown: ScreenAnchor hides props that would overlap the board on this screen.
+        public bool IsShown
+        {
+            get
+            {
+                foreach (var r in _renderers)
+                    if (r != null && !(r is ParticleSystemRenderer) && r.enabled && !r.forceRenderingOff) return true;
+                return false;
+            }
+        }
+
         void Update()
         {
             if (_time < 0f) return;
