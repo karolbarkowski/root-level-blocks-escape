@@ -2,25 +2,31 @@ using UnityEngine;
 
 namespace BlocksEscape
 {
-    // The butterfly sits still on its spot until tapped (TapReaction calls TakeOff); then it flutters up, loops over the
-    // meadow below the board and settles back. Flapping is a squash of the model across its wings, which reads as
-    // wingbeats from the camera above. Animates the model (first child) so ScreenAnchor keeps owning the root.
+    // The butterfly sits still on its spot until tapped (TapReaction calls TakeOff); then it flutters up, makes one
+    // circle over Circle Around (the pond, the circle nudged towards its spot to stay on screen) and settles back. Flapping is a squash of the model across its wings, which
+    // reads as wingbeats from the camera above. Animates the model (first child) so ScreenAnchor keeps owning the root.
+    // The path is kept in the root's space, so when a new level re-frames the screen mid-flight (ScreenAnchor moving and
+    // scaling the root) the flight moves along and still lands on the spot.
     [DisallowMultipleComponent]
     public sealed class ButterflyFlight : MonoBehaviour
     {
-        [Tooltip("Where it flies, in viewport coordinates (0..1 across the screen, y up): the meadow below the board.")]
-        [SerializeField] Rect flightArea = new Rect(0.12f, 0.08f, 0.76f, 0.2f);
-        [SerializeField, Min(1f)] float flightTime = 6f;
+        [Tooltip("What it circles over; its pivot is the circle's centre. Without one it circles just ahead of its spot.")]
+        [SerializeField] Transform circleAround;
+        [Tooltip("Radius of the circle, in cells.")]
+        [SerializeField, Min(0.1f)] float circleRadius = 0.9f;
+        [SerializeField, Min(0.3f)] float flightTime = 1.3f;
         [Tooltip("Height of the flight above the ground, in cells.")]
-        [SerializeField] float altitude = 1.2f;
-        [SerializeField] float flapsPerSecond = 9f;
+        [SerializeField] float altitude = 0.9f;
+        [SerializeField] float flapsPerSecond = 11f;
         [Tooltip("Yaw that turns the model's head along +Z.")]
         [SerializeField] float headingOffset;
+
+        const int CirclePoints = 8;
 
         Transform _model;
         Vector3 _restPosition, _restScale;
         Quaternion _restRotation;
-        Vector3[] _path;
+        Vector3[] _path; // in the root's local space
         float _time = -1f;
 
         void Start()
@@ -48,7 +54,7 @@ namespace BlocksEscape
             ahead.y = 0f;
             if (ahead.sqrMagnitude > 1e-6f)
                 _model.rotation = Quaternion.Slerp(_model.rotation,
-                    Quaternion.LookRotation(ahead) * Quaternion.Euler(0f, headingOffset, 0f), Time.deltaTime * 8f);
+                    Quaternion.LookRotation(ahead) * Quaternion.Euler(0f, headingOffset, 0f), Time.deltaTime * 14f);
             float beat = Mathf.Abs(Mathf.Sin(_time * flapsPerSecond * Mathf.PI));
             _model.localScale = Vector3.Scale(_restScale, new Vector3(0.2f + 0.8f * beat, 1f, 1f));
 
@@ -61,35 +67,60 @@ namespace BlocksEscape
             }
         }
 
-        // A loop from the resting spot over two random points in the flight area and back, through a smooth curve.
+        // From the spot to the near side of the circle, once around it, and back to the spot.
         void Begin()
         {
-            var home = transform.TransformPoint(_restPosition);
+            var home = _restPosition;
+            var homeWorld = transform.TransformPoint(home);
+            var centreWorld = circleAround != null ? circleAround.position : homeWorld + transform.forward * (circleRadius * 2f * GridUnits.CellSize);
+            centreWorld.y = homeWorld.y;
+            // The pond reaches past the screen's corner: slide the circle towards the spot until all of it is on screen.
             var cam = Camera.main;
-            var ground = new Plane(Vector3.up, home);
-            Vector3 Point()
+            for (int step = 0; step < 12 && cam != null && !OnScreen(cam, centreWorld, circleRadius * GridUnits.CellSize); step++)
+                centreWorld = Vector3.Lerp(centreWorld, homeWorld, 0.15f);
+            var centre = transform.InverseTransformPoint(centreWorld);
+            float radius = circleRadius * GridUnits.CellSize / Mathf.Max(transform.lossyScale.x, 1e-4f);
+            // Start on the side facing the spot and go round either way.
+            var toHome = home - centre;
+            float start = Mathf.Atan2(toHome.z, toHome.x);
+            float turn = Random.value < 0.5f ? 1f : -1f;
+
+            _path = new Vector3[CirclePoints + 5];
+            _path[0] = _path[1] = home;
+            for (int k = 0; k <= CirclePoints; k++)
             {
-                if (cam == null) return home;
-                var ray = cam.ViewportPointToRay(new Vector3(Random.Range(flightArea.xMin, flightArea.xMax), Random.Range(flightArea.yMin, flightArea.yMax), 0f));
-                return ground.Raycast(ray, out float d) ? ray.GetPoint(d) : home;
+                float a = start + turn * k * 2f * Mathf.PI / CirclePoints;
+                _path[k + 2] = centre + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * radius;
             }
-            var a = Point();
-            var b = Point();
-            _path = new[] { home, home, a, b, home, home };
+            _path[CirclePoints + 3] = _path[CirclePoints + 4] = home;
             _time = 0f;
+        }
+
+        // Whether a circle around the centre, at flight height, stays inside the screen with a small margin.
+        bool OnScreen(Camera cam, Vector3 centre, float radius)
+        {
+            const float margin = 0.05f;
+            for (int k = 0; k < CirclePoints; k++)
+            {
+                float a = k * 2f * Mathf.PI / CirclePoints;
+                var p = centre + new Vector3(Mathf.Cos(a) * radius, altitude * GridUnits.CellSize, Mathf.Sin(a) * radius);
+                var v = cam.WorldToViewportPoint(p);
+                if (v.x < margin || v.x > 1f - margin || v.y < margin || v.y > 1f - margin) return false;
+            }
+            return true;
         }
 
         Vector3 Path(float u)
         {
-            // Catmull-Rom through home, a, b, home; height rises after take-off and falls for landing.
+            // Catmull-Rom through the points; height rises after take-off and falls for landing.
             int segments = _path.Length - 3;
             float f = u * segments;
             int i = Mathf.Min((int)f, segments - 1);
             float t = f - i;
-            var p = CatmullRom(_path[i], _path[i + 1], _path[i + 2], _path[i + 3], t);
+            var p = transform.TransformPoint(CatmullRom(_path[i], _path[i + 1], _path[i + 2], _path[i + 3], t));
             float lift = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(u / 0.15f)) * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((1f - u) / 0.15f));
-            float flutter = Mathf.Sin(u * Mathf.PI * 9f) * 0.15f; // a little bob
-            p.y = _path[0].y + (altitude + flutter) * GridUnits.CellSize * lift;
+            float flutter = Mathf.Sin(u * Mathf.PI * 6f) * 0.12f; // a little bob
+            p.y = transform.TransformPoint(_restPosition).y + (altitude + flutter) * GridUnits.CellSize * lift;
             return p;
         }
 

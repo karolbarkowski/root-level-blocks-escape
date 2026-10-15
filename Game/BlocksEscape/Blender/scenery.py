@@ -313,19 +313,14 @@ TITLE_W, TITLE_H, TITLE_Z = 5.6, 2.2, 1.45  # the title barn's body: width, heig
 GABLE_W, GABLE_H = 2.6, 0.85                # the roof gable on top of the body, centred
 
 def board_sign(col, name, W, H, Z):
-    """A wooden board on two posts with white flowers in its upper corners and leaves at the posts' feet."""
+    """A wooden board on two posts with leaves at the posts' feet. Its face is kept clear for the level number and the
+    level picker's captions, which use its whole width."""
     parts = []
     for x in (-W/2 + 0.15, W/2 - 0.15):
         parts.append(cylinder("wood", (x, 0.06, 0), 0.18, Z + H/2 + 0.12, verts=14, bevel=0.05))
         parts.append(sphere("wood", (x, 0.06, Z + H/2 + 0.12), (0.18, 0.18, 0.11), subdiv=2))
     parts.append(box("sign_frame", (0, 0, Z), (W, 0.26, H), bevel=0.12, segments=4))
     parts.append(box("sign_face", (0, -0.1, Z), (W - 0.3, 0.1, H - 0.28), bevel=0.06))  # lighter face panel
-    fz = Z + H/2 - 0.42 if H > 1.8 else Z  # tall boards keep their flowers in the corners, clear of the text
-    for x in (-W/2 + 0.45, W/2 - 0.45):
-        f = flower((0, 0, 0), "white", r=0.14, rot=0.4)
-        for ob in f:
-            ob.location = Vector((ob.location.x + x, -0.16, ob.location.z + fz + ob.location.y)); ob.rotation_euler = (math.pi/2, 0, 0)
-        parts += f
     for i, (x, a) in enumerate([(-W/2 + 0.15, -0.6), (W/2 - 0.15, 3.6)]):  # leaves at the posts
         for k in range(3):
             parts.append(leaf((x, -0.05, 0.02), 0.32 + k*0.05, a + k*0.6, ["leaf", "leaf_dark", "leaf_light"][k]))

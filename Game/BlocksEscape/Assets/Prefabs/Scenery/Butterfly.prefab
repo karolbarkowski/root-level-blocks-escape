@@ -65,15 +65,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e12b229bcbcdfd4185afbfb1ec457e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ButterflyFlight
-  flightArea:
-    serializedVersion: 2
-    x: 0.12
-    y: 0.08
-    width: 0.76
-    height: 0.2
-  flightTime: 6
-  altitude: 1.2
-  flapsPerSecond: 9
+  circleAround: {fileID: 0}
+  circleRadius: 0.9
+  flightTime: 1.3
+  altitude: 0.9
+  flapsPerSecond: 11
   headingOffset: 0
 --- !u!1001 &5249569184027746683
 PrefabInstance:

@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1318562937}
     m_Modifications:
+    - target: {fileID: 496545060989112432, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
+      propertyPath: 'arms.Array.data[6]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3644904446328376886, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -268,206 +272,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
   m_PrefabInstance: {fileID: 14062093}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &17834600
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 17834601}
-  - component: {fileID: 17834602}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &17834601
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17834600}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.795038, y: 0.0000008594825, z: 3.8718793}
-  m_LocalScale: {x: 1.1081417, y: 1.1081417, z: 1.1081417}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &17834602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 17834600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: -0.010401209, y: 0.40438884}
-  groundHeight: 0
-  size: 1.2170036
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &20341619
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 20341620}
-  - component: {fileID: 20341621}
-  m_Layer: 0
-  m_Name: FlowersPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &20341620
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20341619}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.869371, y: 0.00000010600979, z: 16.699492}
-  m_LocalScale: {x: 1.2261558, y: 1.2261558, z: 1.2261558}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &20341621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20341619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.73, y: 0.975}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &20359739
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 20359740}
-  - component: {fileID: 20359741}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &20359740
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20359739}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.3758217, y: -0.0000001730632, z: 1.9538975}
-  m_LocalScale: {x: 1.0529734, y: 1.0529734, z: 1.0529734}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &20359741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20359739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.23881789, y: 0.29632106}
-  groundHeight: 0
-  size: 1.1965245
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &30806500
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 30806501}
-  - component: {fileID: 30806502}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &30806501
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30806500}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.2176495, y: 0.00000009744474, z: -1.2065547}
-  m_LocalScale: {x: 1.1125242, y: 1.1125242, z: 1.1125242}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &30806502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30806500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.33276922, y: 0.1009022}
-  groundHeight: 0
-  size: 1.3408245
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &44593141
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -554,106 +358,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 44593141}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &50700970
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 50700971}
-  - component: {fileID: 50700972}
-  m_Layer: 0
-  m_Name: FlowerBushPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &50700971
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50700970}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.743361, y: 0.00000073239823, z: 4.018043}
-  m_LocalScale: {x: 0.92907, y: 0.92907, z: 0.92907}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &50700972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50700970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 1.0029747, y: 0.412328}
-  groundHeight: 0
-  size: 1.0177404
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &52104146
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 52104147}
-  - component: {fileID: 52104148}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &52104147
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52104146}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3375459, y: 0.00000071156364, z: 12.390026}
-  m_LocalScale: {x: 1.1767838, y: 1.1767838, z: 1.1767838}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &52104148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52104146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.48319587, y: 0.80814195}
-  groundHeight: 0
-  size: 1.1249179
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &62831659
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,56 +402,68 @@ Transform:
   - {fileID: 2126164958}
   m_Father: {fileID: 990186573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &68109475
-GameObject:
+--- !u!1001 &65175447
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 68109476}
-  - component: {fileID: 68109477}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &68109476
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 68109475}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.62836945, y: -0.00000014192614, z: 1.398017}
-  m_LocalScale: {x: 1.0243902, y: 1.0243902, z: 1.0243902}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &68109477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 565160967}
+    m_Modifications:
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.38934082
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.25573796
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8219494
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.32773632
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 19.854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 239.172
+      objectReference: {fileID: 0}
+    - target: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 45.915
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230485129093784193, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+      propertyPath: m_Name
+      value: FlowerBushPink (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+--- !u!4 &65175448 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4694544841856519113, guid: 1a0459824b0987f4cb4e5fb2fddefcd7, type: 3}
+  m_PrefabInstance: {fileID: 65175447}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 68109475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.14332826, y: 0.26358485}
-  groundHeight: 0
-  size: 1.1758647
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &69698319
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +475,7 @@ GameObject:
   - component: {fileID: 69698320}
   - component: {fileID: 69698321}
   m_Layer: 0
-  m_Name: Tree
+  m_Name: Tree2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -773,13 +489,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 69698319}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8035686, y: 0.000000038148983, z: 14.6945505}
-  m_LocalScale: {x: 1.3534758, y: 1.3534758, z: 1.3534758}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.7599713, y: 0.00000028942668, z: 14.134987}
+  m_LocalScale: {x: 1.3423448, y: 1.3423448, z: 1.3423448}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1954138808}
-  m_Father: {fileID: 713964260}
+  m_Father: {fileID: 1970138081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &69698321
 MonoBehaviour:
@@ -914,56 +630,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &98138737
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 98138738}
-  - component: {fileID: 98138739}
-  m_Layer: 0
-  m_Name: FlowersLilac
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &98138738
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 98138737}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9944296, y: -0.00000059258423, z: 10.998212}
-  m_LocalScale: {x: 1.3987396, y: 1.3987396, z: 1.3987396}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &98138739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 98138737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.44657454, y: 0.7494784}
-  groundHeight: 0
-  size: 1.3660135
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &107694626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1136,57 +802,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 111438854}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &113023761
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 113023762}
-  - component: {fileID: 113023763}
-  m_Layer: 0
-  m_Name: FlowerBushWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &113023762
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113023761}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.3174644, y: -0.000000015102046, z: -0.13119169}
-  m_LocalScale: {x: 0.8468447, y: 0.8468447, z: 0.8468447}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 915366136}
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &113023763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113023761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.86, y: 0.17}
-  groundHeight: 0
-  size: 1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &121999684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1249,56 +864,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
   m_PrefabInstance: {fileID: 121999684}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &139342296
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 139342297}
-  - component: {fileID: 139342298}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &139342297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139342296}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.98958564, y: 0.00000052062705, z: 7.1821465}
-  m_LocalScale: {x: 1.4316158, y: 1.4316158, z: 1.4316158}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &139342298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139342296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: -0.0043413476, y: 0.57479304}
-  groundHeight: 0
-  size: 1.4862679
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &149334666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1646,6 +1211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Butterfly
       objectReference: {fileID: 0}
+    - target: {fileID: 5644620763653961181, guid: 8c84e8b195954884794abc27c8e3a52e, type: 3}
+      propertyPath: circleAround
+      value: 
+      objectReference: {fileID: 2025381148}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1656,57 +1225,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2065081801839464231, guid: 8c84e8b195954884794abc27c8e3a52e, type: 3}
   m_PrefabInstance: {fileID: 189822194}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &223295493
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 223295494}
-  - component: {fileID: 223295495}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &223295494
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223295493}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.046347603, y: -0.00000019731425, z: 0.087132856}
-  m_LocalScale: {x: 1.2282124, y: 1.2282124, z: 1.2282124}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1282244262}
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &223295495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223295493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.060513902, y: 0.18368873}
-  groundHeight: 0
-  size: 1.4444134
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &227428822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1822,118 +1340,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &228281375
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 228281376}
-  - component: {fileID: 228281377}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &228281376
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 228281375}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.6821337, y: -0.000000033367314, z: 11.376379}
-  m_LocalScale: {x: 1.2369305, y: 1.2369305, z: 1.2369305}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &228281377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 228281375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.62418985, y: 0.7656671}
-  groundHeight: 0
-  size: 1.2009321
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1001 &243892995
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1466553286}
-    m_Modifications:
-    - target: {fileID: 3004858855839282474, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_Name
-      value: Grass
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.59641033
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.8026797
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 03e0749977ca56f419572b80c7943639, type: 3}
---- !u!4 &243892996 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-  m_PrefabInstance: {fileID: 243892995}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &245348788
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,27 +1453,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2319208
+      value: 1.2217891
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2319208
+      value: 1.2217891
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2319208
+      value: 1.2217891
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5000012
+      value: 3.4999928
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000014740817
+      value: 0.0000008087461
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.583938
+      value: 8.074611
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2133,56 +1539,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &270033271
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 270033272}
-  - component: {fileID: 270033273}
-  m_Layer: 0
-  m_Name: FlowersPink (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &270033272
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270033271}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.893667, y: 0.00000022440912, z: -2.4843225}
-  m_LocalScale: {x: 0.89033675, y: 0.89033675, z: 0.89033675}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &270033273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 270033271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.82, y: 0.015}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &273143515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,8 +1565,8 @@ Transform:
   m_GameObject: {fileID: 273143515}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.1898475, y: 0.0000003963521, z: 12.2432785}
-  m_LocalScale: {x: 1.1141224, y: 1.1141224, z: 1.1141224}
+  m_LocalPosition: {x: 2.2006109, y: -0.0000004061335, z: 11.703866}
+  m_LocalScale: {x: 1.1049597, y: 1.1049597, z: 1.1049597}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 121999685}
@@ -2259,13 +1615,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279754302}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.268667, y: 0.00000043138516, z: -0.9137078}
-  m_LocalScale: {x: 1.0012702, y: 1.0012702, z: 1.0012702}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.2705622, y: 0.00000033555636, z: -1.3449392}
+  m_LocalScale: {x: 0.99303514, y: 0.99303514, z: 0.99303514}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 752112412}
-  m_Father: {fileID: 713964260}
+  m_Father: {fileID: 339365550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &279754304
 MonoBehaviour:
@@ -2282,106 +1638,6 @@ MonoBehaviour:
   viewportPoint: {x: 0.47, y: 0.12}
   groundHeight: 0
   size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &320207932
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 320207933}
-  - component: {fileID: 320207934}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &320207933
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 320207932}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.0971527, y: -0.00000010023791, z: 1.9645267}
-  m_LocalScale: {x: 1.1339628, y: 1.1339628, z: 1.1339628}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &320207934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 320207932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.6963428, y: 0.29694054}
-  groundHeight: 0
-  size: 1.2883074
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &325468057
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 325468058}
-  - component: {fileID: 325468059}
-  m_Layer: 0
-  m_Name: FlowersLilac
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &325468058
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325468057}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.0135124, y: 0.00000026250717, z: 1.893638}
-  m_LocalScale: {x: 1.1758585, y: 1.1758585, z: 1.1758585}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &325468059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325468057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.4401175, y: 0.29280418}
-  groundHeight: 0
-  size: 1.3376201
   referenceScreenHeight: 20
   avoidBoard: 1
   keepInSafeArea: 0
@@ -2445,7 +1701,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 32.75248
+  far clip plane: 32.562477
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -2473,7 +1729,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.601815, y: 0, z: 0, w: 0.79863554}
-  m_LocalPosition: {x: 3.5000002, y: 15.64016, z: 1.1984758}
+  m_LocalPosition: {x: 3.5000002, y: 15.511528, z: 0.7498801}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2539,8 +1795,8 @@ MonoBehaviour:
   pitch: 74
   fieldOfView: 60
   margin: 0.12
-  reserveTop: 0.28
-  reserveBottom: 0.08
+  reserveTop: 0.2975
+  reserveBottom: 0.1605
 --- !u!1 &339365549
 GameObject:
   m_ObjectHideFlags: 0
@@ -2570,61 +1826,14 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2048190940}
-  - {fileID: 1381328251}
-  - {fileID: 736907567}
-  - {fileID: 2055374941}
-  - {fileID: 638701317}
-  - {fileID: 139342297}
-  - {fileID: 2092278108}
+  - {fileID: 1513549859}
+  - {fileID: 279754303}
   - {fileID: 565160967}
+  - {fileID: 520307472}
   - {fileID: 273143516}
-  - {fileID: 223295494}
-  - {fileID: 1857453607}
-  - {fileID: 30806501}
-  - {fileID: 889524750}
-  - {fileID: 1545068981}
-  - {fileID: 378478617}
-  - {fileID: 20359740}
-  - {fileID: 2145567545}
-  - {fileID: 559768061}
-  - {fileID: 1246473378}
-  - {fileID: 68109476}
-  - {fileID: 442009385}
-  - {fileID: 1307885886}
-  - {fileID: 98138738}
-  - {fileID: 617038282}
-  - {fileID: 228281376}
-  - {fileID: 1288734394}
-  - {fileID: 1438552113}
-  - {fileID: 1094519053}
-  - {fileID: 1317134710}
-  - {fileID: 1466553286}
-  - {fileID: 795311630}
-  - {fileID: 795089644}
-  - {fileID: 1983773061}
-  - {fileID: 1418038907}
-  - {fileID: 17834601}
-  - {fileID: 791598550}
-  - {fileID: 325468058}
-  - {fileID: 1159863373}
-  - {fileID: 50700971}
-  - {fileID: 320207933}
-  - {fileID: 366508361}
-  - {fileID: 517674842}
-  - {fileID: 954539177}
-  - {fileID: 1550533652}
-  - {fileID: 660966848}
-  - {fileID: 2088459386}
-  - {fileID: 1927467296}
-  - {fileID: 1278670969}
-  - {fileID: 52104147}
-  - {fileID: 498234559}
-  - {fileID: 1191121580}
-  - {fileID: 770458057}
   m_Father: {fileID: 713964260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &358782414
+--- !u!1 &367995590
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2632,145 +1841,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 358782415}
-  - component: {fileID: 358782416}
+  - component: {fileID: 367995591}
+  - component: {fileID: 367995592}
   m_Layer: 0
-  m_Name: Grass2 (2)
+  m_Name: Tree3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &358782415
+--- !u!4 &367995591
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358782414}
+  m_GameObject: {fileID: 367995590}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5913415, y: 0.00000065286577, z: 3.427498}
-  m_LocalScale: {x: 1.0841728, y: 1.0841728, z: 1.0841728}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.19085, y: 0.00000039621818, z: 13.694076}
+  m_LocalScale: {x: 1.3335739, y: 1.3335739, z: 1.3335739}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
+  m_Children:
+  - {fileID: 1908138527}
+  m_Father: {fileID: 1970138081}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &358782416
+--- !u!114 &367995592
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358782414}
+  m_GameObject: {fileID: 367995590}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.99, y: 0.38}
+  viewportPoint: {x: 0.36722136, y: 0.882768}
   groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &366508360
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 366508361}
-  - component: {fileID: 366508362}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &366508361
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366508360}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.1125464, y: 0.00000016816273, z: -1.9830338}
-  m_LocalScale: {x: 1.2699968, y: 1.2699968, z: 1.2699968}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &366508362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366508360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.84585255, y: 0.04921036}
-  groundHeight: 0
-  size: 1.5537513
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &378478616
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 378478617}
-  - component: {fileID: 378478618}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &378478617
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378478616}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1216755, y: 0.00000045099625, z: -0.7774142}
-  m_LocalScale: {x: 1.0759968, y: 1.0759968, z: 1.0759968}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &378478618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378478616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.70975584, y: 0.1288158}
-  groundHeight: 0
-  size: 1.2862147
+  size: 1.25
   referenceScreenHeight: 20
   avoidBoard: 1
   keepInSafeArea: 0
@@ -3009,8 +2119,8 @@ MonoBehaviour:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
-  m_LightCookieSize: {x: 24.423748, y: 24.423748}
-  m_LightCookieOffset: {x: 15.728603, y: 7.563069}
+  m_LightCookieSize: {x: 24.222876, y: 24.222876}
+  m_LightCookieOffset: {x: 5.9292483, y: 3.2709298}
   m_SoftShadowQuality: 1
   m_RenderingLayersMask:
     serializedVersion: 0
@@ -3042,56 +2152,6 @@ MonoBehaviour:
   wind: {x: 0.6, y: 0.25}
   resolution: 128
   seed: 7
---- !u!1 &442009384
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 442009385}
-  - component: {fileID: 442009386}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &442009385
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 442009384}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.046893, y: 0.000000795731, z: 8.401968}
-  m_LocalScale: {x: 1.3145056, y: 1.3145056, z: 1.3145056}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &442009386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 442009384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 1.0006888, y: 0.63298005}
-  groundHeight: 0
-  size: 1.3377274
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &459738828
 GameObject:
   m_ObjectHideFlags: 0
@@ -3130,106 +2190,6 @@ Transform:
   - {fileID: 1966224062}
   m_Father: {fileID: 990186573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &465481458
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 465481459}
-  - component: {fileID: 465481460}
-  m_Layer: 0
-  m_Name: FlowersYellow (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &465481459
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465481458}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.2803016, y: 0.0000003891114, z: -0.2895553}
-  m_LocalScale: {x: 0.92875695, y: 0.92875695, z: 0.92875695}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &465481460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465481458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.6, y: 0.16}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &498234558
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 498234559}
-  - component: {fileID: 498234560}
-  m_Layer: 0
-  m_Name: FlowersPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &498234559
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 498234558}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4021251, y: -0.0000004199315, z: -2.6322026}
-  m_LocalScale: {x: 0.96815825, y: 0.96815825, z: 0.96815825}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &498234560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 498234558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.3528015, y: 0.004778963}
-  groundHeight: 0
-  size: 1.1996354
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &516438537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3292,7 +2252,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2924628842192359387, guid: de08165eff80e8e4ebfc123399656eba, type: 3}
   m_PrefabInstance: {fileID: 516438537}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &517674841
+--- !u!1 &520307471
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3300,157 +2260,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 517674842}
-  - component: {fileID: 517674843}
+  - component: {fileID: 520307472}
+  - component: {fileID: 520307473}
   m_Layer: 0
-  m_Name: FlowersWhite
+  m_Name: FlowerBushPink (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &517674842
+--- !u!4 &520307472
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517674841}
+  m_GameObject: {fileID: 520307471}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.260417, y: 0.00000031866614, z: 10.081644}
-  m_LocalScale: {x: 1.2997915, y: 1.2997915, z: 1.2997915}
+  m_LocalRotation: {x: -0, y: 0.546607, z: -0, w: 0.8373893}
+  m_LocalPosition: {x: -0.03073313, y: -0.00000035692972, z: -0.6767689}
+  m_LocalScale: {x: 0.7987734, y: 0.7987734, z: 0.7987734}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &517674843
+  m_LocalEulerAnglesHint: {x: 0, y: 66.269, z: 0}
+--- !u!114 &520307473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517674841}
+  m_GameObject: {fileID: 520307471}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 1.0103196, y: 0.7094391}
+  viewportPoint: {x: 0.044190824, y: 0.16313589}
   groundHeight: 0
-  size: 1.287724
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1001 &530234746
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1191121580}
-    m_Modifications:
-    - target: {fileID: 3004858855839282474, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_Name
-      value: Grass
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.998943
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.04596631
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 03e0749977ca56f419572b80c7943639, type: 3}
---- !u!4 &530234747 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-  m_PrefabInstance: {fileID: 530234746}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &559768060
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 559768061}
-  - component: {fileID: 559768062}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &559768061
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559768060}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.6254773, y: 0.00000025609847, z: -0.23403493}
-  m_LocalScale: {x: 1.1390097, y: 1.1390097, z: 1.1390097}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &559768062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559768060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.51606363, y: 0.16351253}
-  groundHeight: 0
-  size: 1.3476087
+  size: 0.9530055
   referenceScreenHeight: 20
   avoidBoard: 1
   keepInSafeArea: 0
@@ -3480,11 +2328,12 @@ Transform:
   m_GameObject: {fileID: 565160966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9498217, y: 0.0000001196438, z: -1.9949704}
-  m_LocalScale: {x: 0.7787815, y: 0.7787815, z: 0.7787815}
+  m_LocalPosition: {x: 2.954339, y: 0.00000043781915, z: -2.417309}
+  m_LocalScale: {x: 0.7723763, y: 0.7723763, z: 0.7723763}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1777089610}
+  - {fileID: 65175448}
   m_Father: {fileID: 339365550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &565160968
@@ -3531,8 +2380,8 @@ Transform:
   m_GameObject: {fileID: 583652421}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.471225, y: -0.0000003552455, z: -0.28955525}
-  m_LocalScale: {x: 0.84432447, y: 0.84432447, z: 0.84432447}
+  m_LocalPosition: {x: 1.4878994, y: 0.00000046826983, z: -0.7259191}
+  m_LocalScale: {x: 0.83738023, y: 0.83738023, z: 0.83738023}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1989136587}
@@ -3600,113 +2449,13 @@ Transform:
   m_GameObject: {fileID: 609284399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5000012, y: -0.00000055329474, z: 9.471636}
-  m_LocalScale: {x: 1.1696063, y: 1.1696063, z: 1.1696063}
+  m_LocalPosition: {x: 3.4999926, y: 0.0000006656941, z: 8.955012}
+  m_LocalScale: {x: 1.1599871, y: 1.1599871, z: 1.1599871}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 516438538}
   m_Father: {fileID: 754807743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &613533768
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 613533769}
-  - component: {fileID: 613533770}
-  m_Layer: 0
-  m_Name: Bush
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &613533769
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613533768}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.304014, y: 0.000000640714, z: 16.153395}
-  m_LocalScale: {x: 1.2165962, y: 1.2165962, z: 1.2165962}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1970138081}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &613533770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613533768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.97, y: 0.955}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &617038281
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 617038282}
-  - component: {fileID: 617038283}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &617038282
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617038281}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.021631, y: 0.00000014684576, z: 17.618904}
-  m_LocalScale: {x: 1.6323534, y: 1.6323534, z: 1.6323534}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &617038283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617038281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.83742297, y: 1.0079745}
-  groundHeight: 0
-  size: 1.4454323
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &617724108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3725,27 +2474,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.3418982
+      value: 1.3308619
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.3418982
+      value: 1.3308619
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.3418982
+      value: 1.3308619
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.500001
+      value: 3.4999936
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000004073092
+      value: -0.0000001269018
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.4575999
+      value: 2.9937143
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3900,56 +2649,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4571446798119949295, guid: c0e8433539dc2e24d8417790a5a8ef4f, type: 3}
   m_PrefabInstance: {fileID: 627324632}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &638701316
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 638701317}
-  - component: {fileID: 638701318}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &638701317
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638701316}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.2377143, y: -0.00000034554932, z: 0.21964665}
-  m_LocalScale: {x: 1.0953747, y: 1.0953747, z: 1.0953747}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &638701318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638701316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.5936436, y: 0.19194286}
-  groundHeight: 0
-  size: 1.2850057
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &657018988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4012,57 +2711,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1265059956981723790, guid: a4784a96d8304514d80dfbbd50fcb621, type: 3}
   m_PrefabInstance: {fileID: 657018988}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &660966847
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 660966848}
-  - component: {fileID: 660966849}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &660966848
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660966847}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7498796, y: -0.00000012297369, z: 11.279365}
-  m_LocalScale: {x: 1.2585052, y: 1.2585052, z: 1.2585052}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1875275352}
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &660966849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660966847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.31586352, y: 0.76153183}
-  groundHeight: 0
-  size: 1.2237132
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &669664630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4174,9 +2822,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699495280}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2378763, y: 0.23903577, z: -1.2934904}
-  m_LocalScale: {x: 1.0596063, y: 1.0596063, z: 1.0596063}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.256759, y: 0.23903573, z: -1.7212809}
+  m_LocalScale: {x: 1.0507562, y: 1.0507562, z: 1.0507562}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 189822195}
@@ -4399,39 +3047,14 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1780759644}
-  - {fileID: 1449000550}
-  - {fileID: 69698320}
-  - {fileID: 803255780}
-  - {fileID: 1848270313}
-  - {fileID: 2059738540}
-  - {fileID: 978466784}
-  - {fileID: 914292401}
-  - {fileID: 1176128560}
-  - {fileID: 1845873237}
-  - {fileID: 1545209696}
   - {fileID: 1298644595}
-  - {fileID: 873698456}
-  - {fileID: 20341620}
-  - {fileID: 1682875470}
-  - {fileID: 1694732743}
-  - {fileID: 1533927350}
-  - {fileID: 929717986}
-  - {fileID: 358782415}
+  - {fileID: 1449000550}
+  - {fileID: 2059738540}
+  - {fileID: 699495281}
   - {fileID: 2025381148}
   - {fileID: 583652422}
-  - {fileID: 699495281}
-  - {fileID: 1513549859}
-  - {fileID: 803122850}
-  - {fileID: 1098469699}
   - {fileID: 1318562937}
-  - {fileID: 279754303}
-  - {fileID: 465481459}
-  - {fileID: 1477111150}
   - {fileID: 982293823}
-  - {fileID: 1775000234}
-  - {fileID: 852371250}
-  - {fileID: 113023762}
-  - {fileID: 270033272}
   - {fileID: 1970138081}
   - {fileID: 339365550}
   m_Father: {fileID: 0}
@@ -4483,56 +3106,6 @@ Transform:
   - {fileID: 1413100353}
   m_Father: {fileID: 1169734634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &736907566
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 736907567}
-  - component: {fileID: 736907568}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &736907567
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736907566}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.237485, y: -0.00000036664755, z: -2.5871506}
-  m_LocalScale: {x: 0.9155462, y: 0.9155462, z: 0.9155462}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &736907568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736907566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.73274785, y: 0.007898907}
-  groundHeight: 0
-  size: 1.1334374
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &748532480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4625,7 +3198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.45
+      value: 0.59
       objectReference: {fileID: 0}
     - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4633,7 +3206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.44
+      value: -0.51
       objectReference: {fileID: 0}
     - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4893,8 +3466,8 @@ Transform:
   m_GameObject: {fileID: 756315915}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 3.5000012, y: -0.020000568, z: 5.6889606}
-  m_LocalScale: {x: 73.68099, y: 73.68099, z: 73.68099}
+  m_LocalPosition: {x: 3.499993, y: -0.020000178, z: 5.203485}
+  m_LocalScale: {x: 73.07579, y: 73.07579, z: 73.07579}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4916,56 +3489,6 @@ MonoBehaviour:
   size: 78.33602
   referenceScreenHeight: 20
   avoidBoard: 0
-  keepInSafeArea: 0
---- !u!1 &770458056
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 770458057}
-  - component: {fileID: 770458058}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &770458057
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770458056}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1155934, y: 0.00000031932302, z: 8.800357}
-  m_LocalScale: {x: 1.404529, y: 1.404529, z: 1.404529}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &770458058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770458056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: -0.0049956054, y: 0.65148824}
-  groundHeight: 0
-  size: 1.4201783
-  referenceScreenHeight: 20
-  avoidBoard: 1
   keepInSafeArea: 0
 --- !u!1001 &775284283
 PrefabInstance:
@@ -5092,27 +3615,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.9524799
+      value: 0.9446463
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.9524799
+      value: 0.9446463
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.9524799
+      value: 0.9446463
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.900692
+      value: 5.8809443
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000010495785
+      value: -0.0000003696838
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0656295
+      value: 0.61812437
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5287,256 +3810,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5019530154355664021, guid: fe72fbb83d4fc4f4e9757f177d515b81, type: 3}
   m_PrefabInstance: {fileID: 791093951}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &791598549
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 791598550}
-  - component: {fileID: 791598551}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &791598550
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791598549}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.6720843, y: 0.00000030501542, z: 13.153873}
-  m_LocalScale: {x: 1.4103587, y: 1.4103587, z: 1.4103587}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &791598551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791598549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.72209144, y: 0.83929443}
-  groundHeight: 0
-  size: 1.3327117
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &795089643
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 795089644}
-  - component: {fileID: 795089645}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &795089644
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795089643}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.6431627, y: 0.00000023547051, z: 0.8910902}
-  m_LocalScale: {x: 1.0929815, y: 1.0929815, z: 1.0929815}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &795089645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795089643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.8940462, y: 0.23314652}
-  groundHeight: 0
-  size: 1.2663245
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &795311629
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 795311630}
-  - component: {fileID: 795311631}
-  m_Layer: 0
-  m_Name: FlowersPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &795311630
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795311629}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2052443, y: 0.0000005200927, z: 9.888195}
-  m_LocalScale: {x: 1.411963, y: 1.411963, z: 1.411963}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &795311631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795311629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: -0.005948793, y: 0.7008403}
-  groundHeight: 0
-  size: 1.4031339
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &803122849
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 803122850}
-  - component: {fileID: 803122851}
-  m_Layer: 0
-  m_Name: Grass (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &803122850
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803122849}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.2552283, y: 0.000000008681354, z: -0.4469853}
-  m_LocalScale: {x: 1.010183, y: 1.010183, z: 1.010183}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &803122851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803122849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.34, y: 0.15}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &803255779
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 803255780}
-  - component: {fileID: 803255781}
-  m_Layer: 0
-  m_Name: FlowerBushPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &803255780
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803255779}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.49600586, y: -0.0000006657799, z: 12.924124}
-  m_LocalScale: {x: 1.0546062, y: 1.0546062, z: 1.0546062}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &803255781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803255779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.09, y: 0.83}
-  groundHeight: 0
-  size: 1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &809526001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5800,419 +4073,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 838641123}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &852371249
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 852371250}
-  - component: {fileID: 852371251}
-  m_Layer: 0
-  m_Name: Tub
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &852371250
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852371249}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.777262, y: -0.00000017186187, z: -1.5233424}
-  m_LocalScale: {x: 0.6597521, y: 0.6597521, z: 0.6597521}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &852371251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852371249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.93, y: 0.08}
-  groundHeight: 0
-  size: 0.8
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &873698455
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 873698456}
-  - component: {fileID: 873698457}
-  m_Layer: 0
-  m_Name: FlowersWhite (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &873698456
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873698455}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.2289824, y: 0.00000014812292, z: 12.924123}
-  m_LocalScale: {x: 1.2655274, y: 1.2655274, z: 1.2655274}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &873698457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873698455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.78, y: 0.83}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &884959223
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 884959224}
-  - component: {fileID: 884959225}
-  m_Layer: 0
-  m_Name: Tree2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &884959224
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884959223}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.011370474, y: 0.00000015510636, z: 18.535225}
-  m_LocalScale: {x: 1.3726811, y: 1.3726811, z: 1.3726811}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1970138081}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &884959225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884959223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.17, y: 1.04}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &889524749
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 889524750}
-  - component: {fileID: 889524751}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &889524750
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889524749}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2931388, y: 0.00000038641866, z: 1.0761259}
-  m_LocalScale: {x: 1.250187, y: 1.250187, z: 1.250187}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &889524751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889524749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.026085572, y: 0.24432263}
-  groundHeight: 0
-  size: 1.4435377
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &914292400
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 914292401}
-  - component: {fileID: 914292402}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &914292401
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 914292400}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.82158613, y: 0.00000009139967, z: 16.699493}
-  m_LocalScale: {x: 1.2261559, y: 1.2261559, z: 1.2261559}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1320799025}
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &914292402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 914292400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.24, y: 0.975}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1001 &915366135
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 113023762}
-    m_Modifications:
-    - target: {fileID: 3135801470474577191, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_Name
-      value: FlowerBushWhite
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.803
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.96019495
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.27933082
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
---- !u!4 &915366136 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5484575787199688044, guid: e6e5387d28c1eca4dac69ed1547eca6b, type: 3}
-  m_PrefabInstance: {fileID: 915366135}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &929717985
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 929717986}
-  - component: {fileID: 929717987}
-  m_Layer: 0
-  m_Name: FlowersWhite (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &929717986
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929717985}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.7813644, y: 0.000000065012614, z: 6.676899}
-  m_LocalScale: {x: 1.0507069, y: 1.0507069, z: 1.0507069}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &929717987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929717985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.985, y: 0.55}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &954539176
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 954539177}
-  - component: {fileID: 954539178}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &954539177
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 954539176}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.60708, y: -0.000000026495968, z: 11.701912}
-  m_LocalScale: {x: 1.5383266, y: 1.5383266, z: 1.5383266}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &954539178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 954539176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.7202535, y: 0.7794526}
-  groundHeight: 0
-  size: 1.4860821
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &961190704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6235,27 +4095,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.1021295
+      value: 1.093065
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1021295
+      value: 1.093065
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.1021295
+      value: 1.093065
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.500001
+      value: 3.4999936
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000002128154
+      value: -0.0000003320447
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.0592732
+      value: 1.6035961
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6321,56 +4181,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &978466783
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 978466784}
-  - component: {fileID: 978466785}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &978466784
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978466783}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5706551, y: 0.0000005156471, z: 13.047509}
-  m_LocalScale: {x: 1.2678837, y: 1.2678837, z: 1.2678837}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &978466785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978466783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.2, y: 0.835}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &982293822
 GameObject:
   m_ObjectHideFlags: 0
@@ -6397,8 +4207,8 @@ Transform:
   m_GameObject: {fileID: 982293822}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.02183, y: 0.00000040833777, z: -0.13119163}
-  m_LocalScale: {x: 0.67747575, y: 0.67747575, z: 0.67747575}
+  m_LocalPosition: {x: 6.9928646, y: 0.00000040221437, z: -0.5688559}
+  m_LocalScale: {x: 0.67190385, y: 0.67190385, z: 0.67190385}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 825115715}
@@ -6650,27 +4460,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2771866
+      value: 1.2666826
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2771866
+      value: 1.2666826
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2771866
+      value: 1.2666826
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.41296917
+      value: 0.43834326
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000039558074
+      value: -0.00000019354331
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.390057
+      value: 7.8823256
       objectReference: {fileID: 0}
     - target: {fileID: 1917891801336398146, guid: 1a3961ba60a93d24595c3764801a610f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6777,8 +4587,8 @@ Transform:
   m_GameObject: {fileID: 1059049881}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.009524, y: 0.00000061010246, z: 11.243489}
-  m_LocalScale: {x: 1.1820395, y: 1.1820395, z: 1.1820395}
+  m_LocalPosition: {x: 8.964216, y: -0.00000052706264, z: 10.7123}
+  m_LocalScale: {x: 1.1723185, y: 1.1723185, z: 1.1723185}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 657018989}
@@ -6824,27 +4634,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.1765012
+      value: 1.166825
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1765012
+      value: 1.166825
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.1765012
+      value: 1.166825
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5000012
+      value: 3.499993
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000087580963
+      value: -0.00000040564032
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.7979617
+      value: 5.3115425
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6910,57 +4720,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &1094519052
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1094519053}
-  - component: {fileID: 1094519054}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1094519053
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094519052}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0867805, y: 0.00000029173611, z: -2.1545703}
-  m_LocalScale: {x: 0.9936199, y: 0.9936199, z: 0.9936199}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1721173385}
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1094519054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094519052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.5779389, y: 0.037579298}
-  groundHeight: 0
-  size: 1.2196972
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1096680502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6969,6 +4728,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1318562937}
     m_Modifications:
+    - target: {fileID: 496545060989112432, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
+      propertyPath: 'arms.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3644904446328376886, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7048,56 +4811,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 1096680502}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1098469698
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1098469699}
-  - component: {fileID: 1098469700}
-  m_Layer: 0
-  m_Name: FlowersYellow (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1098469699
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098469698}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23408343, y: -0.00000015956954, z: 0.6750376}
-  m_LocalScale: {x: 0.9456425, y: 0.9456425, z: 0.9456425}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1098469700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098469698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.03, y: 0.22}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1135859185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7120,27 +4833,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.1258527
+      value: 1.1165932
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1258527
+      value: 1.1165932
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.1258527
+      value: 1.1165932
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.500001
+      value: 3.4999936
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000036819068
+      value: 0.00000012791969
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.2518501
+      value: 2.7863665
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7354,56 +5067,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
   m_PrefabInstance: {fileID: 1146349746}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1159863372
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1159863373}
-  - component: {fileID: 1159863374}
-  m_Layer: 0
-  m_Name: FlowersLilac
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1159863373
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159863372}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.290726, y: 0.00000018926596, z: -2.8348105}
-  m_LocalScale: {x: 0.9279977, y: 0.9279977, z: 0.9279977}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1159863374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1159863372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.4718288, y: -0.009321987}
-  groundHeight: 0
-  size: 1.1544852
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1169734633
 GameObject:
   m_ObjectHideFlags: 0
@@ -7440,56 +5103,6 @@ Transform:
   - {fileID: 1749435918}
   m_Father: {fileID: 990186573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1176128559
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1176128560}
-  - component: {fileID: 1176128561}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1176128560
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1176128559}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.13875811, y: -0.00000062105846, z: 11.953206}
-  m_LocalScale: {x: 1.246986, y: 1.246986, z: 1.246986}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1176128561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1176128559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.15, y: 0.79}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1184898149
 GameObject:
   m_ObjectHideFlags: 0
@@ -7625,57 +5238,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 1189742421}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1191121579
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1191121580}
-  - component: {fileID: 1191121581}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1191121580
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191121579}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.4729123, y: -0.00000035103653, z: -1.3269165}
-  m_LocalScale: {x: 1.0922093, y: 1.0922093, z: 1.0922093}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 530234747}
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1191121581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191121579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 1.0193062, y: 0.092990406}
-  groundHeight: 0
-  size: 1.3193866
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1210335270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7762,56 +5324,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 1210335270}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1246473377
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1246473378}
-  - component: {fileID: 1246473379}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1246473378
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246473377}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4702394, y: 0.000000047696403, z: 1.0412991}
-  m_LocalScale: {x: 1.1856619, y: 1.1856619, z: 1.1856619}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1246473379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246473377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.37125957, y: 0.24222493}
-  groundHeight: 0
-  size: 1.3699099
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1269464778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7834,27 +5346,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.1506197
+      value: 1.1411567
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1506197
+      value: 1.1411567
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.1506197
+      value: 1.1411567
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5000012
+      value: 3.4999933
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000002526167
+      value: 0.00000037577036
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.4969006
+      value: 4.0211806
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7920,169 +5432,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &1278670968
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1278670969}
-  - component: {fileID: 1278670970}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1278670969
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1278670968}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1570929, y: -0.0000004031799, z: 12.421127}
-  m_LocalScale: {x: 1.366837, y: 1.366837, z: 1.366837}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1278670970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1278670968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.25777388, y: 0.8094245}
-  groundHeight: 0
-  size: 1.3059767
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1001 &1282244261
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 223295494}
-    m_Modifications:
-    - target: {fileID: 2873918444456659648, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_Name
-      value: FlowersWhite
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.91965437
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.39272875
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3793549468420150602, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
---- !u!4 &1282244262 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5050316567552149768, guid: a3667d14712b12d419a12ee29e0cfc9e, type: 3}
-  m_PrefabInstance: {fileID: 1282244261}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1288734393
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1288734394}
-  - component: {fileID: 1288734395}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1288734394
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288734393}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.6557019, y: -0.0000003467498, z: 1.1131086}
-  m_LocalScale: {x: 0.9944652, y: 0.9944652, z: 0.9944652}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1288734395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288734393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.5194401, y: 0.24654736}
-  groundHeight: 0
-  size: 1.1474867
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1298644594
 GameObject:
   m_ObjectHideFlags: 0
@@ -8109,8 +5458,8 @@ Transform:
   m_GameObject: {fileID: 1298644594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.644711, y: -0.0000002779998, z: 12.19326}
-  m_LocalScale: {x: 1.0429752, y: 1.0429752, z: 1.0429752}
+  m_LocalPosition: {x: 7.610624, y: -0.00000013190686, z: 11.654262}
+  m_LocalScale: {x: 1.0343977, y: 1.0343977, z: 1.0343977}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 110549990124422887}
@@ -8131,56 +5480,6 @@ MonoBehaviour:
   viewportPoint: {x: 0.93, y: 0.8}
   groundHeight: 0
   size: 1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1307885885
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1307885886}
-  - component: {fileID: 1307885887}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1307885886
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307885885}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6583695, y: 0.000000015512455, z: 2.271205}
-  m_LocalScale: {x: 0.9760221, y: 0.9760221, z: 0.9760221}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1307885887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307885885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: -0.008383113, y: 0.31471413}
-  groundHeight: 0
-  size: 1.1027548
   referenceScreenHeight: 20
   avoidBoard: 1
   keepInSafeArea: 0
@@ -8299,56 +5598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e071f5e84fe744729084775d89f4aae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1317134709
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1317134710}
-  - component: {fileID: 1317134711}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1317134710
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1317134709}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5487514, y: -0.00000052264465, z: 11.061399}
-  m_LocalScale: {x: 1.190039, y: 1.190039, z: 1.190039}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1317134711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1317134709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.9274259, y: 0.75219625}
-  groundHeight: 0
-  size: 1.1610557
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1318562936
 GameObject:
   m_ObjectHideFlags: 0
@@ -8375,8 +5624,8 @@ Transform:
   m_GameObject: {fileID: 1318562936}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.500001, y: -0.00000033976198, z: -2.2657354}
-  m_LocalScale: {x: 0.8128756, y: 0.8128756, z: 0.8128756}
+  m_LocalPosition: {x: 3.499994, y: -0.00000032628054, z: -2.6858482}
+  m_LocalScale: {x: 0.80619013, y: 0.80619013, z: 0.80619013}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 11692127}
@@ -8405,68 +5654,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 1
   keepInSafeArea: 0
---- !u!1001 &1320799024
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 914292401}
-    m_Modifications:
-    - target: {fileID: 5562391001771586601, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_Name
-      value: FlowersYellow
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6785869
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.73452014
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
---- !u!4 &1320799025 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8658304235581428664, guid: f4d8a4c68243a6c4b8dd7fe4b875c807, type: 3}
-  m_PrefabInstance: {fileID: 1320799024}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1326037077
 GameObject:
   m_ObjectHideFlags: 0
@@ -8663,27 +5850,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2035732
+      value: 1.1936748
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2035732
+      value: 1.1936748
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2035732
+      value: 1.1936748
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5000012
+      value: 3.499993
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000038592907
+      value: 0.00000007460767
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.158894
+      value: 6.6612873
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8749,106 +5936,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &1381328250
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1381328251}
-  - component: {fileID: 1381328252}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1381328251
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381328250}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.476242, y: -0.000000069829184, z: 12.780772}
-  m_LocalScale: {x: 1.5081288, y: 1.5081288, z: 1.5081288}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1381328252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381328250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.6003819, y: 0.824168}
-  groundHeight: 0
-  size: 1.4331399
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1386553711
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1386553712}
-  - component: {fileID: 1386553713}
-  m_Layer: 0
-  m_Name: Tree
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1386553712
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386553711}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.1088853, y: 0.0000005190278, z: 18.826185}
-  m_LocalScale: {x: 1.3782375, y: 1.3782375, z: 1.3782375}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1970138081}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1386553713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386553711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.84, y: 1.05}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1396120154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9021,56 +6108,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 387087692863249506, guid: 3f07a8dd96d995742a25e690a3041598, type: 3}
   m_PrefabInstance: {fileID: 1413100352}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1418038906
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1418038907}
-  - component: {fileID: 1418038908}
-  m_Layer: 0
-  m_Name: FlowersPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1418038907
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418038906}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.323177, y: -0.000000360439, z: -1.3046197}
-  m_LocalScale: {x: 1.0498236, y: 1.0498236, z: 1.0498236}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1418038908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418038906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.6075529, y: 0.09445874}
-  groundHeight: 0
-  size: 1.2676415
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1430197218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9141,56 +6178,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3029306652393876832, guid: 1bcf1d20b8d952d458e5c56d10501e09, type: 3}
   m_PrefabInstance: {fileID: 1430197218}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1438552112
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1438552113}
-  - component: {fileID: 1438552114}
-  m_Layer: 0
-  m_Name: FlowersPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1438552113
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438552112}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.62570345, y: 0.0000006811854, z: 11.168727}
-  m_LocalScale: {x: 1.4158624, y: 1.4158624, z: 1.4158624}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1438552114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438552112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.19706571, y: 0.7568016}
-  groundHeight: 0
-  size: 1.3790814
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1449000549
 GameObject:
   m_ObjectHideFlags: 0
@@ -9217,8 +6204,8 @@ Transform:
   m_GameObject: {fileID: 1449000549}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5000012, y: -0.000000094881216, z: 12.18528}
-  m_LocalScale: {x: 1.1992753, y: 1.1992753, z: 1.1992753}
+  m_LocalPosition: {x: 3.4999924, y: -0.0000007132311, z: 11.646344}
+  m_LocalScale: {x: 1.1894125, y: 1.1894125, z: 1.1894125}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 791093952}
@@ -9242,107 +6229,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &1466553285
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1466553286}
-  - component: {fileID: 1466553287}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1466553286
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466553285}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.015239, y: -0.00000016156594, z: 0.20459394}
-  m_LocalScale: {x: 0.97552353, y: 0.97552353, z: 0.97552353}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 243892996}
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1466553287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466553285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.18450138, y: 0.19100742}
-  groundHeight: 0
-  size: 1.1447277
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1477111149
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1477111150}
-  - component: {fileID: 1477111151}
-  m_Layer: 0
-  m_Name: Grass (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1477111150
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477111149}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.8810787, y: 0.0000004041649, z: -1.5233423}
-  m_LocalScale: {x: 0.9896281, y: 0.9896281, z: 0.9896281}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1477111151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477111149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.55, y: 0.08}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1513549858
 GameObject:
   m_ObjectHideFlags: 0
@@ -9368,13 +6254,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513549858}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.984501, y: 0.00000016734509, z: -1.8228714}
-  m_LocalScale: {x: 0.9839081, y: 0.9839081, z: 0.9839081}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.9969556, y: 0.00000018003652, z: -2.2466137}
+  m_LocalScale: {x: 0.97581613, y: 0.97581613, z: 0.97581613}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1605936094}
-  m_Father: {fileID: 713964260}
+  m_Father: {fileID: 339365550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1513549860
 MonoBehaviour:
@@ -9388,7 +6274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.3, y: 0.06}
+  viewportPoint: {x: 0.29999986, y: 0.060000867}
   groundHeight: 0
   size: 1.2
   referenceScreenHeight: 20
@@ -9412,27 +6298,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.3814087
+      value: 1.3700473
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.3814087
+      value: 1.3700473
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.3814087
+      value: 1.3700473
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5000012
+      value: 3.4999933
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000008131417
+      value: -0.00000038469847
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.118302
+      value: 4.6407614
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9509,256 +6395,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1 &1533927349
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1533927350}
-  - component: {fileID: 1533927351}
-  m_Layer: 0
-  m_Name: Grass (side)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1533927350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533927349}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6846224, y: 0.00000015028934, z: 4.72191}
-  m_LocalScale: {x: 1.108892, y: 1.108892, z: 1.108892}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1533927351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533927349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.01, y: 0.45}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1545068980
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1545068981}
-  - component: {fileID: 1545068982}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1545068981
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545068980}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.2252674, y: -0.000000107188384, z: 0.23723516}
-  m_LocalScale: {x: 1.2595335, y: 1.2595335, z: 1.2595335}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1545068982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545068980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.7189293, y: 0.19303533}
-  groundHeight: 0
-  size: 1.4770987
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1545209695
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1545209696}
-  - component: {fileID: 1545209697}
-  m_Layer: 0
-  m_Name: Chicken On Fence
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1545209696
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545209695}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.9153256, y: 0.0000005258829, z: 14.955235}
-  m_LocalScale: {x: 0.978236, y: 0.978236, z: 0.978236}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1545209697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545209695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.84, y: 0.91}
-  groundHeight: 0
-  size: 0.9
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1550533651
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1550533652}
-  - component: {fileID: 1550533653}
-  m_Layer: 0
-  m_Name: Rock
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1550533652
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550533651}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.9460506, y: 0.0000005387046, z: 5.440836}
-  m_LocalScale: {x: 0.6946136, y: 0.6946136, z: 0.6946136}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1550533653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550533651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 1.0142455, y: 0.48754707}
-  groundHeight: 0
-  size: 0.74249125
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1561729061
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1561729062}
-  - component: {fileID: 1561729063}
-  m_Layer: 0
-  m_Name: FlowerBushPink
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1561729062
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561729061}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.085795, y: 0.0000005867515, z: 9.645995}
-  m_LocalScale: {x: 1.0024381, y: 1.0024381, z: 1.0024381}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1970138081}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1561729063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561729061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.995, y: 0.69}
-  groundHeight: 0
-  size: 1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1591882752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10020,56 +6656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e580b555148c3294ea86727fb2ae7e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.WorldButton
---- !u!1 &1682875469
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1682875470}
-  - component: {fileID: 1682875471}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1682875470
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682875469}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.940488, y: 0.00000065396443, z: 10.894386}
-  m_LocalScale: {x: 1.226766, y: 1.226766, z: 1.226766}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1682875471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682875469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.97, y: 0.745}
-  groundHeight: 0
-  size: 1.2
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1691501385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10132,56 +6718,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3306545713930646412, guid: 0f90974395e9d5743a3cbbe9270a2802, type: 3}
   m_PrefabInstance: {fileID: 1691501385}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1694732742
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1694732743}
-  - component: {fileID: 1694732744}
-  m_Layer: 0
-  m_Name: FlowersLilac
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1694732743
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694732742}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8846999, y: 0.000000054061502, z: 8.125615}
-  m_LocalScale: {x: 1.0760672, y: 1.0760672, z: 1.0760672}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1694732744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694732742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.015, y: 0.62}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1 &1697949915
 GameObject:
   m_ObjectHideFlags: 0
@@ -10215,68 +6751,6 @@ Transform:
   - {fileID: 245348789}
   m_Father: {fileID: 1966224062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1721173384
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1094519053}
-    m_Modifications:
-    - target: {fileID: 3004858855839282474, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_Name
-      value: Grass
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6450644
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.76412827
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 03e0749977ca56f419572b80c7943639, type: 3}
---- !u!4 &1721173385 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-  m_PrefabInstance: {fileID: 1721173384}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1749435917
 GameObject:
   m_ObjectHideFlags: 0
@@ -10323,27 +6797,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.9524799
+      value: 0.9446463
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.9524799
+      value: 0.9446463
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.9524799
+      value: 0.9446463
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.09931
+      value: 1.1190434
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000010495785
+      value: -0.00000039573092
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0656295
+      value: 0.61812437
       objectReference: {fileID: 0}
     - target: {fileID: 4919407753560833762, guid: ce596170d5b19944aabc65f595bacc35, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10592,56 +7066,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 1760041224}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1775000233
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1775000234}
-  - component: {fileID: 1775000235}
-  m_Layer: 0
-  m_Name: Resting Sheep
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1775000234
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775000233}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1743045, y: -0.00000027874296, z: -1.5985495}
-  m_LocalScale: {x: 0.7411439, y: 0.7411439, z: 0.7411439}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1775000235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775000233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.72, y: 0.075}
-  groundHeight: 0
-  size: 0.9
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1777089609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10762,8 +7186,8 @@ Transform:
   m_GameObject: {fileID: 1780759643}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.322408, y: -0.00000047114622, z: 10.544148}
-  m_LocalScale: {x: 1.2383789, y: 1.2383789, z: 1.2383789}
+  m_LocalPosition: {x: 3.3238597, y: 0.0000001554381, z: 10.018704}
+  m_LocalScale: {x: 1.2281941, y: 1.2281941, z: 1.2281941}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 14062094}
@@ -10787,68 +7211,6 @@ MonoBehaviour:
   referenceScreenHeight: 20
   avoidBoard: 0
   keepInSafeArea: 1
---- !u!1001 &1798091418
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2088459386}
-    m_Modifications:
-    - target: {fileID: 3004858855839282474, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_Name
-      value: Grass
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.97965086
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.20070948
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 03e0749977ca56f419572b80c7943639, type: 3}
---- !u!4 &1798091419 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-  m_PrefabInstance: {fileID: 1798091418}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1834171198
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10867,27 +7229,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.69271266
+      value: 0.6870155
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.69271266
+      value: 0.6870155
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.69271266
+      value: 0.6870155
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.500001
+      value: 3.4999938
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000039602497
+      value: -0.00000026638475
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0656295
+      value: 0.61812437
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11051,156 +7413,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 1835361663}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1845873236
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1845873237}
-  - component: {fileID: 1845873238}
-  m_Layer: 0
-  m_Name: Tree2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1845873237
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845873236}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.872883, y: -0.00000039297515, z: 14.307259}
-  m_LocalScale: {x: 1.3457716, y: 1.3457716, z: 1.3457716}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1845873238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845873236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 1.04, y: 0.885}
-  groundHeight: 0
-  size: 1.25
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1848270312
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1848270313}
-  - component: {fileID: 1848270314}
-  m_Layer: 0
-  m_Name: Bush2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1848270313
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848270312}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.092888, y: 0.00000011484008, z: 11.714918}
-  m_LocalScale: {x: 1.035363, y: 1.035363, z: 1.035363}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 713964260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1848270314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848270312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.02, y: 0.78}
-  groundHeight: 0
-  size: 1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &1857453606
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1857453607}
-  - component: {fileID: 1857453608}
-  m_Layer: 0
-  m_Name: FlowersYellow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1857453607
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1857453606}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.0160396, y: -0.00000038034023, z: -0.062853746}
-  m_LocalScale: {x: 0.94443333, y: 0.94443333, z: 0.94443333}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1857453608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1857453606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.31063032, y: 0.1742968}
-  groundHeight: 0
-  size: 1.1138076
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1869696358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11283,6 +7495,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1318562937}
     m_Modifications:
+    - target: {fileID: 496545060989112432, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
+      propertyPath: 'arms.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3644904446328376886, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11362,119 +7578,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 1872436887}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1875275351
+--- !u!1001 &1908138526
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 660966848}
+    m_TransformParent: {fileID: 367995591}
     m_Modifications:
-    - target: {fileID: 3004858855839282474, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 3107873676956698272, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_Name
-      value: Grass
+      value: Tree
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.55
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.48
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.9737794
+      value: -0.50391203
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.2274946
+      value: 0.86375505
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    - target: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5104537205638110114, guid: 03e0749977ca56f419572b80c7943639, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 03e0749977ca56f419572b80c7943639, type: 3}
---- !u!4 &1875275352 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
+--- !u!4 &1908138527 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7969539022130125138, guid: 03e0749977ca56f419572b80c7943639, type: 3}
-  m_PrefabInstance: {fileID: 1875275351}
+  m_CorrespondingSourceObject: {fileID: 7795978061664584964, guid: ee40b5ce8f3736848a4665abd098bd94, type: 3}
+  m_PrefabInstance: {fileID: 1908138526}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1927467295
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1927467296}
-  - component: {fileID: 1927467297}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1927467296
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927467295}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.2992206, y: 0.000000298918, z: -2.8069293}
-  m_LocalScale: {x: 1.093356, y: 1.093356, z: 1.093356}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1927467297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927467295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.60752666, y: -0.0073753675}
-  groundHeight: 0
-  size: 1.3594506
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1954138807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11662,13 +7827,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 884959224}
   - {fileID: 2027708668}
-  - {fileID: 1386553712}
+  - {fileID: 69698320}
+  - {fileID: 367995591}
   - {fileID: 1059049882}
-  - {fileID: 2031527729}
-  - {fileID: 613533769}
-  - {fileID: 1561729062}
   m_Father: {fileID: 713964260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1978504206
@@ -11761,56 +7923,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978504206}
   m_Mesh: {fileID: 996319034}
---- !u!1 &1983773060
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1983773061}
-  - component: {fileID: 1983773062}
-  m_Layer: 0
-  m_Name: Grass2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1983773061
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983773060}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5612726, y: -0.00000024420933, z: 1.2993124}
-  m_LocalScale: {x: 1.1315523, y: 1.1315523, z: 1.1315523}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1983773062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983773060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.6320538, y: 0.25770247}
-  groundHeight: 0
-  size: 1.3012187
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &1989136586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11899,8 +8011,8 @@ Transform:
   m_GameObject: {fileID: 2025381147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15624347, y: -0.0000002679468, z: -1.6735436}
-  m_LocalScale: {x: 0.6989548, y: 0.6989548, z: 0.6989548}
+  m_LocalPosition: {x: 0.18373217, y: -0.00000040451437, z: -2.0985248}
+  m_LocalScale: {x: 0.6932062, y: 0.6932062, z: 0.6932062}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1691501386}
@@ -11935,7 +8047,7 @@ GameObject:
   - component: {fileID: 2027708668}
   - component: {fileID: 2027708669}
   m_Layer: 0
-  m_Name: Tree
+  m_Name: Tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11950,8 +8062,8 @@ Transform:
   m_GameObject: {fileID: 2027708667}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9740233, y: 0.00000017118248, z: 11.953205}
-  m_LocalScale: {x: 1.1950281, y: 1.1950281, z: 1.1950281}
+  m_LocalPosition: {x: -1.9290239, y: 0.0000003969235, z: 11.416176}
+  m_LocalScale: {x: 1.1852001, y: 1.1852001, z: 1.1852001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1146349747}
@@ -11972,156 +8084,6 @@ MonoBehaviour:
   viewportPoint: {x: -0.07, y: 0.79}
   groundHeight: 0
   size: 1.15
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &2031527728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2031527729}
-  - component: {fileID: 2031527730}
-  m_Layer: 0
-  m_Name: FlowerBushWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2031527729
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031527728}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1763994, y: -0.00000016108879, z: 14.307258}
-  m_LocalScale: {x: 1.184279, y: 1.184279, z: 1.184279}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1970138081}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2031527730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031527728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.03, y: 0.885}
-  groundHeight: 0
-  size: 1.1
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &2048190939
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2048190940}
-  - component: {fileID: 2048190941}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2048190940
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2048190939}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.0195823, y: -0.00000036166898, z: -2.4789064}
-  m_LocalScale: {x: 1.1401957, y: 1.1401957, z: 1.1401957}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2048190941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2048190939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.9704683, y: 0.015373521}
-  groundHeight: 0
-  size: 1.4085475
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &2055374940
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2055374941}
-  - component: {fileID: 2055374942}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2055374941
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055374940}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.192338, y: -0.000000109545795, z: 1.6141859}
-  m_LocalScale: {x: 1.1626062, y: 1.1626062, z: 1.1626062}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2055374942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055374940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.8330872, y: 0.27639392}
-  groundHeight: 0
-  size: 1.3292695
   referenceScreenHeight: 20
   avoidBoard: 1
   keepInSafeArea: 0
@@ -12151,8 +8113,8 @@ Transform:
   m_GameObject: {fileID: 2059738539}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7515264, y: -0.0000006036653, z: 10.894386}
-  m_LocalScale: {x: 1.022305, y: 1.022305, z: 1.022305}
+  m_LocalPosition: {x: -0.7165777, y: -0.00000059460433, z: 10.366066}
+  m_LocalScale: {x: 1.0138975, y: 1.0138975, z: 1.0138975}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 161104869}
@@ -12194,27 +8156,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.4233158
+      value: 1.41161
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.4233158
+      value: 1.41161
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.4233158
+      value: 1.41161
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5000012
+      value: 3.499993
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000005489221
+      value: 0.00000043956447
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.8797555
+      value: 6.387731
       objectReference: {fileID: 0}
     - target: {fileID: 8759486928894984352, guid: 08ad94d484ad76a41921e5fc6775114e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12377,107 +8339,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 2065641337}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2088459385
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2088459386}
-  - component: {fileID: 2088459387}
-  m_Layer: 0
-  m_Name: Grass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2088459386
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088459385}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.488158, y: -0.00000035633605, z: -0.9771949}
-  m_LocalScale: {x: 1.033661, y: 1.033661, z: 1.033661}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1798091419}
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2088459387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088459385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.88797855, y: 0.11587785}
-  groundHeight: 0
-  size: 1.2403215
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
---- !u!1 &2092278107
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2092278108}
-  - component: {fileID: 2092278109}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2092278108
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2092278107}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.23624, y: -0.00000015725038, z: 1.9938358}
-  m_LocalScale: {x: 1.0878972, y: 1.0878972, z: 1.0878972}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2092278109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2092278107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.5904599, y: 0.2986476}
-  groundHeight: 0
-  size: 1.2353171
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!1001 &2126164957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12564,56 +8425,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5162762757669619280, guid: c2baca9f5a38fa047a0e5e8cf36f58de, type: 3}
   m_PrefabInstance: {fileID: 2126164957}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2145567544
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2145567545}
-  - component: {fileID: 2145567546}
-  m_Layer: 0
-  m_Name: FlowersWhite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2145567545
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145567544}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.5577335, y: 0.00000025572945, z: 11.782784}
-  m_LocalScale: {x: 1.5185162, y: 1.5185162, z: 1.5185162}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 339365550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2145567546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145567544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e56baece2e49d8446b9ed56fe9cac665, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.ScreenAnchor
-  viewportPoint: {x: 0.81922907, y: 0.7828559}
-  groundHeight: 0
-  size: 1.4651229
-  referenceScreenHeight: 20
-  avoidBoard: 1
-  keepInSafeArea: 0
 --- !u!4 &110549990124422887
 Transform:
   m_ObjectHideFlags: 0
