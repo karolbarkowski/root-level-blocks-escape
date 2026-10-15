@@ -12,7 +12,7 @@
 
 1. Unity › Project Settings › Player › Android › Publishing Settings › Keystore Manager: create (or pick) your keystore and an upload key alias.
 2. Keep the keystore file and both passwords somewhere safe and **outside the repository**. Unity does not save the passwords; you enter them again after reopening the project.
-3. Build: File › Build Profiles › Android › Build. The result is `<name>.aab`.
+3. Build: File › Build Profiles › Android: untick **Export Project** (it is on in this project; with it on Unity writes a Gradle project folder instead of a bundle), then Build. The result is a single `<name>.aab` file, about 39 MB (an unsigned test build on 2026-10-15 succeeded with 0 errors).
 4. In Play Console, keep **Play App Signing** on (the default): Google holds the app signing key and your keystore is only the upload key, so a lost upload key can be reset.
 
 ## 3. Create the app

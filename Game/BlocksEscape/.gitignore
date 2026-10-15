@@ -10,7 +10,9 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
+/[Pp]rofilerCaptures/
 /[Rr]ecordings/
+/.utmp/
 
 # IDE files Unity regenerates (Assets > Open C# Project). .vsconfig stays committed.
 .vs/
@@ -40,6 +42,11 @@ crashlytics-buildid.txt
 *.aab
 *.unitypackage
 *.app
+*.symbols.zip
+
+# Signing keys: keep them (and their passwords) out of the repository.
+*.keystore
+*.jks
 
 # The root .gitignore's NuGet rule would hide Unity's package manifest and per-package settings.
 !/[Pp]ackages/*
