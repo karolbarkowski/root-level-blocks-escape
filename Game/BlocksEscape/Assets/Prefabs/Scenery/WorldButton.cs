@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 namespace BlocksEscape
 {
     // A 3D prop that works as a button: pressing it with mouse or touch squashes it, and releasing over it raises Clicked.
+    // A press that moves further than Drag Tolerance is a drag or a swipe (the level picker's pages), not a click.
     // Hit-tests its own colliders with a ray from the camera, so it needs a collider on itself or a child.
     [DisallowMultipleComponent]
     public sealed class WorldButton : MonoBehaviour
@@ -13,12 +14,15 @@ namespace BlocksEscape
         [Tooltip("Height scale while pressed.")]
         [SerializeField, Range(0.5f, 1f)] float pressedSquash = 0.8f;
         [SerializeField, Min(0.01f)] float animationTime = 0.08f;
+        [Tooltip("How far the pointer may move while pressed and still click, as a share of the screen height.")]
+        [SerializeField, Range(0f, 0.2f)] float dragTolerance = 0.03f;
         [SerializeField] UnityEvent clicked = new UnityEvent();
 
         public UnityEvent Clicked => clicked;
 
         Transform _visual;
         bool _pressed;
+        Vector2 _pressedAt;
         float _squash = 1f;
 
         void Awake()
@@ -33,7 +37,12 @@ namespace BlocksEscape
             if (pointer != null)
             {
                 var screen = pointer.position.ReadValue();
-                if (pointer.press.wasPressedThisFrame) _pressed = IsUnder(screen);
+                if (pointer.press.wasPressedThisFrame)
+                {
+                    _pressed = IsUnder(screen);
+                    _pressedAt = screen;
+                }
+                else if (_pressed && (screen - _pressedAt).magnitude > dragTolerance * Screen.height) _pressed = false;
                 else if (_pressed && pointer.press.wasReleasedThisFrame)
                 {
                     _pressed = false;

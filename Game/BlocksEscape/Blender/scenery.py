@@ -1,5 +1,6 @@
 # Generates the scenery and in-world UI props around the board: trees, bushes, rocks, flowers, grass, a pond, a barn
-# corner, a bucket, a water tub, a butterfly, the level sign, the title sign, the back button, and the menu's planks. Text on them is
+# corner, a bucket, a water tub, a butterfly, the level sign, the title sign, the back button, the menu's planks and the
+# level picker's tiles. Text on them is
 # set in Unity with the game font (TextMeshPro), not modelled.
 # Run inside Blender:  exec(open(r"...\Blender\scenery.py").read()); build_all()   (or build("Tree"), export_all())
 #
@@ -408,6 +409,22 @@ def back_button(col):
     parts.append(finish(ob, "cream", smooth=False, bevel=0.025, bevel_segments=2))
     return join("BackButton", parts, col)
 
+def level_tile(col, done=False, name="LevelTile"):
+    """Level picker tile: a small square plank like the back button (top at z = 0.30); WorldLabel puts the level number
+    in the middle. The solved variant has a green top and a cream check mark in its upper right corner."""
+    parts = [box("wood", (0, 0, 0.14), (1.0, 1.0, 0.28), bevel=0.14, segments=4),
+             box("leaf_light" if done else "wood_light", (0, 0, 0.27), (0.82, 0.82, 0.06), bevel=0.06, segments=3)]
+    if done:
+        # check mark lying on the top: short stroke down-right, long stroke up-right (x, y in the plank's plane)
+        pts = [(-0.10, 0.03), (-0.02, -0.06), (0.16, 0.12), (0.10, 0.18), (-0.02, 0.04), (-0.06, 0.08)]
+        bm = bmesh.new(); verts = [bm.verts.new((x + 0.23, y + 0.21, 0)) for x, y in pts]
+        f = bm.faces.new(verts); r = bmesh.ops.extrude_face_region(bm, geom=[f])
+        for v in [e for e in r["geom"] if isinstance(e, bmesh.types.BMVert)]: v.co.z = 0.05
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+        ob = mesh_object("check", bm); ob.location = (0, 0, 0.29)
+        parts.append(finish(ob, "cream", smooth=False, bevel=0.012, bevel_segments=1))
+    return join(name, parts, col)
+
 def glyph(text, color, offset, extrude, bevel, y, resolution=3):
     """One standing glyph mesh (X/Z, front facing -Y) at depth y, pivot at baseline centre."""
     font = bpy.data.fonts.load("<builtin>", check_existing=True)
@@ -476,6 +493,7 @@ BUILDERS = {
     "Grass": lambda c: grass(c, 6), "Grass2": lambda c: grass(c, 16, "Grass2"),
     "Pond": pond, "Barn": barn, "Bucket": bucket, "Tub": tub, "Butterfly": butterfly,
     "Sign": sign, "TitleSign": title_sign, "BackButton": back_button, "MenuPlank": menu_plank, "SleepBubble": sleep_bubble, "AxisArrow": axis_arrow,
+    "LevelTile": level_tile, "LevelTileDone": lambda c: level_tile(c, True, "LevelTileDone"),
 }
 
 def _rename(ob, name): ob.name = name; ob.data.name = name; return ob

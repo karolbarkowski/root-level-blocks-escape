@@ -4,7 +4,8 @@ using UnityEngine;
 namespace BlocksEscape
 {
     // The wooden level sign: shows the level number in the game font (WorldText), centred on the sign's panel. With no number set, it shows the leading number of the board's level file name
-    // (0173-cross_8x8-001 -> 173) until a level list provides real numbers.
+    // (0173-cross_8x8-001 -> 173) until a level list provides real numbers. A caption (the level picker's "PICK LEVEL"
+    // or section name) shows instead of the number while set.
     [ExecuteAlways]
     [DisallowMultipleComponent]
     public sealed class LevelSign : MonoBehaviour
@@ -22,6 +23,7 @@ namespace BlocksEscape
         [SerializeField, Min(0)] int number;
 
         Board _subscribed;
+        string _caption;
 
         public int Number
         {
@@ -60,6 +62,13 @@ namespace BlocksEscape
             if (_subscribed != null) _subscribed.Initialized += Rebuild;
         }
 
+        // Text shown instead of the number; null or empty shows the number again. Not saved.
+        public string Caption
+        {
+            get => _caption;
+            set { _caption = value; Rebuild(); }
+        }
+
         int NumberFromLevel()
         {
             if (board == null || board.Level == null) return 0;
@@ -74,7 +83,8 @@ namespace BlocksEscape
 
         public void Rebuild()
         {
-            var text = WorldText.Show(transform, NumberRootName, Number > 0 ? Number.ToString() : null, font, digitHeight, maxWidth);
+            string shown = !string.IsNullOrEmpty(_caption) ? _caption : Number > 0 ? Number.ToString() : null;
+            var text = WorldText.Show(transform, NumberRootName, shown, font, digitHeight, maxWidth);
             if (text != null) text.transform.localPosition = numberCenter;
         }
     }

@@ -8,8 +8,9 @@ namespace BlocksEscape.EditorTools
     // Turns the models exported by Game/BlocksEscape/Blender/scenery.py (Prefabs/Scenery/*.fbx + Scenery_Palette.png)
     // into prefabs that share one URP Lit material. The palette texture is a grid of flat colour swatches the meshes are
     // UV-mapped into, so it is imported without filtering or mipmaps to keep the swatches from bleeding.
-    // The back button and the menu plank get a collider and a WorldButton; the sign gets a LevelSign, and the plank and
-    // the title sign a WorldLabel, all wired to the game font (Fonts/Fredoka SDF, "Blocks Escape/Build Game Font").
+    // The back button, the menu plank and the level tile get a collider and a WorldButton; the sign gets a LevelSign, and
+    // the plank, the tile and the title sign a WorldLabel, all wired to the game font (Fonts/Fredoka SDF, "Blocks
+    // Escape/Build Game Font"). LevelTileDone is no prefab: it is the level tile's solved mesh (LevelTile component).
     // A model named <Prop>_<Part>.fbx is a moving part of <Prop> (the barn's door leaves): it is hung on a hinge inside
     // that prop's prefab instead of becoming a prefab. Props that answer taps get a TapReaction (see Reaction).
     static class SceneryModelsSetup
@@ -20,6 +21,7 @@ namespace BlocksEscape.EditorTools
         const string LeafMaterialPath = "Assets/Materials/Leaf.mat";
         const string RippleMaterialPath = "Assets/Materials/Ripple.mat";
         const string FontPath = "Assets/Fonts/Fredoka SDF.asset";
+        const string SolvedTile = "LevelTileDone";
 
         static readonly Color Leaf = new(0.36f, 0.62f, 0.25f), LeafLight = new(0.55f, 0.75f, 0.3f);
 
@@ -73,7 +75,7 @@ namespace BlocksEscape.EditorTools
                     importer.SaveAndReimport();
                 }
                 string name = Path.GetFileNameWithoutExtension(path);
-                if (IsPart(name)) continue;
+                if (IsPart(name) || name == SolvedTile) continue;
                 string prefabPath = $"{Dir}/{name}.prefab";
                 // Each prefab is a root with the model as its child, so scripts can animate the model (a button's squash)
                 // while the root keeps the position and scale ScreenAnchor gives it. An existing prefab is updated in
@@ -96,7 +98,7 @@ namespace BlocksEscape.EditorTools
                     r.shadowCastingMode = casts ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
                 Configure(root, name);
 
-                if (name is "BackButton" or "MenuPlank")
+                if (name is "BackButton" or "MenuPlank" or "LevelTile")
                 {
                     var collider = model.AddComponent<BoxCollider>();
                     collider.size += new Vector3(0.1f, 0.3f, 0.1f); // a little forgiving for fingers
@@ -110,6 +112,8 @@ namespace BlocksEscape.EditorTools
             WireFont<LevelSign>("Sign");
             WireFont<WorldLabel>("MenuPlank");
             WireFont<WorldLabel>("TitleSign");
+            WireFont<WorldLabel>("LevelTile");
+            SetUpLevelTile();
 
             AssetDatabase.SaveAssets();
             Debug.Log("Built scenery prefabs.", material);
@@ -119,6 +123,25 @@ namespace BlocksEscape.EditorTools
             name.StartsWith("Grass") || name.StartsWith("Flowers") || name.StartsWith("Rock") ||
             name is "Butterfly" or "SleepBubble" or "AxisArrow" or
                 "TitleSign"; // UI: its shadow would vanish with it when the menu pops out, a visible blink on the ground
+
+        // The tile's number fits inside its top, and LevelTile gets both meshes so it can show a level as solved.
+        static void SetUpLevelTile()
+        {
+            var path = $"{Dir}/LevelTile.prefab";
+            var root = PrefabUtility.LoadPrefabContents(path);
+            var label = new SerializedObject(root.GetComponent<WorldLabel>());
+            label.FindProperty("letterHeight").floatValue = 0.34f;
+            label.FindProperty("maxWidth").floatValue = 0.64f;
+            label.ApplyModifiedPropertiesWithoutUndo();
+            var tile = root.GetComponent<LevelTile>();
+            if (tile == null) tile = root.AddComponent<LevelTile>();
+            var so = new SerializedObject(tile);
+            so.FindProperty("plainMesh").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Mesh>($"{Dir}/LevelTile.fbx");
+            so.FindProperty("solvedMesh").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Mesh>($"{Dir}/{SolvedTile}.fbx");
+            so.ApplyModifiedPropertiesWithoutUndo();
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            PrefabUtility.UnloadPrefabContents(root);
+        }
 
         // Adds T to the prop's prefab if missing and sets its font to the game font.
         static void WireFont<T>(string prop) where T : Component
