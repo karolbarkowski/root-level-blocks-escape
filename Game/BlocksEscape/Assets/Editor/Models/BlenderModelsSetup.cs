@@ -128,10 +128,20 @@ namespace BlocksEscape.EditorTools
 
         static Material MakeMaterial(string path, string texturePath)
         {
-            if (AssetImporter.GetAtPath(texturePath) is TextureImporter textures && textures.maxTextureSize != 2048)
+            if (AssetImporter.GetAtPath(texturePath) is TextureImporter textures)
             {
-                textures.maxTextureSize = 2048; // plenty for blocks a phone shows at ~100 px per cell
-                textures.SaveAndReimport();
+                // Flat cartoon colours survive ASTC 8x8 (2 bpp) fine; it halves the atlases' memory on phones.
+                var android = textures.GetPlatformTextureSettings("Android");
+                bool androidSet = android.overridden && android.maxTextureSize == 2048 && android.format == TextureImporterFormat.ASTC_8x8;
+                if (textures.maxTextureSize != 2048 || !androidSet)
+                {
+                    textures.maxTextureSize = 2048; // plenty for blocks a phone shows at ~100 px per cell
+                    android.overridden = true;
+                    android.maxTextureSize = 2048;
+                    android.format = TextureImporterFormat.ASTC_8x8;
+                    textures.SetPlatformTextureSettings(android);
+                    textures.SaveAndReimport();
+                }
             }
             var material = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (material == null)

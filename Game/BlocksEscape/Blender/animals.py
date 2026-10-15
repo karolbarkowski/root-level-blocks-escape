@@ -247,6 +247,7 @@ def side_free(ctx, sx, dy=0.16):
 # ======================================================================= animals
 class Animal:
     name = "Animal"; type_id = "animal"; has_gate = True
+    has_face = True   # False: no eyes to shut, so no _Sleep atlas (frozen blocks keep the awake material)
     body = Body()
     base = hexc("#FFFFFF")
     ear_base = None; ear_inner = hexc("#F2A0A0")
@@ -571,7 +572,7 @@ class Dog(Animal):
 
 # -------------------------------------------------------------- hay bale: the neutral blocker (no type, never leaves)
 class HayBale(Animal):
-    name = "HayBale"; type_id = ""; seed = 808; has_gate = False
+    name = "HayBale"; type_id = ""; seed = 808; has_gate = False; has_face = False
     body = Body(R=0.11, BULGE=0.015, BULGE_TOP=0.02)
     base = hexc("#D9B867")
     def pattern(s, P, col, ctx):
@@ -711,7 +712,7 @@ def build_blocks(A, row_y):
         print(name, "tris", sum(len(p.vertices)-2 for p in me.polygons))
 
     # bake: once awake, once with the eyes shut (frozen blocks swap to the _Sleep texture; the atlas layout is the same)
-    for sleeping in (False, True):
+    for sleeping in ((False, True) if A.has_face else (False,)):
         Face.sleeping = sleeping
         img = np.empty((TEX, TEX, 4), np.float32); img[..., :3] = A.base; img[..., 3] = 1
         written = np.zeros((TEX, TEX), bool)
@@ -891,7 +892,7 @@ def export(A):
     for ob in bpy.data.collections[f"{A.name}Blocks"].objects: export_fbx(ob, os.path.join(bdir, ob.name + ".fbx"))
     src = os.path.join(GAME, "Blender", A.name)
     shutil.copy(os.path.join(src, f"{A.name}_Albedo.png"), bdir)
-    shutil.copy(os.path.join(src, f"{A.name}_Sleep_Albedo.png"), bdir)
+    if A.has_face: shutil.copy(os.path.join(src, f"{A.name}_Sleep_Albedo.png"), bdir)
     if not A.has_gate: return
     for ob in bpy.data.collections[f"{A.name}Gate"].objects: export_fbx(ob, os.path.join(gdir, ob.name + ".fbx"))
     shutil.copy(os.path.join(src, f"{A.name}Gate_Albedo.png"), gdir)

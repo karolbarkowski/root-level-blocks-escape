@@ -118,14 +118,14 @@ def box(color, loc, size, bevel=0.05, rot=(0, 0, 0), segments=3):
     apply_transform(ob)
     return finish(ob, color, bevel=bevel, bevel_segments=segments)
 
-def cylinder(color, loc, r, h, r2=None, verts=20, bevel=0.03, rot=(0, 0, 0)):
+def cylinder(color, loc, r, h, r2=None, verts=20, bevel=0.03, rot=(0, 0, 0), segments=3):
     bm = bmesh.new()
     bmesh.ops.create_cone(bm, cap_ends=True, segments=verts, radius1=r, radius2=r if r2 is None else r2, depth=h,
                           matrix=Matrix.Translation((0, 0, h/2)))
     ob = mesh_object("cyl", bm)
     ob.location = loc; ob.rotation_euler = rot
     apply_transform(ob)
-    return finish(ob, color, bevel=bevel)
+    return finish(ob, color, bevel=bevel, bevel_segments=segments)
 
 def disc(color, loc, r, h, verts=24, noise=0.0, seed=0, scale=(1, 1, 1)):
     bm = bmesh.new()
@@ -159,17 +159,18 @@ def join(name, parts, col):
     return ob
 
 # ----------------------------------------------------------------------- small pieces
-def flower(loc, petal, r=0.1, n=5, rot=0.0, centre="yellow"):
+def flower(loc, petal, r=0.1, n=5, rot=0.0, centre="yellow", subdiv=2):
+    """subdiv 1 for flowers that stay a few pixels on screen: petals are flat, so 20 faces read the same as 80."""
     x, y, z = loc; parts = []
     for i in range(n):
         a = rot + i / n * 2 * math.pi
-        parts.append(sphere(petal, (x + math.cos(a)*r*0.95, y + math.sin(a)*r*0.95, z), (r*0.75, r*0.75, r*0.35), subdiv=2))
-    parts.append(sphere(centre, (x, y, z + r*0.15), (r*0.55, r*0.55, r*0.4), subdiv=2))
+        parts.append(sphere(petal, (x + math.cos(a)*r*0.95, y + math.sin(a)*r*0.95, z), (r*0.75, r*0.75, r*0.35), subdiv=subdiv))
+    parts.append(sphere(centre, (x, y, z + r*0.15), (r*0.55, r*0.55, r*0.4), subdiv=subdiv))
     return parts
 
-def leaf(loc, length, angle, color="leaf"):
+def leaf(loc, length, angle, color="leaf", subdiv=2):
     x, y, z = loc
-    ob = sphere(color, (x + math.cos(angle)*length*0.5, y + math.sin(angle)*length*0.5, z), (length*0.5, length*0.2, 0.03), subdiv=2)
+    ob = sphere(color, (x + math.cos(angle)*length*0.5, y + math.sin(angle)*length*0.5, z), (length*0.5, length*0.2, 0.03), subdiv=subdiv)
     ob.rotation_euler = (0, 0, angle)
     return ob
 
@@ -199,7 +200,7 @@ def flowering_bush(col, seed=3, petal="white", name="FlowerBush"):
     parts = [link(base)]
     for i in range(5):
         a = rng.uniform(0, 2*math.pi); d = rng.uniform(.1, .38)
-        parts += flower((math.cos(a)*d, math.sin(a)*d, 0.72 + rng.uniform(-.08, .08) - d*0.35), petal, r=0.075, rot=rng.uniform(0, 1))
+        parts += flower((math.cos(a)*d, math.sin(a)*d, 0.72 + rng.uniform(-.08, .08) - d*0.35), petal, r=0.075, rot=rng.uniform(0, 1), subdiv=1)
     return join(name, parts, col)
 
 def rock(col, seed=4, name="Rock", scale=(1, .8, .55)):
@@ -214,7 +215,7 @@ def flower_clump(col, petal, seed=5, name="Flowers"):
                           ["leaf", "leaf_dark"][i % 2]))
     for i in range(3):
         a = i / 3 * 2 * math.pi + rng.uniform(-.3, .3); d = rng.uniform(.08, .16)
-        parts += flower((math.cos(a)*d, math.sin(a)*d, 0.14 + rng.uniform(0, .08)), petal, r=0.085, rot=rng.uniform(0, 1))
+        parts += flower((math.cos(a)*d, math.sin(a)*d, 0.14 + rng.uniform(0, .08)), petal, r=0.085, rot=rng.uniform(0, 1), subdiv=1)
     return join(name, parts, col)
 
 def grass(col, seed=6, name="Grass"):
@@ -407,11 +408,11 @@ def back_button(col):
     parts.append(finish(ob, "cream", smooth=False, bevel=0.025, bevel_segments=2))
     return join("BackButton", parts, col)
 
-def glyph(text, color, offset, extrude, bevel, y):
+def glyph(text, color, offset, extrude, bevel, y, resolution=3):
     """One standing glyph mesh (X/Z, front facing -Y) at depth y, pivot at baseline centre."""
     font = bpy.data.fonts.load("<builtin>", check_existing=True)
     cu = bpy.data.curves.new("glyph", 'FONT'); cu.body = text; cu.font = font
-    cu.size = 1.0; cu.offset = offset; cu.extrude = extrude; cu.bevel_depth = bevel; cu.bevel_resolution = 3
+    cu.size = 1.0; cu.offset = offset; cu.extrude = extrude; cu.bevel_depth = bevel; cu.bevel_resolution = resolution
     cu.align_x = 'CENTER'
     ob = link(bpy.data.objects.new("glyph", cu))
     bpy.context.view_layer.update()
@@ -436,11 +437,12 @@ def sleep_bubble(col):
     """Badge floating over a frozen animal: a soft blue disc standing up (front -Y, pivot at its centre), with
     "z z" rising off its upper right; Block puts the turns-to-wake digits on its front."""
     parts = []
-    rim = cylinder("sleep_rim", (0, 0.03, 0), 0.5, 0.1, verts=32, bevel=0.04, rot=(math.pi/2, 0, 0))
-    face = cylinder("sleep", (0, -0.02, 0), 0.43, 0.06, verts=32, bevel=0.025, rot=(math.pi/2, 0, 0))
+    # Shown on every frozen block at once, so kept lean: 24-sided discs, 2-segment bevels, 1-step bevelled letters.
+    rim = cylinder("sleep_rim", (0, 0.03, 0), 0.5, 0.1, verts=24, bevel=0.04, rot=(math.pi/2, 0, 0), segments=2)
+    face = cylinder("sleep", (0, -0.02, 0), 0.43, 0.06, verts=24, bevel=0.025, rot=(math.pi/2, 0, 0), segments=2)
     parts += [rim, face]
     for size, x, z in ((0.32, 0.5, 0.42), (0.24, 0.72, 0.68)):
-        zg = glyph("z", "sleep_z", 0.03, 0.03, 0.015, -0.02)
+        zg = glyph("z", "sleep_z", 0.03, 0.03, 0.015, -0.02, resolution=1)
         zg.scale = (size, size, size); zg.location = (x, 0, z)
         parts.append(zg)
     return join("SleepBubble", parts, col)

@@ -89,6 +89,10 @@ namespace BlocksEscape.EditorTools
                 foreach (var part in models.Where(p => Path.GetFileNameWithoutExtension(p).StartsWith(name + "_")))
                     if (IsPart(Path.GetFileNameWithoutExtension(part))) AddHingedPart(model.transform, part);
                 foreach (var r in model.GetComponentsInChildren<MeshRenderer>()) r.sharedMaterial = material;
+                // Shadows of ankle-high props and floating badges are a few pixels, not worth a second draw in the shadow pass.
+                bool casts = !SkipsShadow(name);
+                foreach (var r in model.GetComponentsInChildren<MeshRenderer>(true))
+                    r.shadowCastingMode = casts ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
                 Configure(root, name);
 
                 if (name is "BackButton" or "MenuPlank")
@@ -109,6 +113,10 @@ namespace BlocksEscape.EditorTools
             AssetDatabase.SaveAssets();
             Debug.Log("Built scenery prefabs.", material);
         }
+
+        static bool SkipsShadow(string name) =>
+            name.StartsWith("Grass") || name.StartsWith("Flowers") || name.StartsWith("Rock") ||
+            name is "Butterfly" or "SleepBubble" or "AxisArrow";
 
         // Adds T to the prop's prefab if missing and sets its font to the game font.
         static void WireFont<T>(string prop) where T : Component
