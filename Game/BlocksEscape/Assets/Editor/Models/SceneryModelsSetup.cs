@@ -8,8 +8,8 @@ namespace BlocksEscape.EditorTools
     // Turns the models exported by Game/BlocksEscape/Blender/scenery.py (Prefabs/Scenery/*.fbx + Scenery_Palette.png)
     // into prefabs that share one URP Lit material. The palette texture is a grid of flat colour swatches the meshes are
     // UV-mapped into, so it is imported without filtering or mipmaps to keep the swatches from bleeding.
-    // The back button and the menu plank get a collider and a WorldButton; the sign gets a LevelSign and the plank a
-    // WorldLabel, both wired to the game font (Fonts/Fredoka SDF, "Blocks Escape/Build Game Font").
+    // The back button and the menu plank get a collider and a WorldButton; the sign gets a LevelSign, and the plank and
+    // the title sign a WorldLabel, all wired to the game font (Fonts/Fredoka SDF, "Blocks Escape/Build Game Font").
     // A model named <Prop>_<Part>.fbx is a moving part of <Prop> (the barn's door leaves): it is hung on a hinge inside
     // that prop's prefab instead of becoming a prefab. Props that answer taps get a TapReaction (see Reaction).
     static class SceneryModelsSetup
@@ -77,12 +77,15 @@ namespace BlocksEscape.EditorTools
                 string prefabPath = $"{Dir}/{name}.prefab";
                 // Each prefab is a root with the model as its child, so scripts can animate the model (a button's squash)
                 // while the root keeps the position and scale ScreenAnchor gives it. An existing prefab is updated in
-                // place, only its model child replaced, so its root components keep the overrides scene instances have.
+                // place, only its model child replaced, so its root components keep the overrides scene instances have,
+                // and children added by hand (the title sign's peeking animals) stay. The model stays the first child.
                 bool exists = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null;
                 var root = exists ? PrefabUtility.LoadPrefabContents(prefabPath) : new GameObject(name);
-                for (int i = root.transform.childCount - 1; i >= 0; i--) Object.DestroyImmediate(root.transform.GetChild(i).gameObject);
+                for (int i = root.transform.childCount - 1; i >= 0; i--)
+                    if (root.transform.GetChild(i).name == name) Object.DestroyImmediate(root.transform.GetChild(i).gameObject);
                 var model = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(path));
                 model.transform.SetParent(root.transform, false);
+                model.transform.SetSiblingIndex(0);
                 foreach (var part in models.Where(p => Path.GetFileNameWithoutExtension(p).StartsWith(name + "_")))
                     if (IsPart(Path.GetFileNameWithoutExtension(part))) AddHingedPart(model.transform, part);
                 foreach (var r in model.GetComponentsInChildren<MeshRenderer>()) r.sharedMaterial = material;
@@ -101,6 +104,7 @@ namespace BlocksEscape.EditorTools
 
             WireFont<LevelSign>("Sign");
             WireFont<WorldLabel>("MenuPlank");
+            WireFont<WorldLabel>("TitleSign");
 
             AssetDatabase.SaveAssets();
             Debug.Log("Built scenery prefabs.", material);

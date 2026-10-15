@@ -11,6 +11,9 @@ namespace BlocksEscape
     // screen, so scenery can end up on top of it; with Avoid Board on, such a prop is hidden until a framing clears it.
     // Hiding uses Renderer.forceRenderingOff, which is not saved, so the scene doesn't change with the Game view size.
     // Pop scales the prop on top of that, for show and hide animations (PopTransition).
+    //
+    // In the editor, a prop moved or scaled by hand (or carried along by its parent) takes its new place as its anchor:
+    // Viewport Point and Size are worked out from where it stands, so it stays there instead of snapping back.
     [ExecuteAlways]
     [DisallowMultipleComponent]
     public sealed class ScreenAnchor : MonoBehaviour
@@ -30,6 +33,10 @@ namespace BlocksEscape
 
         float _pop = 1f;
         float _placedScale; // from the last placement, before Pop
+#if UNITY_EDITOR
+        Vector3 _placedPosition;
+        bool _placed;
+#endif
 
         // Extra scale for show and hide animations; 1 is the placed size. Not saved.
         public float Pop
@@ -81,10 +88,42 @@ namespace BlocksEscape
                 : 2f * depth * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
             _placedScale = size * screenHeight / referenceScreenHeight;
             ApplyScale();
+#if UNITY_EDITOR
+            _placedPosition = transform.position;
+            _placed = true;
+#endif
 
             bool hide = avoidBoard && OverlapsBoard(boardCamera.BoardBounds);
             foreach (var r in GetComponentsInChildren<Renderer>(true)) r.forceRenderingOff = hide;
         }
+
+#if UNITY_EDITOR
+        void Update()
+        {
+            if (Application.isPlaying || !_placed) return;
+            bool moved = (transform.position - _placedPosition).sqrMagnitude > 1e-8f;
+            bool scaled = Mathf.Abs(transform.localScale.x - _placedScale * Mathf.Max(_pop, 1e-3f)) > 1e-4f;
+            if (moved || scaled) Adopt();
+        }
+
+        // Re-anchors the prop where it now stands and at its current scale.
+        void Adopt()
+        {
+            var boardCamera = Object.FindAnyObjectByType<BoardCamera>();
+            var camera = boardCamera != null ? boardCamera.Camera : null;
+            if (camera == null || _placedScale <= 0f) return;
+            UnityEditor.Undo.RecordObject(this, "Move Anchored Prop");
+            Vector2 vp = camera.WorldToViewportPoint(transform.position);
+            if (keepInSafeArea && Screen.width > 0 && Screen.height > 0)
+            {
+                var safe = Screen.safeArea;
+                vp = new Vector2((vp.x * Screen.width - safe.xMin) / safe.width, (vp.y * Screen.height - safe.yMin) / safe.height);
+            }
+            viewportPoint = vp;
+            size *= transform.localScale.x / (_placedScale * Mathf.Max(_pop, 1e-3f));
+            Place(boardCamera);
+        }
+#endif
 
         void ApplyScale()
         {

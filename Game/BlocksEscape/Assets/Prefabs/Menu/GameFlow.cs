@@ -7,7 +7,7 @@ using BlocksEscape.Levels;
 namespace BlocksEscape
 {
     // Runs the game in one scene: the main menu, the settings page and the levels share the meadow and its scenery.
-    // In the menu the board is cleared and the menu planks lie where it was; starting a level hides them, builds the
+    // In the menu the board is cleared, the title sign stands at the top and the menu planks lie where the board was; starting a level hides them, builds the
     // level from the catalog and shows the level sign and back button. Each page is a GameObject whose children are the
     // planks, top to bottom. A solved level is marked in Progress and celebrated (Celebration) as the last block leaves;
     // then the next level follows (the menu after the last one).
@@ -30,6 +30,8 @@ namespace BlocksEscape
         [SerializeField] WorldButton backButton;
 
         [Header("Main menu")]
+        [Tooltip("The game's title sign at the top of the main menu.")]
+        [SerializeField] ScreenAnchor title;
         [SerializeField] GameObject mainPage;
         [SerializeField] WorldButton playButton;
         [SerializeField] WorldButton continueButton;
@@ -40,12 +42,6 @@ namespace BlocksEscape
         [SerializeField] GameObject settingsPage;
         [SerializeField] WorldButton musicButton;
         [SerializeField] WorldButton soundButton;
-
-        [Header("Layout")]
-        [Tooltip("Screen point of the first plank on a page, (0, 0) bottom left, (1, 1) top right.")]
-        [SerializeField] Vector2 firstPlank = new Vector2(0.5f, 0.62f);
-        [Tooltip("Screen height between planks, 0..1.")]
-        [SerializeField, Range(0.02f, 0.3f)] float plankStep = 0.1f;
 
         [Header("Transitions")]
         [SerializeField, Min(0.01f)] float popInTime = 0.3f;
@@ -67,6 +63,7 @@ namespace BlocksEscape
         int _level = -1; // catalog index of the level being played
         bool _busy;      // a switch is animating
         ScreenAnchor _sign, _back;
+        readonly Dictionary<GameObject, List<Vector2>> _slots = new(); // per page: the planks' places as laid out in the scene
 
         static bool CanQuit =>
             Application.platform != RuntimePlatform.IPhonePlayer && Application.platform != RuntimePlatform.WebGLPlayer;
@@ -75,6 +72,9 @@ namespace BlocksEscape
         {
             _sign = levelSign.GetComponentInParent<ScreenAnchor>();
             _back = backButton.GetComponentInParent<ScreenAnchor>();
+            // The planks' places in the scene, top to bottom, are the slots the shown ones fill (LayOut).
+            foreach (var page in new[] { mainPage, settingsPage })
+                _slots[page] = Planks(page, false).ConvertAll(plank => plank.ViewportPoint);
             // Everything starts hidden and pops in as the first screen opens.
             mainPage.SetActive(true);
             settingsPage.SetActive(true);
@@ -82,6 +82,7 @@ namespace BlocksEscape
             foreach (var plank in Planks(settingsPage, false)) plank.gameObject.SetActive(false);
             _sign.gameObject.SetActive(false);
             _back.gameObject.SetActive(false);
+            if (title != null) title.gameObject.SetActive(false);
         }
 
         void OnEnable()
@@ -150,14 +151,14 @@ namespace BlocksEscape
             yield return Together(Pop(hide, false), Wait(blocks));
             board.Clear();
             boardCamera.Frame(); // the cleared board has its own framing; the scenery and planks follow it
-            yield return Pop(LayOut(mainPage), true);
+            yield return Pop(MainMenu(true), true);
         }
 
         IEnumerator ToSettings()
         {
             _screen = Screen.Settings;
             UpdateSettingsLabels();
-            yield return Pop(Planks(mainPage, false), false);
+            yield return Pop(MainMenu(false), false);
             var show = LayOut(settingsPage);
             show.Add(_back);
             yield return Pop(show, true);
@@ -169,7 +170,7 @@ namespace BlocksEscape
             _level = index;
             Progress.LastPlayed = index;
             // The back button stays when going from level to level; the sign pops out and back in with the new number.
-            yield return Pop(new List<ScreenAnchor>(Planks(mainPage, false)) { _sign }, false);
+            yield return Pop(new List<ScreenAnchor>(MainMenu(false)) { _sign }, false);
             levelSign.Number = index + 1;
             board.Level = catalog[index];
             board.Initialize(LevelData.Parse(catalog[index].text));
@@ -209,6 +210,16 @@ namespace BlocksEscape
             foreach (var r in running) yield return r;
         }
 
+        // The main menu in the order it pops: the title, then the planks. To show it, only the available planks, laid out
+        // afresh; to hide it, all of them where they are (hiding skips the ones not shown), so none jumps as it goes.
+        List<ScreenAnchor> MainMenu(bool show)
+        {
+            var menu = new List<ScreenAnchor>();
+            if (title != null) menu.Add(title);
+            menu.AddRange(show ? LayOut(mainPage) : Planks(mainPage, false));
+            return menu;
+        }
+
         // The page's planks, top to bottom; with availableOnly, only those that apply now (no Continue before the first
         // level, no Quit where apps don't quit).
         List<ScreenAnchor> Planks(GameObject page, bool availableOnly)
@@ -224,12 +235,13 @@ namespace BlocksEscape
             return planks;
         }
 
-        // Stacks the page's available planks down from First Plank, so a missing one leaves no gap, and returns them.
+        // Puts the page's available planks in its slots from the top, so a missing one leaves no gap, and returns them.
+        // The slots are where the planks stand in the scene (all shown), so the scene shows the layout as played.
         List<ScreenAnchor> LayOut(GameObject page)
         {
             var planks = Planks(page, true);
-            for (int row = 0; row < planks.Count; row++)
-                planks[row].ViewportPoint = firstPlank - new Vector2(0f, plankStep * row);
+            var slots = _slots[page];
+            for (int row = 0; row < planks.Count && row < slots.Count; row++) planks[row].ViewportPoint = slots[row];
             return planks;
         }
 

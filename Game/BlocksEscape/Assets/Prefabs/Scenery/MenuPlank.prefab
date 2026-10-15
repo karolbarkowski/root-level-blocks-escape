@@ -66,10 +66,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.WorldLabel
   text: 
   font: {fileID: 11400000, guid: e1d109573c9a2494394d28aa5d50b164, type: 2}
-  center: {x: 0, y: 0.33, z: 0}
+  center: {x: 0, y: 0.32, z: 0}
   rotation: {x: 90, y: 0, z: 0}
   letterHeight: 0.45
-  maxWidth: 3
+  maxWidth: 2.65
 --- !u!1001 &5376119369856168360
 PrefabInstance:
   m_ObjectHideFlags: 0

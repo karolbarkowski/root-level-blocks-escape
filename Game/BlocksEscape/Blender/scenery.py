@@ -1,5 +1,5 @@
 # Generates the scenery and in-world UI props around the board: trees, bushes, rocks, flowers, grass, a pond, a barn
-# corner, a bucket, a water tub, a butterfly, the level sign, the back button, and the menu's planks. Text on them is
+# corner, a bucket, a water tub, a butterfly, the level sign, the title sign, the back button, and the menu's planks. Text on them is
 # set in Unity with the game font (TextMeshPro), not modelled.
 # Run inside Blender:  exec(open(r"...\Blender\scenery.py").read()); build_all()   (or build("Tree"), export_all())
 #
@@ -25,6 +25,7 @@ PALETTE = [
     ("metal", "#BCC4CC"), ("metal_dark", "#848D96"), ("wing", "#F28C28"), ("dark", "#3A2618"),
     ("reed", "#6F9E3A"), ("soil", "#B98A5A"), ("lilac", "#C9B6F2"), ("red", "#E25A4A"),
     ("sign_face", "#F4CB90"), ("sign_frame", "#CC8E58"), ("letter_edge", "#6B3E22"),
+    ("barn_dark", "#A9372F"), ("straw", "#E8B64A"),
     ("sleep", "#BFDDF7"), ("sleep_rim", "#6F95C9"), ("sleep_z", "#3D5A8C"),
 ]
 GRID = 8; SW = 8  # 8x8 swatches of 8 px -> 64 px texture
@@ -306,24 +307,92 @@ def butterfly(col):
     return join("Butterfly", parts, col)
 
 SIGN_W, SIGN_H, SIGN_Z = 4.6, 1.45, 1.15  # plank width, height and centre height; LevelSign centres the number there
+TITLE_W, TITLE_H, TITLE_Z = 5.6, 2.2, 1.45  # the title barn's body: width, height, centre height (WorldLabel's text)
+GABLE_W, GABLE_H = 2.6, 0.85                # the roof gable on top of the body, centred
 
-def sign(col):
-    W, H, Z = SIGN_W, SIGN_H, SIGN_Z
+def board_sign(col, name, W, H, Z):
+    """A wooden board on two posts with white flowers in its upper corners and leaves at the posts' feet."""
     parts = []
     for x in (-W/2 + 0.15, W/2 - 0.15):
         parts.append(cylinder("wood", (x, 0.06, 0), 0.18, Z + H/2 + 0.12, verts=14, bevel=0.05))
         parts.append(sphere("wood", (x, 0.06, Z + H/2 + 0.12), (0.18, 0.18, 0.11), subdiv=2))
     parts.append(box("sign_frame", (0, 0, Z), (W, 0.26, H), bevel=0.12, segments=4))
     parts.append(box("sign_face", (0, -0.1, Z), (W - 0.3, 0.1, H - 0.28), bevel=0.06))  # lighter face panel
+    fz = Z + H/2 - 0.42 if H > 1.8 else Z  # tall boards keep their flowers in the corners, clear of the text
     for x in (-W/2 + 0.45, W/2 - 0.45):
         f = flower((0, 0, 0), "white", r=0.14, rot=0.4)
         for ob in f:
-            ob.location = Vector((ob.location.x + x, -0.16, ob.location.z + Z + ob.location.y)); ob.rotation_euler = (math.pi/2, 0, 0)
+            ob.location = Vector((ob.location.x + x, -0.16, ob.location.z + fz + ob.location.y)); ob.rotation_euler = (math.pi/2, 0, 0)
         parts += f
     for i, (x, a) in enumerate([(-W/2 + 0.15, -0.6), (W/2 - 0.15, 3.6)]):  # leaves at the posts
         for k in range(3):
             parts.append(leaf((x, -0.05, 0.02), 0.32 + k*0.05, a + k*0.6, ["leaf", "leaf_dark", "leaf_light"][k]))
-    return join("Sign", parts, col)
+    return join(name, parts, col)
+
+def sign(col):
+    return board_sign(col, "Sign", SIGN_W, SIGN_H, SIGN_Z)
+
+def prism(color, pts, y, depth, bevel=0.04):
+    """A flat shape in the XZ plane (points (x, z)), from depth y to y + depth along +Y."""
+    bm = bmesh.new(); verts = [bm.verts.new((x, y, z)) for x, z in pts]
+    f = bm.faces.new(verts); r = bmesh.ops.extrude_face_region(bm, geom=[f])
+    for v in [e for e in r["geom"] if isinstance(e, bmesh.types.BMVert)]: v.co.y = y + depth
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return finish(mesh_object("prism", bm), color, smooth=False, bevel=bevel, bevel_segments=2)
+
+def bar(color, a, b, width, y, depth):
+    """A straight strip standing in the XZ plane from point a to point b (x, z), centred at depth y."""
+    (ax, az), (bx, bz) = a, b
+    length = math.hypot(bx - ax, bz - az); angle = math.atan2(bz - az, bx - ax)
+    return box(color, ((ax + bx)/2, y, (az + bz)/2), (length + width, depth, width), bevel=0.02, rot=(0, -angle, 0))
+
+def standing_flower(x, z, petal, r=0.16, rot=0.4):
+    parts = flower((0, 0, 0), petal, r=r, rot=rot)
+    for ob in parts:
+        ob.location = Vector((ob.location.x + x, -0.2, ob.location.z + z + ob.location.y)); ob.rotation_euler = (math.pi/2, 0, 0)
+    return parts
+
+def standing_leaf(x, z, length, angle, color):
+    """A leaf standing in the XZ plane, growing from (x, z) at the given angle (0 = towards +X)."""
+    ob = sphere(color, (x + math.cos(angle)*length*0.5, -0.22, z + math.sin(angle)*length*0.5), (length*0.5, 0.03, length*0.2), subdiv=2)
+    ob.rotation_euler = (0, -angle, 0)
+    return ob
+
+def title_sign(col):
+    """The game's title board: a red barn front (body plus a roof gable with an X window) with cream trim and board
+    seams, flowers on its sides and straw at its feet, on two posts behind. WorldLabel writes the title on the body."""
+    W, H, Z, GW, GH = TITLE_W, TITLE_H, TITLE_Z, GABLE_W, GABLE_H
+    top, bottom = Z + H/2, Z - H/2
+    parts = []
+    for x in (-W/3, W/3):  # posts behind, holding it up
+        parts.append(box("wood_dark", (x, 0.25, (bottom + 0.3)/2), (0.22, 0.22, bottom + 0.3), bevel=0.04))
+    body = [(-W/2, bottom), (W/2, bottom), (W/2, top), (GW/2, top), (0, top + GH), (-GW/2, top), (-W/2, top)]
+    parts.append(prism("barn_red", body, -0.1, 0.25, bevel=0.05))
+    for i in range(1, 10):  # board seams
+        x = -W/2 + i * W/10
+        ztop = top if abs(x) > GW/2 else top + GH * (1 - abs(x) / (GW/2))
+        parts.append(box("barn_dark", (x, -0.115, (bottom + ztop)/2), (0.045, 0.02, ztop - bottom - 0.24), bevel=0.0))
+    loop = body + [body[0]]
+    for a, b in zip(loop, loop[1:]):  # cream trim all round
+        parts.append(bar("barn_trim", a, b, 0.16, -0.14, 0.1))
+    for s_ in (-1, 1):  # roof edge over the gable
+        parts.append(bar("roof", (s_ * (GW/2 + 0.22), top - 0.08), (0, top + GH + 0.16), 0.18, -0.06, 0.36))
+    wz, ws = top + GH * 0.4, 0.46  # X window in the gable
+    corners = [(-ws/2, wz - ws/2), (ws/2, wz - ws/2), (ws/2, wz + ws/2), (-ws/2, wz + ws/2)]
+    for a, b in zip(corners, corners[1:] + corners[:1]):
+        parts.append(bar("barn_trim", a, b, 0.07, -0.16, 0.06))
+    parts.append(bar("barn_trim", corners[0], corners[2], 0.06, -0.16, 0.06))
+    parts.append(bar("barn_trim", corners[1], corners[3], 0.06, -0.16, 0.06))
+    for s_ in (-1, 1):  # flowers on the sides, straw at the feet
+        x = s_ * (W/2 - 0.02)
+        parts += standing_flower(x, Z + 0.25, "white", r=0.2)
+        parts += standing_flower(x + s_ * 0.05, Z - 0.3, "pink", r=0.15, rot=1.1)
+        for k in range(3):
+            parts.append(standing_leaf(x - s_ * 0.05, Z - 0.02, 0.34, (0 if s_ > 0 else math.pi) + (k - 1) * 0.55, ["leaf", "leaf_dark", "leaf_light"][k]))
+        for k in range(7):
+            a = (k - 3) * 0.22 + s_ * 0.15
+            parts.append(cylinder("straw", (x - s_ * 0.55 + (k - 3) * 0.06, -0.18, bottom - 0.18), 0.022, 0.5, verts=6, bevel=0.0, rot=(0, a, 0)))
+    return join("TitleSign", parts, col)
 
 def back_button(col):
     parts = [box("wood", (0, 0, 0.14), (1.0, 1.0, 0.28), bevel=0.14, segments=4),
@@ -353,10 +422,15 @@ def glyph(text, color, offset, extrude, bevel, y):
     return finish(mo, color, smooth=True)
 
 def menu_plank(col):
-    """Menu button: a wide plank lying on the ground like the back button (top at z = 0.30); WorldLabel lays the
-    word on top of it."""
-    return join("MenuPlank", [box("wood", (0, 0, 0.14), (3.6, 1.0, 0.28), bevel=0.14, segments=4),
-                              box("wood_light", (0, 0, 0.27), (3.42, 0.82, 0.06), bevel=0.06, segments=3)], col)
+    """Menu button: a wide plank lying on the ground like the back button (top at z = 0.30), with grain lines along its
+    edges and a nail at each end; WorldLabel lays the word on top of it, between the nails."""
+    parts = [box("wood", (0, 0, 0.14), (3.6, 1.0, 0.28), bevel=0.14, segments=4),
+             box("wood_light", (0, 0, 0.27), (3.42, 0.82, 0.06), bevel=0.06, segments=3)]
+    for x, y, length in ((-0.3, 0.31, 2.2), (0.35, 0.26, 1.6), (0.2, -0.31, 2.4), (-0.6, -0.26, 1.3)):  # grain, clear of the word
+        parts.append(box("wood", (x, y, 0.3), (length, 0.025, 0.012), bevel=0.0))
+    for x in (-1.5, 1.5):
+        parts.append(cylinder("metal_dark", (x, 0, 0.29), 0.065, 0.035, verts=12, bevel=0.012))
+    return join("MenuPlank", parts, col)
 
 def sleep_bubble(col):
     """Badge floating over a frozen animal: a soft blue disc standing up (front -Y, pivot at its centre), with
@@ -399,7 +473,7 @@ BUILDERS = {
     "FlowersLilac": lambda c: flower_clump(c, "lilac", 35, "FlowersLilac"),
     "Grass": lambda c: grass(c, 6), "Grass2": lambda c: grass(c, 16, "Grass2"),
     "Pond": pond, "Barn": barn, "Bucket": bucket, "Tub": tub, "Butterfly": butterfly,
-    "Sign": sign, "BackButton": back_button, "MenuPlank": menu_plank, "SleepBubble": sleep_bubble, "AxisArrow": axis_arrow,
+    "Sign": sign, "TitleSign": title_sign, "BackButton": back_button, "MenuPlank": menu_plank, "SleepBubble": sleep_bubble, "AxisArrow": axis_arrow,
 }
 
 def _rename(ob, name): ob.name = name; ob.data.name = name; return ob

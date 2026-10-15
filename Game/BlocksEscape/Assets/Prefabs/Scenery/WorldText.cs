@@ -41,7 +41,9 @@ namespace BlocksEscape
             // TextMeshPro sizes 3D text at a tenth of a unit per point, relative to the size the font was sampled at.
             var face = font.faceInfo;
             float size = capHeight / Mathf.Max(0.1f * face.capLine / face.pointSize * face.scale, 1e-5f);
-            tmp.rectTransform.sizeDelta = new Vector2(maxWidth > 0f ? maxWidth : capHeight * 50f, capHeight * 3f);
+            int lines = 1; // room for every line, so shrinking to fit only ever answers to the width
+            foreach (char c in text) if (c == '\n') lines++;
+            tmp.rectTransform.sizeDelta = new Vector2(maxWidth > 0f ? maxWidth : capHeight * 50f, capHeight * 3f * lines);
             tmp.enableAutoSizing = maxWidth > 0f;
             tmp.fontSizeMax = size;
             tmp.fontSizeMin = size * 0.3f;
