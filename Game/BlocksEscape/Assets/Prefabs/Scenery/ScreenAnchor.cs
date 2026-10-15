@@ -10,6 +10,7 @@ namespace BlocksEscape
     // On screens shaped differently from the one the layout was made for, the board takes up a different part of the
     // screen, so scenery can end up on top of it; with Avoid Board on, such a prop is hidden until a framing clears it.
     // Hiding uses Renderer.forceRenderingOff, which is not saved, so the scene doesn't change with the Game view size.
+    // Pop scales the prop on top of that, for show and hide animations (PopTransition).
     [ExecuteAlways]
     [DisallowMultipleComponent]
     public sealed class ScreenAnchor : MonoBehaviour
@@ -26,6 +27,16 @@ namespace BlocksEscape
         [SerializeField] bool avoidBoard = true;
         [Tooltip("Read Viewport Point inside the screen's safe area (clear of notches and rounded corners). For UI.")]
         [SerializeField] bool keepInSafeArea;
+
+        float _pop = 1f;
+        float _placedScale; // from the last placement, before Pop
+
+        // Extra scale for show and hide animations; 1 is the placed size. Not saved.
+        public float Pop
+        {
+            get => _pop;
+            set { _pop = value; ApplyScale(); }
+        }
 
         public Vector2 ViewportPoint
         {
@@ -68,10 +79,17 @@ namespace BlocksEscape
             float screenHeight = camera.orthographic
                 ? camera.orthographicSize * 2f
                 : 2f * depth * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-            transform.localScale = Vector3.one * (size * screenHeight / referenceScreenHeight);
+            _placedScale = size * screenHeight / referenceScreenHeight;
+            ApplyScale();
 
             bool hide = avoidBoard && OverlapsBoard(boardCamera.BoardBounds);
             foreach (var r in GetComponentsInChildren<Renderer>(true)) r.forceRenderingOff = hide;
+        }
+
+        void ApplyScale()
+        {
+            // Never quite zero: colliders and bounds don't like degenerate scales.
+            if (_placedScale > 0f) transform.localScale = Vector3.one * (_placedScale * Mathf.Max(_pop, 1e-3f));
         }
 
         // Whether the prop's footprint on the ground, shrunk a little so leaves may brush the fence, overlaps the board's.

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using BlocksEscape.Levels;
 
@@ -7,8 +9,11 @@ namespace BlocksEscape
     // Runs the game in one scene: the main menu, the settings page and the levels share the meadow and its scenery.
     // In the menu the board is cleared and the menu planks lie where it was; starting a level hides them, builds the
     // level from the catalog and shows the level sign and back button. Each page is a GameObject whose children are the
-    // planks, top to bottom. A solved level is marked in Progress and, after
-    // the last block has left, the next level follows (the menu after the last one).
+    // planks, top to bottom. A solved level is marked in Progress and, after the last block has left, the next level
+    // follows (the menu after the last one).
+    //
+    // Every switch is animated: what goes away pops out (PopTransition; the blocks shrink into the board with
+    // BlockAppear), then what comes pops in, one after another. Buttons are ignored until a switch has finished.
     //
     // Play starts level 1 until there is a level picker; Continue goes where Progress.ContinueLevel says and is hidden
     // before the first level is played; Quit is hidden where apps don't quit themselves (iOS, web).
@@ -42,14 +47,38 @@ namespace BlocksEscape
         [Tooltip("Screen height between planks, 0..1.")]
         [SerializeField, Range(0.02f, 0.3f)] float plankStep = 0.1f;
 
+        [Header("Transitions")]
+        [SerializeField, Min(0.01f)] float popInTime = 0.3f;
+        [SerializeField, Min(0.01f)] float popOutTime = 0.16f;
+        [Tooltip("Seconds between one plank or button starting to pop and the next.")]
+        [SerializeField, Min(0f)] float popStagger = 0.05f;
+        [SerializeField, Min(0.01f)] float blockPopTime = 0.25f;
+        [Tooltip("Seconds the blocks' pop-in takes to sweep from the top left corner of the board to the bottom right.")]
+        [SerializeField, Min(0f)] float blockSweep = 0.35f;
+
         [Tooltip("Seconds from solving a level to the next one, so the last block's exit plays out.")]
         [SerializeField, Min(0f)] float nextLevelDelay = 1.5f;
 
         Screen _screen;
         int _level = -1; // catalog index of the level being played
+        bool _busy;      // a switch is animating
+        ScreenAnchor _sign, _back;
 
         static bool CanQuit =>
             Application.platform != RuntimePlatform.IPhonePlayer && Application.platform != RuntimePlatform.WebGLPlayer;
+
+        void Awake()
+        {
+            _sign = levelSign.GetComponentInParent<ScreenAnchor>();
+            _back = backButton.GetComponentInParent<ScreenAnchor>();
+            // Everything starts hidden and pops in as the first screen opens.
+            mainPage.SetActive(true);
+            settingsPage.SetActive(true);
+            foreach (var plank in Planks(mainPage, false)) plank.gameObject.SetActive(false);
+            foreach (var plank in Planks(settingsPage, false)) plank.gameObject.SetActive(false);
+            _sign.gameObject.SetActive(false);
+            _back.gameObject.SetActive(false);
+        }
 
         void OnEnable()
         {
@@ -79,31 +108,12 @@ namespace BlocksEscape
 
         void Start() => ShowMenu();
 
-        public void ShowMenu()
-        {
-            StopAllCoroutines();
-            _screen = Screen.Menu;
-            _level = -1;
-            board.Clear();
-            dragger.enabled = false;
-            boardCamera.Frame(); // the cleared board has its own framing; the scenery and planks follow it
-            Show(levelSign, false);
-            Show(backButton, false);
-            mainPage.SetActive(true);
-            settingsPage.SetActive(false);
-            Show(continueButton, Progress.HasStarted && catalog.Count > 0);
-            Show(quitButton, CanQuit);
-            LayOut(mainPage);
-        }
+        public void ShowMenu() => Switch(ToMenu());
+        public void ShowSettings() => Switch(ToSettings());
 
-        public void ShowSettings()
+        public void StartLevel(int index)
         {
-            _screen = Screen.Settings;
-            mainPage.SetActive(false);
-            settingsPage.SetActive(true);
-            Show(backButton, true);
-            UpdateSettingsLabels();
-            LayOut(settingsPage);
+            if (catalog != null && index >= 0 && index < catalog.Count) Switch(ToLevel(index));
         }
 
         public void Back()
@@ -111,35 +121,110 @@ namespace BlocksEscape
             if (_screen != Screen.Menu) ShowMenu();
         }
 
-        public void StartLevel(int index)
+        // Runs a switch unless one is already running.
+        void Switch(IEnumerator routine)
         {
-            if (catalog == null || index < 0 || index >= catalog.Count) return;
-            StopAllCoroutines();
+            if (!_busy) StartCoroutine(Busy(routine));
+        }
+
+        IEnumerator Busy(IEnumerator routine)
+        {
+            _busy = true;
+            dragger.enabled = false;
+            yield return routine;
+            dragger.enabled = _screen == Screen.Level;
+            _busy = false;
+        }
+
+        IEnumerator ToMenu()
+        {
+            _screen = Screen.Menu;
+            _level = -1;
+            var hide = new List<ScreenAnchor> { _sign, _back };
+            hide.AddRange(Planks(settingsPage, false));
+            float blocks = BlockAppear.Sweep(board, false, blockSweep * 0.5f, popOutTime);
+            yield return Together(Pop(hide, false), Wait(blocks));
+            board.Clear();
+            boardCamera.Frame(); // the cleared board has its own framing; the scenery and planks follow it
+            yield return Pop(LayOut(mainPage), true);
+        }
+
+        IEnumerator ToSettings()
+        {
+            _screen = Screen.Settings;
+            UpdateSettingsLabels();
+            yield return Pop(Planks(mainPage, false), false);
+            var show = LayOut(settingsPage);
+            show.Add(_back);
+            yield return Pop(show, true);
+        }
+
+        IEnumerator ToLevel(int index)
+        {
             _screen = Screen.Level;
             _level = index;
             Progress.LastPlayed = index;
-            mainPage.SetActive(false);
-            settingsPage.SetActive(false);
-            Show(levelSign, true);
-            Show(backButton, true);
+            // The back button stays when going from level to level; the sign pops out and back in with the new number.
+            yield return Pop(new List<ScreenAnchor>(Planks(mainPage, false)) { _sign }, false);
             levelSign.Number = index + 1;
             board.Level = catalog[index];
             board.Initialize(LevelData.Parse(catalog[index].text));
-            dragger.enabled = true;
+            float blocks = BlockAppear.Sweep(board, true, blockSweep, blockPopTime);
+            var show = new List<ScreenAnchor> { _sign };
+            if (!_back.gameObject.activeSelf) show.Add(_back);
+            yield return Together(Pop(show, true), Wait(blocks));
         }
 
         void OnCompleted()
         {
-            if (_screen != Screen.Level) return;
+            if (_screen != Screen.Level || _busy) return;
             Progress.MarkSolved(_level);
-            StartCoroutine(NextLevelAfterDelay());
+            Switch(NextLevel());
         }
 
-        IEnumerator NextLevelAfterDelay()
+        IEnumerator NextLevel()
         {
-            yield return new WaitForSeconds(nextLevelDelay);
-            if (_level + 1 < catalog.Count) StartLevel(_level + 1);
-            else ShowMenu();
+            yield return Wait(nextLevelDelay);
+            yield return _level + 1 < catalog.Count ? ToLevel(_level + 1) : ToMenu();
+        }
+
+        IEnumerator Pop(List<ScreenAnchor> props, bool show) =>
+            PopTransition.Run(props, show, show ? popInTime : popOutTime, popStagger);
+
+        static IEnumerator Wait(float seconds)
+        {
+            if (seconds > 0f) yield return new WaitForSeconds(seconds);
+        }
+
+        // Runs the routines side by side and waits for all of them.
+        IEnumerator Together(params IEnumerator[] routines)
+        {
+            var running = Array.ConvertAll(routines, StartCoroutine);
+            foreach (var r in running) yield return r;
+        }
+
+        // The page's planks, top to bottom; with availableOnly, only those that apply now (no Continue before the first
+        // level, no Quit where apps don't quit).
+        List<ScreenAnchor> Planks(GameObject page, bool availableOnly)
+        {
+            var planks = new List<ScreenAnchor>();
+            foreach (Transform child in page.transform)
+            {
+                if (!child.TryGetComponent<ScreenAnchor>(out var anchor)) continue;
+                if (availableOnly && child == continueButton.transform && !(Progress.HasStarted && catalog.Count > 0)) continue;
+                if (availableOnly && child == quitButton.transform && !CanQuit) continue;
+                planks.Add(anchor);
+            }
+            return planks;
+        }
+
+        // Stacks the page's available planks down from First Plank, so a missing one leaves no gap, and returns them.
+        List<ScreenAnchor> LayOut(GameObject page)
+        {
+            var planks = Planks(page, true);
+            for (int row = 0; row < planks.Count; row++)
+                planks[row].ViewportPoint = firstPlank - new Vector2(0f, plankStep * row);
+            return planks;
         }
 
         void UpdateSettingsLabels()
@@ -151,20 +236,6 @@ namespace BlocksEscape
         static void SetLabel(WorldButton button, string text)
         {
             if (button != null && button.TryGetComponent<WorldLabel>(out var label)) label.Text = text;
-        }
-
-        // Stacks the page's visible planks down from First Plank, so a hidden one leaves no gap.
-        void LayOut(GameObject page)
-        {
-            int row = 0;
-            foreach (Transform child in page.transform)
-                if (child.gameObject.activeSelf && child.TryGetComponent<ScreenAnchor>(out var anchor))
-                    anchor.ViewportPoint = firstPlank - new Vector2(0f, plankStep * row++);
-        }
-
-        static void Show(Component c, bool visible)
-        {
-            if (c != null) c.gameObject.SetActive(visible);
         }
 
         static void Quit()

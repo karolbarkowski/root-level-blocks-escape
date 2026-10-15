@@ -29,7 +29,7 @@ namespace BlocksEscape
         {
             _time += Time.deltaTime;
             float t = Mathf.Clamp01((_time - _delay) / Duration);
-            Apply(Mathf.LerpUnclamped(_from, 1f, EaseOutBack(t)));
+            Apply(Mathf.LerpUnclamped(_from, 1f, Ease.OutBack(t)));
             if (t >= 1f) Destroy(this);
         }
 
@@ -44,13 +44,6 @@ namespace BlocksEscape
             p.y = _bottom + _pivotHeight * height;
             t.localPosition = p;
             _writtenY = p.y;
-        }
-
-        static float EaseOutBack(float t)
-        {
-            const float c = 1.4f;
-            float u = t - 1f;
-            return 1f + (c + 1f) * u * u * u + c * u * u;
         }
     }
 }
