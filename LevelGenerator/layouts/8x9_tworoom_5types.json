@@ -1,0 +1,177 @@
+{
+  "width": 10,
+  "height": 11,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 1,
+      "y": 0
+    },
+    {
+      "x": 4,
+      "y": 0
+    },
+    {
+      "x": 5,
+      "y": 0
+    },
+    {
+      "x": 8,
+      "y": 0
+    },
+    {
+      "x": 0,
+      "y": 1
+    },
+    {
+      "x": 9,
+      "y": 1
+    },
+    {
+      "x": 0,
+      "y": 3
+    },
+    {
+      "x": 9,
+      "y": 3
+    },
+    {
+      "x": 1,
+      "y": 4
+    },
+    {
+      "x": 2,
+      "y": 4
+    },
+    {
+      "x": 7,
+      "y": 4
+    },
+    {
+      "x": 8,
+      "y": 4
+    },
+    {
+      "x": 1,
+      "y": 5
+    },
+    {
+      "x": 2,
+      "y": 5
+    },
+    {
+      "x": 7,
+      "y": 5
+    },
+    {
+      "x": 8,
+      "y": 5
+    },
+    {
+      "x": 0,
+      "y": 6
+    },
+    {
+      "x": 9,
+      "y": 6
+    },
+    {
+      "x": 0,
+      "y": 7
+    },
+    {
+      "x": 9,
+      "y": 7
+    },
+    {
+      "x": 0,
+      "y": 9
+    },
+    {
+      "x": 9,
+      "y": 9
+    },
+    {
+      "x": 1,
+      "y": 10
+    },
+    {
+      "x": 4,
+      "y": 10
+    },
+    {
+      "x": 5,
+      "y": 10
+    },
+    {
+      "x": 8,
+      "y": 10
+    }
+  ],
+  "gates": [
+    {
+      "id": "sheep-1",
+      "side": "left",
+      "start": 2,
+      "length": 1,
+      "type": "sheep",
+      "line": 0
+    },
+    {
+      "id": "chicken-1",
+      "side": "top",
+      "start": 2,
+      "length": 2,
+      "type": "chicken",
+      "line": 0
+    },
+    {
+      "id": "horse-1",
+      "side": "top",
+      "start": 6,
+      "length": 2,
+      "type": "horse",
+      "line": 0
+    },
+    {
+      "id": "dog-1",
+      "side": "right",
+      "start": 2,
+      "length": 1,
+      "type": "dog",
+      "line": 9
+    },
+    {
+      "id": "cow-1",
+      "side": "right",
+      "start": 8,
+      "length": 1,
+      "type": "cow",
+      "line": 9
+    },
+    {
+      "id": "sheep-2",
+      "side": "bottom",
+      "start": 6,
+      "length": 2,
+      "type": "sheep",
+      "line": 10
+    },
+    {
+      "id": "chicken-2",
+      "side": "bottom",
+      "start": 2,
+      "length": 2,
+      "type": "chicken",
+      "line": 10
+    },
+    {
+      "id": "horse-2",
+      "side": "left",
+      "start": 8,
+      "length": 1,
+      "type": "horse",
+      "line": 0
+    }
+  ]
+}

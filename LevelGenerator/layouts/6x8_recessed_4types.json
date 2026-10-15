@@ -1,0 +1,97 @@
+{
+  "width": 8,
+  "height": 10,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 2,
+      "y": 1
+    },
+    {
+      "x": 3,
+      "y": 1
+    },
+    {
+      "x": 5,
+      "y": 1
+    },
+    {
+      "x": 1,
+      "y": 2
+    },
+    {
+      "x": 6,
+      "y": 2
+    },
+    {
+      "x": 1,
+      "y": 3
+    },
+    {
+      "x": 6,
+      "y": 3
+    },
+    {
+      "x": 1,
+      "y": 6
+    },
+    {
+      "x": 6,
+      "y": 6
+    },
+    {
+      "x": 1,
+      "y": 7
+    },
+    {
+      "x": 6,
+      "y": 7
+    },
+    {
+      "x": 2,
+      "y": 8
+    },
+    {
+      "x": 3,
+      "y": 8
+    },
+    {
+      "x": 5,
+      "y": 8
+    }
+  ],
+  "gates": [
+    {
+      "id": "sheep-1",
+      "side": "top",
+      "start": 4,
+      "length": 1,
+      "type": "sheep",
+      "line": 0
+    },
+    {
+      "id": "chicken-1",
+      "side": "right",
+      "start": 4,
+      "length": 2,
+      "type": "chicken",
+      "line": 7
+    },
+    {
+      "id": "horse-1",
+      "side": "bottom",
+      "start": 4,
+      "length": 1,
+      "type": "horse",
+      "line": 9
+    },
+    {
+      "id": "dog-1",
+      "side": "left",
+      "start": 4,
+      "length": 2,
+      "type": "dog",
+      "line": 0
+    }
+  ]
+}

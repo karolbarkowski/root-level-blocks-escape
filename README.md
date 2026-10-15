@@ -38,7 +38,7 @@ This restores packages from nuget.org, builds the solution in Release and runs t
 1. Draw a layout in the [layout editor](#layout-editor) and save the export to `LevelGenerator/layouts/`.
 2. Generate levels, from `LevelGenerator/`:
    ```powershell
-   dotnet bin/Release/net10.0/LevelGenerator.dll generate --layout layouts/classic_6x7.json --maxCandidates 3 --out levels
+   dotnet bin/Release/net10.0/LevelGenerator.dll generate --layout layouts/6x6_rect_5types.json --maxCandidates 3 --out levels
    ```
 3. Sort `levels/` by name to see them in difficulty order. Open the `.html` files to watch the solution replay.
 
@@ -72,20 +72,31 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 
 ### Sample layouts
 
-`LevelGenerator/layouts/` contains eight layouts sized after boards in the genre. They range from compact 6×7-style boards with 2-cell gates, two per side, to irregular 9×11 shapes with towers, recessed gates and corridors. With the defaults, levels have about 12 blocks on 6×7, averaging 2.4–3 cells, with two or three special blocks.
+`LevelGenerator/layouts/` holds 120 enclosed layouts written by `make-layouts.mjs` (`node make-layouts.mjs` from `LevelGenerator/` rewrites them). File names are `<width>x<height>_<shape>_<N>types.json`: the floor's bounding box (the canvas adds one wall cell on every side), the shape, and how many block types the gates use. Each shape comes in five sizes between 5×5 and 8×10, each with 4, 5, 6 and 7 types:
 
-| Layout | Floor cells | Gates / types | Shape | Sample difficulty | Time per level |
-|---|---:|---:|---|---:|---:|
-| `starter_4x5` | 20 | 4 / 4 | rectangle, one gate per side | 303–589 | ~1 s |
-| `classic_5x6` | 30 | 5 / 4 | rectangle | 189–328 | ~1 s |
-| `classic_6x7` | 42 | 8 / 5 | rectangle, two 2-cell gates per side | 166–262 | ~1 s |
-| `notched_6x8` | 44 | 6 / 6 | cut corners | 480–568 | ~6 s |
-| `cross_8x8` | 48 | 8 / 7 | plus shape, four recessed corner gates | 269–343 | ~2 s |
-| `hourglass_7x11` | 71 | 8 / 7 | two rooms joined by a 5-wide waist | 289–372 | ~6 s |
-| `pillars_7x7` | 45 | 8 / 7 | interior pillars forming lanes | ~340 | seconds to minutes |
-| `fortress_9x11` | 77 | 10 / 7 | two towers, side gates, bottom corridor | ~350 | seconds to minutes |
+| Shape | Sizes | What it is |
+|---|---|---|
+| `rect` | 5x5, 5x7, 6x6, 7x8, 8x10 | plain rectangle |
+| `notched` | 5x6, 6x7, 6x8, 7x9, 8x10 | corners cut by 1 cell (2 from 7×7 up) |
+| `pillars` | 5x7, 6x7, 7x7, 7x9, 8x9 | single-cell interior pillars forming lanes |
+| `tworoom` | 5x7, 6x8, 7x9, 8x9, 8x10 | two rooms joined by a narrower waist |
+| `recessed` | 6x8, 7x7, 7x8, 8x9, 8x10 | room one cell smaller on every side; every gate sits at the end of a 1-cell alcove |
+| `mixed` | 6x8 (6x9 for 7 types), 7x9, 7x8, 8x8, 8x10 | alcove gates top and bottom, cut corners, centre pillar |
 
-Sample difficulties come from two levels each with `--seed 3`. Pillars and fortress times vary most with the seed: narrow lanes leave few ways to keep blocks away from their exits. The starter scores are high because its tiny board leaves almost no free space.
+Gates sit on the outline. There are about one per 4.5 perimeter cells, and never fewer than the type count. They are 2 cells wide where a side has room, and neighbouring gates get different types. The type set rotates through `block-types.json` from layout to layout, so every animal appears. A few layouts use another rotation or one gate more or fewer (`OVERRIDES` in the script), because their default gates couldn't reach the generator's default forced opening. Smaller recessed and mixed boards were dropped for the same reason.
+
+Every layout generates levels with the default options. `generate-all.mjs` fills `levels/<layout>/` with 10 levels per layout, retrying slow layouts with fresh seeds and longer limits and deleting duplicate levels. Difficulty of those 1,200 levels:
+
+| Shape | Difficulty range | Median |
+|---|---|---:|
+| `rect` | 130–684 | 294 |
+| `notched` | 121–735 | 330 |
+| `pillars` | 139–666 | 272 |
+| `tworoom` | 121–760 | 270 |
+| `recessed` | 111–741 | 344 |
+| `mixed` | 135–682 | 289 |
+
+Most layouts produce a level within seconds. Pillars and mixed boards with 6–7 types on 7×9–8×9 can take 10+ minutes per level: narrow lanes and alcoves leave few ways to keep blocks away from their exits.
 
 ### Difficulty and file names
 

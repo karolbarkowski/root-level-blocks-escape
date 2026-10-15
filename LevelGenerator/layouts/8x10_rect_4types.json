@@ -1,0 +1,153 @@
+{
+  "width": 10,
+  "height": 12,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 1,
+      "y": 0
+    },
+    {
+      "x": 4,
+      "y": 0
+    },
+    {
+      "x": 5,
+      "y": 0
+    },
+    {
+      "x": 8,
+      "y": 0
+    },
+    {
+      "x": 0,
+      "y": 1
+    },
+    {
+      "x": 9,
+      "y": 1
+    },
+    {
+      "x": 0,
+      "y": 2
+    },
+    {
+      "x": 9,
+      "y": 2
+    },
+    {
+      "x": 0,
+      "y": 5
+    },
+    {
+      "x": 9,
+      "y": 5
+    },
+    {
+      "x": 0,
+      "y": 6
+    },
+    {
+      "x": 9,
+      "y": 6
+    },
+    {
+      "x": 0,
+      "y": 7
+    },
+    {
+      "x": 9,
+      "y": 7
+    },
+    {
+      "x": 0,
+      "y": 10
+    },
+    {
+      "x": 9,
+      "y": 10
+    },
+    {
+      "x": 1,
+      "y": 11
+    },
+    {
+      "x": 4,
+      "y": 11
+    },
+    {
+      "x": 5,
+      "y": 11
+    },
+    {
+      "x": 8,
+      "y": 11
+    }
+  ],
+  "gates": [
+    {
+      "id": "cat-1",
+      "side": "left",
+      "start": 3,
+      "length": 2,
+      "type": "cat",
+      "line": 0
+    },
+    {
+      "id": "sheep-1",
+      "side": "top",
+      "start": 2,
+      "length": 2,
+      "type": "sheep",
+      "line": 0
+    },
+    {
+      "id": "chicken-1",
+      "side": "top",
+      "start": 6,
+      "length": 2,
+      "type": "chicken",
+      "line": 0
+    },
+    {
+      "id": "horse-1",
+      "side": "right",
+      "start": 3,
+      "length": 2,
+      "type": "horse",
+      "line": 9
+    },
+    {
+      "id": "cat-2",
+      "side": "right",
+      "start": 8,
+      "length": 2,
+      "type": "cat",
+      "line": 9
+    },
+    {
+      "id": "sheep-2",
+      "side": "bottom",
+      "start": 6,
+      "length": 2,
+      "type": "sheep",
+      "line": 11
+    },
+    {
+      "id": "chicken-2",
+      "side": "bottom",
+      "start": 2,
+      "length": 2,
+      "type": "chicken",
+      "line": 11
+    },
+    {
+      "id": "horse-2",
+      "side": "left",
+      "start": 8,
+      "length": 2,
+      "type": "horse",
+      "line": 0
+    }
+  ]
+}

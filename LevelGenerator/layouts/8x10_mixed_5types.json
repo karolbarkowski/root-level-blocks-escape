@@ -1,0 +1,161 @@
+{
+  "width": 10,
+  "height": 12,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 2,
+      "y": 1
+    },
+    {
+      "x": 4,
+      "y": 1
+    },
+    {
+      "x": 5,
+      "y": 1
+    },
+    {
+      "x": 7,
+      "y": 1
+    },
+    {
+      "x": 1,
+      "y": 2
+    },
+    {
+      "x": 8,
+      "y": 2
+    },
+    {
+      "x": 0,
+      "y": 3
+    },
+    {
+      "x": 9,
+      "y": 3
+    },
+    {
+      "x": 0,
+      "y": 4
+    },
+    {
+      "x": 4,
+      "y": 5
+    },
+    {
+      "x": 5,
+      "y": 5
+    },
+    {
+      "x": 9,
+      "y": 5
+    },
+    {
+      "x": 4,
+      "y": 6
+    },
+    {
+      "x": 5,
+      "y": 6
+    },
+    {
+      "x": 9,
+      "y": 6
+    },
+    {
+      "x": 0,
+      "y": 7
+    },
+    {
+      "x": 0,
+      "y": 8
+    },
+    {
+      "x": 9,
+      "y": 8
+    },
+    {
+      "x": 1,
+      "y": 9
+    },
+    {
+      "x": 8,
+      "y": 9
+    },
+    {
+      "x": 2,
+      "y": 10
+    },
+    {
+      "x": 4,
+      "y": 10
+    },
+    {
+      "x": 5,
+      "y": 10
+    },
+    {
+      "x": 7,
+      "y": 10
+    }
+  ],
+  "gates": [
+    {
+      "id": "horse-1",
+      "side": "top",
+      "start": 3,
+      "length": 1,
+      "type": "horse",
+      "line": 0
+    },
+    {
+      "id": "dog-1",
+      "side": "top",
+      "start": 6,
+      "length": 1,
+      "type": "dog",
+      "line": 0
+    },
+    {
+      "id": "cow-1",
+      "side": "right",
+      "start": 4,
+      "length": 1,
+      "type": "cow",
+      "line": 9
+    },
+    {
+      "id": "pig-1",
+      "side": "right",
+      "start": 7,
+      "length": 1,
+      "type": "pig",
+      "line": 9
+    },
+    {
+      "id": "cat-1",
+      "side": "bottom",
+      "start": 6,
+      "length": 1,
+      "type": "cat",
+      "line": 11
+    },
+    {
+      "id": "horse-2",
+      "side": "bottom",
+      "start": 3,
+      "length": 1,
+      "type": "horse",
+      "line": 11
+    },
+    {
+      "id": "dog-2",
+      "side": "left",
+      "start": 5,
+      "length": 2,
+      "type": "dog",
+      "line": 0
+    }
+  ]
+}

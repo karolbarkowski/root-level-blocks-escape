@@ -1,0 +1,121 @@
+{
+  "width": 10,
+  "height": 12,
+  "boundaryMode": "enclosed",
+  "walls": [
+    {
+      "x": 2,
+      "y": 1
+    },
+    {
+      "x": 3,
+      "y": 1
+    },
+    {
+      "x": 6,
+      "y": 1
+    },
+    {
+      "x": 7,
+      "y": 1
+    },
+    {
+      "x": 1,
+      "y": 2
+    },
+    {
+      "x": 8,
+      "y": 2
+    },
+    {
+      "x": 1,
+      "y": 5
+    },
+    {
+      "x": 8,
+      "y": 5
+    },
+    {
+      "x": 1,
+      "y": 6
+    },
+    {
+      "x": 8,
+      "y": 6
+    },
+    {
+      "x": 1,
+      "y": 9
+    },
+    {
+      "x": 8,
+      "y": 9
+    },
+    {
+      "x": 2,
+      "y": 10
+    },
+    {
+      "x": 3,
+      "y": 10
+    },
+    {
+      "x": 6,
+      "y": 10
+    },
+    {
+      "x": 7,
+      "y": 10
+    }
+  ],
+  "gates": [
+    {
+      "id": "horse-1",
+      "side": "left",
+      "start": 3,
+      "length": 2,
+      "type": "horse",
+      "line": 0
+    },
+    {
+      "id": "dog-1",
+      "side": "top",
+      "start": 4,
+      "length": 2,
+      "type": "dog",
+      "line": 0
+    },
+    {
+      "id": "cow-1",
+      "side": "right",
+      "start": 3,
+      "length": 2,
+      "type": "cow",
+      "line": 9
+    },
+    {
+      "id": "pig-1",
+      "side": "right",
+      "start": 7,
+      "length": 2,
+      "type": "pig",
+      "line": 9
+    },
+    {
+      "id": "horse-2",
+      "side": "bottom",
+      "start": 4,
+      "length": 2,
+      "type": "horse",
+      "line": 11
+    },
+    {
+      "id": "dog-2",
+      "side": "left",
+      "start": 7,
+      "length": 2,
+      "type": "dog",
+      "line": 0
+    }
+  ]
+}
