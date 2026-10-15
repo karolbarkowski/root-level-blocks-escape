@@ -1,5 +1,6 @@
 # Generates the scenery and in-world UI props around the board: trees, bushes, rocks, flowers, grass, a pond, a barn
-# corner, a bucket, a water tub, a butterfly, the level sign with its digits, and the back button.
+# corner, a bucket, a water tub, a butterfly, the level sign with its digits, the back button, and the menu's planks
+# and letters.
 # Run inside Blender:  exec(open(r"...\Blender\scenery.py").read()); build_all()   (or build("Tree"), export_all())
 #
 # Blender units: 1 m = 1 cell. Pivot = centre of the prop's footprint on the ground (z = 0). Fronts face -Y, which is
@@ -360,6 +361,21 @@ def digits(col):
         made.append(join(f"Digit_{d}", [front, back], col))
     return made
 
+def letters(col):
+    """Capital letters A-Z in the same style as the digits, for the menu's words."""
+    made = []
+    for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        front = glyph(c, "cream", 0.035, 0.05, 0.03, 0.0)
+        back = glyph(c, "letter_edge", 0.085, 0.03, 0.02, 0.05)
+        made.append(join(f"Letter_{c}", [front, back], col))
+    return made
+
+def menu_plank(col):
+    """Menu button: a wide plank lying on the ground like the back button (top at z = 0.30); WorldLabel lays the
+    word on top of it."""
+    return join("MenuPlank", [box("wood", (0, 0, 0.14), (3.6, 1.0, 0.28), bevel=0.14, segments=4),
+                              box("wood_light", (0, 0, 0.27), (3.42, 0.82, 0.06), bevel=0.06, segments=3)], col)
+
 def sleep_bubble(col):
     """Badge floating over a frozen animal: a soft blue disc standing up (front -Y, pivot at its centre), with
     "z z" rising off its upper right; Block puts the turns-to-wake digits on its front."""
@@ -401,7 +417,7 @@ BUILDERS = {
     "FlowersLilac": lambda c: flower_clump(c, "lilac", 35, "FlowersLilac"),
     "Grass": lambda c: grass(c, 6), "Grass2": lambda c: grass(c, 16, "Grass2"),
     "Pond": pond, "Barn": barn, "Bucket": bucket, "Tub": tub, "Butterfly": butterfly,
-    "Sign": sign, "BackButton": back_button, "SleepBubble": sleep_bubble, "AxisArrow": axis_arrow,
+    "Sign": sign, "BackButton": back_button, "MenuPlank": menu_plank, "SleepBubble": sleep_bubble, "AxisArrow": axis_arrow,
 }
 
 def _rename(ob, name): ob.name = name; ob.data.name = name; return ob
@@ -410,6 +426,7 @@ def build(name):
     scene(); palette_material()
     col = collection(name)
     if name == "Digits": return digits(col)
+    if name == "Letters": return letters(col)
     return BUILDERS[name](col)
 
 def export(name):
@@ -436,7 +453,7 @@ def export_fbx(ob, path):
 
 def build_all(do_export=True):
     palette_image()
-    for name in list(BUILDERS) + ["Digits"]:
+    for name in list(BUILDERS) + ["Digits", "Letters"]:
         build(name)
         if do_export: export(name)
-    print("built", len(BUILDERS) + 1)
+    print("built", len(BUILDERS) + 2)

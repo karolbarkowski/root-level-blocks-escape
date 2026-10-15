@@ -3,7 +3,8 @@ using UnityEngine;
 namespace BlocksEscape
 {
     // Plays the game's sounds: the looping background music from the start, and now and then an animal's voice when the
-    // player picks up its block (a random clip from that block type's sounds, see GameSounds).
+    // player picks up its block (a random clip from that block type's sounds, see GameSounds). Follows the player's
+    // music and sound switches in GameSettings.
     [DisallowMultipleComponent]
     public sealed class SoundPlayer : MonoBehaviour
     {
@@ -30,11 +31,19 @@ namespace BlocksEscape
         void OnEnable()
         {
             if (dragger != null) dragger.Grabbed += OnGrabbed;
+            GameSettings.Changed += ApplySettings;
+            ApplySettings();
         }
 
         void OnDisable()
         {
             if (dragger != null) dragger.Grabbed -= OnGrabbed;
+            GameSettings.Changed -= ApplySettings;
+        }
+
+        void ApplySettings()
+        {
+            if (_music != null) _music.mute = !GameSettings.MusicOn;
         }
 
         void Start()
@@ -46,7 +55,7 @@ namespace BlocksEscape
 
         void OnGrabbed(int block)
         {
-            if (sounds == null || board == null || board.Rules == null || Random.value >= pickupChance) return;
+            if (!GameSettings.SoundOn || sounds == null || board == null || board.Rules == null || Random.value >= pickupChance) return;
             var types = board.Rules.RemainingTypes(block);
             if (types == null || types.Length == 0) return; // neutral blocks have no voice
             var clips = sounds.ClipsOf(types[0]); // the animal on the outside

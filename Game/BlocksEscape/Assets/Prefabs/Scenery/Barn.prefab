@@ -1,37 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &144561872034286249
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5213883345575406960}
-  m_Layer: 0
-  m_Name: Hinge Barn_DoorR
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5213883345575406960
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144561872034286249}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.60021764, y: 0.049999952, z: -1.3775}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3758410931509538671}
-  m_Father: {fileID: 7662114544391356177}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3199797038252897526
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7662114544391356177}
+  - {fileID: 2169741007234846385}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &333901223914625540
@@ -82,8 +50,9 @@ MonoBehaviour:
   particleColor: {r: 0, g: 0, b: 0, a: 0}
   particleColor2: {r: 0, g: 0, b: 0, a: 0}
   particleCount: 0
+  hitScale: 1
   hopHeight: 0.6
---- !u!1 &5932652730623300202
+--- !u!1 &5681470616106332496
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,7 +60,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5649217104018088373}
+  - component: {fileID: 1189263817192586472}
+  m_Layer: 0
+  m_Name: Hinge Barn_DoorR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1189263817192586472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5681470616106332496}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.60021764, y: 0.049999952, z: -1.3775}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5071709067520847143}
+  m_Father: {fileID: 2169741007234846385}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8741459779391232270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3623744007838627844}
   m_Layer: 0
   m_Name: Hinge Barn_DoorL
   m_TagString: Untagged
@@ -99,155 +100,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5649217104018088373
+--- !u!4 &3623744007838627844
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5932652730623300202}
+  m_GameObject: {fileID: 8741459779391232270}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.6002179, y: 0.049999952, z: -1.3775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5027791106382927980}
-  m_Father: {fileID: 7662114544391356177}
+  - {fileID: 7067166304044193881}
+  m_Father: {fileID: 2169741007234846385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &3720597441992411268
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 5213883345575406960}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.60021764
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.049999952
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.3775
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 5969fb4fa9466224ba8895165af8101e, type: 2}
-    - target: {fileID: 919132149155446097, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-      propertyPath: m_Name
-      value: Barn_DoorR
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
---- !u!4 &3758410931509538671 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
-  m_PrefabInstance: {fileID: 3720597441992411268}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &4777461731774431111
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 5649217104018088373}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.6002179
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.049999952
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.3775
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 5969fb4fa9466224ba8895165af8101e, type: 2}
-    - target: {fileID: 919132149155446097, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-      propertyPath: m_Name
-      value: Barn_DoorL
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
---- !u!4 &5027791106382927980 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
-  m_PrefabInstance: {fileID: 4777461731774431111}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &7917317048339896570
+--- !u!1001 &1843888207681923418
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -308,14 +177,146 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45d401e5a97593f4daf65c420e475438, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5649217104018088373}
+      addedObject: {fileID: 3623744007838627844}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45d401e5a97593f4daf65c420e475438, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5213883345575406960}
+      addedObject: {fileID: 1189263817192586472}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45d401e5a97593f4daf65c420e475438, type: 3}
---- !u!4 &7662114544391356177 stripped
+--- !u!4 &2169741007234846385 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45d401e5a97593f4daf65c420e475438, type: 3}
-  m_PrefabInstance: {fileID: 7917317048339896570}
+  m_PrefabInstance: {fileID: 1843888207681923418}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4749307473163733708
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1189263817192586472}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.60021764
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.049999952
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.3775
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5969fb4fa9466224ba8895165af8101e, type: 2}
+    - target: {fileID: 919132149155446097, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+      propertyPath: m_Name
+      value: Barn_DoorR
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+--- !u!4 &5071709067520847143 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f4434ec30e3c7e64898855dcd1fb37b2, type: 3}
+  m_PrefabInstance: {fileID: 4749307473163733708}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7320925765499322290
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3623744007838627844}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.6002179
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.049999952
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.3775
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5969fb4fa9466224ba8895165af8101e, type: 2}
+    - target: {fileID: 919132149155446097, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+      propertyPath: m_Name
+      value: Barn_DoorL
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+--- !u!4 &7067166304044193881 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7f07d390d7c033449a8c4e93eb7d67ad, type: 3}
+  m_PrefabInstance: {fileID: 7320925765499322290}
   m_PrefabAsset: {fileID: 0}

@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6641720310624528867}
+  - {fileID: 483669588303578909}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1974197086330045782
@@ -50,8 +50,9 @@ MonoBehaviour:
   particleColor: {r: 0.36, g: 0.62, b: 0.25, a: 1}
   particleColor2: {r: 0.55, g: 0.75, b: 0.3, a: 1}
   particleCount: 7
+  hitScale: 1
   hopHeight: 0.6
---- !u!1001 &6604133113557208584
+--- !u!1001 &89209498451042550
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -112,8 +113,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5706387031cf4f4d8cd2f2c681a1fe7, type: 3}
---- !u!4 &6641720310624528867 stripped
+--- !u!4 &483669588303578909 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e5706387031cf4f4d8cd2f2c681a1fe7, type: 3}
-  m_PrefabInstance: {fileID: 6604133113557208584}
+  m_PrefabInstance: {fileID: 89209498451042550}
   m_PrefabAsset: {fileID: 0}

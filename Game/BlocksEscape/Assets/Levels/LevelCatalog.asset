@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc355e3d3cf73442be6a71ef3ad545b, type: 3}
+  m_Name: LevelCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.LevelCatalog
+  levels:
+  - {fileID: 4900000, guid: 0ecd400dee03e5b45820444fa2ea1fe3, type: 3}
+  - {fileID: 4900000, guid: 57d1670900d829048879595767328dc7, type: 3}
+  - {fileID: 4900000, guid: 521f35eb82e9de548b3fe243724592fb, type: 3}
+  - {fileID: 4900000, guid: 7394bb98cc6429c4cbdd00f769e68581, type: 3}
+  - {fileID: 4900000, guid: 7c9575ac422480e4d8fb49cfb33fde61, type: 3}
+  - {fileID: 4900000, guid: 3646e962d32aa9c4c82916428b538c73, type: 3}

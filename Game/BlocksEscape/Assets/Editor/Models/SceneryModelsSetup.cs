@@ -8,7 +8,8 @@ namespace BlocksEscape.EditorTools
     // Turns the models exported by Game/BlocksEscape/Blender/scenery.py (Prefabs/Scenery/*.fbx + Scenery_Palette.png)
     // into prefabs that share one URP Lit material. The palette texture is a grid of flat colour swatches the meshes are
     // UV-mapped into, so it is imported without filtering or mipmaps to keep the swatches from bleeding.
-    // The back button gets a collider and a WorldButton; the sign gets a LevelSign wired to the digit prefabs.
+    // The back button and the menu plank get a collider and a WorldButton; the sign gets a LevelSign wired to the digit
+    // prefabs, and the plank a WorldLabel wired to the letters and digits.
     // A model named <Prop>_<Part>.fbx is a moving part of <Prop> (the barn's door leaves): it is hung on a hinge inside
     // that prop's prefab instead of becoming a prefab. Props that answer taps get a TapReaction (see Reaction).
     static class SceneryModelsSetup
@@ -56,6 +57,7 @@ namespace BlocksEscape.EditorTools
             EditorUtility.SetDirty(material);
 
             var digits = new GameObject[10];
+            var letters = new GameObject[26];
             var models = Directory.GetFiles(Dir, "*.fbx").Select(p => p.Replace('\\', '/')).OrderBy(p => p).ToList();
             bool IsPart(string modelName)
             {
@@ -87,7 +89,7 @@ namespace BlocksEscape.EditorTools
                 foreach (var r in model.GetComponentsInChildren<MeshRenderer>()) r.sharedMaterial = material;
                 Configure(root, name);
 
-                if (name == "BackButton")
+                if (name is "BackButton" or "MenuPlank")
                 {
                     var collider = model.AddComponent<BoxCollider>();
                     collider.size += new Vector3(0.1f, 0.3f, 0.1f); // a little forgiving for fingers
@@ -97,23 +99,34 @@ namespace BlocksEscape.EditorTools
                 if (exists) PrefabUtility.UnloadPrefabContents(root);
                 else Object.DestroyImmediate(root);
                 if (name.StartsWith("Digit_") && int.TryParse(name.Substring(6), out int d) && d is >= 0 and <= 9) digits[d] = prefab;
+                if (name.Length == 8 && name.StartsWith("Letter_") && name[7] is >= 'A' and <= 'Z') letters[name[7] - 'A'] = prefab;
             }
 
-            // The sign needs the digits, so wire it last.
-            var signPath = $"{Dir}/Sign.prefab";
-            var sign = PrefabUtility.LoadPrefabContents(signPath);
-            var levelSign = sign.GetComponent<LevelSign>();
-            if (levelSign == null) levelSign = sign.AddComponent<LevelSign>();
-            var so = new SerializedObject(levelSign);
-            var array = so.FindProperty("digits");
-            array.arraySize = 10;
-            for (int i = 0; i < 10; i++) array.GetArrayElementAtIndex(i).objectReferenceValue = digits[i];
-            so.ApplyModifiedPropertiesWithoutUndo();
-            PrefabUtility.SaveAsPrefabAsset(sign, signPath);
-            PrefabUtility.UnloadPrefabContents(sign);
+            // The sign and the plank need the glyphs, so wire them last.
+            WireGlyphs<LevelSign>("Sign", ("digits", digits));
+            WireGlyphs<WorldLabel>("MenuPlank", ("digits", digits), ("letters", letters));
 
             AssetDatabase.SaveAssets();
             Debug.Log("Built scenery prefabs.", material);
+        }
+
+        // Adds T to the prop's prefab if missing and fills its glyph arrays.
+        static void WireGlyphs<T>(string prop, params (string field, GameObject[] glyphs)[] arrays) where T : Component
+        {
+            var path = $"{Dir}/{prop}.prefab";
+            var root = PrefabUtility.LoadPrefabContents(path);
+            var component = root.GetComponent<T>();
+            if (component == null) component = root.AddComponent<T>();
+            var so = new SerializedObject(component);
+            foreach (var (field, glyphs) in arrays)
+            {
+                var array = so.FindProperty(field);
+                array.arraySize = glyphs.Length;
+                for (int i = 0; i < glyphs.Length; i++) array.GetArrayElementAtIndex(i).objectReferenceValue = glyphs[i];
+            }
+            so.ApplyModifiedPropertiesWithoutUndo();
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            PrefabUtility.UnloadPrefabContents(root);
         }
 
         // A part modelled in its owner's coordinates, hung on a hinge at its outer vertical edge (the side away from the

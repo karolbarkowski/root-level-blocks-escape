@@ -40,6 +40,8 @@ namespace BlocksEscape
         [Tooltip("Glow over the gates a held block fits (Shaders/GateGlow.shader).")]
         [SerializeField] Material gateGlow;
         [SerializeField] BlockExitSettings exit = new();
+        [Tooltip("Build the assigned level when Play mode starts. Off when GameFlow picks the levels.")]
+        [SerializeField] bool buildOnStart = true;
         [SerializeField, HideInInspector] Transform content; // everything spawned by Initialize
 
         BoardRules _rules;
@@ -397,7 +399,14 @@ namespace BlocksEscape
                     if (Application.isPlaying) Destroy(filter.sharedMesh);
                     else DestroyImmediate(filter.sharedMesh);
                 }
-                if (Application.isPlaying) Destroy(root);
+                if (Application.isPlaying)
+                {
+                    // Destroy waits for the end of the frame: hide and detach the old level now, so a level built or
+                    // framed in the same frame doesn't see it.
+                    root.SetActive(false);
+                    root.transform.SetParent(null, false);
+                    Destroy(root);
+                }
                 else DestroyImmediate(root);
             }
             content = null;
@@ -436,7 +445,7 @@ namespace BlocksEscape
         // The spawned level in the scene has no live state after loading, so Play rebuilds it from the level file.
         void Start()
         {
-            if (Application.isPlaying && level != null) Initialize();
+            if (Application.isPlaying && buildOnStart && level != null) Initialize();
         }
 
         void OnValidate() => UpdateSurface();
