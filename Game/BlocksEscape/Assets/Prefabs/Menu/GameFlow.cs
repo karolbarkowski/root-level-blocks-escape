@@ -51,6 +51,11 @@ namespace BlocksEscape
         [SerializeField, Min(0.01f)] float blockPopTime = 0.25f;
         [Tooltip("Seconds the blocks' pop-in takes to sweep from the top left corner of the board to the bottom right.")]
         [SerializeField, Min(0f)] float blockSweep = 0.35f;
+        [Tooltip("Seconds the pen floor takes to grow out of the meadow; the fence starts rising halfway through.")]
+        [SerializeField, Min(0.01f)] float floorGrowTime = 0.35f;
+        [SerializeField, Min(0.01f)] float fencePopTime = 0.25f;
+        [Tooltip("Seconds the fence's pop-in takes to sweep from the top left corner of the board to the bottom right.")]
+        [SerializeField, Min(0f)] float fenceSweep = 0.3f;
 
         [Header("Level solved")]
         [SerializeField] Celebration celebration;
@@ -147,8 +152,7 @@ namespace BlocksEscape
             _level = -1;
             var hide = new List<ScreenAnchor> { _sign, _back };
             hide.AddRange(Planks(settingsPage, false));
-            float blocks = BlockAppear.Sweep(board, false, blockSweep * 0.5f, popOutTime);
-            yield return Together(Pop(hide, false), Wait(blocks));
+            yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
             board.Clear();
             boardCamera.Frame(); // the cleared board has its own framing; the scenery and planks follow it
             yield return Pop(MainMenu(true), true);
@@ -170,14 +174,25 @@ namespace BlocksEscape
             _level = index;
             Progress.LastPlayed = index;
             // The back button stays when going from level to level; the sign pops out and back in with the new number.
-            yield return Pop(new List<ScreenAnchor>(MainMenu(false)) { _sign }, false);
+            // From level to level the old pen comes down first (its blocks are usually gone already).
+            yield return Together(Pop(new List<ScreenAnchor>(MainMenu(false)) { _sign }, false), Wait(TakeDownBoard()));
             levelSign.Number = index + 1;
             board.Level = catalog[index];
             board.Initialize(LevelData.Parse(catalog[index].text));
-            float blocks = BlockAppear.Sweep(board, true, blockSweep, blockPopTime);
+            // The pen goes up first, the animals pop in once the floor is mostly there.
+            float pen = BoardAppear.Sweep(board, true, floorGrowTime, fenceSweep, fencePopTime);
+            float blocks = BlockAppear.Sweep(board, true, blockSweep, blockPopTime, floorGrowTime * 0.6f);
             var show = new List<ScreenAnchor> { _sign };
             if (!_back.gameObject.activeSelf) show.Add(_back);
-            yield return Together(Pop(show, true), Wait(blocks));
+            yield return Together(Pop(show, true), Wait(Mathf.Max(pen, blocks)));
+        }
+
+        // Shrinks the blocks into the board, then takes the fence and the floor down. Returns the seconds it takes.
+        float TakeDownBoard()
+        {
+            float blocks = BlockAppear.Sweep(board, false, blockSweep * 0.5f, popOutTime);
+            float pen = BoardAppear.Sweep(board, false, floorGrowTime * 0.6f, fenceSweep * 0.5f, popOutTime, blocks * 0.5f);
+            return Mathf.Max(blocks, pen);
         }
 
         void OnCompleted()

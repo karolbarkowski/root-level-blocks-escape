@@ -22,7 +22,7 @@ namespace BlocksEscape
         public const int MaxTiles = 20; // block-puzzle board limit
         const string LevelRootName = "Level"; // root of everything Initialize spawns
         const string BlocksRootName = "Blocks";
-        const string FloorName = "Floor";
+        public const string FloorName = "Floor", WallsName = "Walls", GatesName = "Gates";
 
         [SerializeField, Range(1, MaxTiles)] int xTiles = 8;
         [SerializeField, Range(1, MaxTiles)] int yTiles = 8;
@@ -132,7 +132,7 @@ namespace BlocksEscape
             foreach (var gate in data.board.gates ?? Array.Empty<GateData>()) barriers.UnionWith(data.GateCells(gate));
             if (floorMaterial != null) BuildFloor(barriers);
 
-            var walls = NewChild("Walls", content);
+            var walls = NewChild(WallsName, content);
             if (wallPrefab != null)
             {
                 foreach (var cell in data.board.walls ?? Array.Empty<CellData>())
@@ -145,7 +145,7 @@ namespace BlocksEscape
                 }
             }
 
-            var gates = NewChild("Gates", content);
+            var gates = NewChild(GatesName, content);
             foreach (var gate in data.board.gates ?? Array.Empty<GateData>())
             {
                 var type = types.Get(gate.type);

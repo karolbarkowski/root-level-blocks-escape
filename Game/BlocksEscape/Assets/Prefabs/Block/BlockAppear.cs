@@ -13,8 +13,9 @@ namespace BlocksEscape
         Vector3 _scale;
 
         // Starts every block of the board after a delay growing with its distance from the top left corner, so the wave
-        // takes spread seconds to cross the board whatever its size. Returns the seconds until the last block is done.
-        public static float Sweep(Board board, bool show, float spread, float duration)
+        // takes spread seconds to cross the board whatever its size, starting after delay. Returns the seconds until the
+        // last block is done.
+        public static float Sweep(Board board, bool show, float spread, float duration, float delay = 0f)
         {
             if (board.Rules == null) return 0f;
             float diagonal = Mathf.Max(1f, board.XTiles + board.YTiles - 2);
@@ -25,10 +26,10 @@ namespace BlocksEscape
                 if (block == null) continue;
                 // Level coordinates: x grows to the right, y down the board, so x + y grows from the top left corner.
                 var cell = board.LocalToLevel(block.transform.localPosition);
-                Play(block, show, Mathf.Clamp01((cell.x + cell.y) / diagonal) * spread, duration);
+                Play(block, show, delay + Mathf.Clamp01((cell.x + cell.y) / diagonal) * spread, duration);
                 any = true;
             }
-            return any ? spread + duration : 0f;
+            return any ? delay + spread + duration : 0f;
         }
 
         public static void Play(Block block, bool show, float delay, float duration)

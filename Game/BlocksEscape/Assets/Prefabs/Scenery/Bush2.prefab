@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6100155561472242414}
+  - {fileID: 7708854371469177939}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2324833893240156069
@@ -52,7 +52,7 @@ MonoBehaviour:
   particleCount: 7
   hitScale: 1
   hopHeight: 0.6
---- !u!1001 &5990528939147154693
+--- !u!1001 &7886334322391536568
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -113,8 +113,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5acf485fcffbd5f48955d54bfb99bf6e, type: 3}
---- !u!4 &6100155561472242414 stripped
+--- !u!4 &7708854371469177939 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5acf485fcffbd5f48955d54bfb99bf6e, type: 3}
-  m_PrefabInstance: {fileID: 5990528939147154693}
+  m_PrefabInstance: {fileID: 7886334322391536568}
   m_PrefabAsset: {fileID: 0}

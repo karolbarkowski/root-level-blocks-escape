@@ -6,13 +6,19 @@ namespace BlocksEscape
     // Soft cloud shadows drifting over the farm: a tiling noise texture generated at start-up, used as the sun's light
     // cookie and scrolled slowly. Everything lit by the sun darkens under a cloud, so it costs one texture lookup in the
     // lighting and no extra geometry. Goes on the directional light.
+    //
+    // The clouds follow BoardCamera's framing like the screen-anchored scenery does: after each framing the cookie is
+    // re-centred under the middle of the screen and scaled with the camera's distance, so a new level doesn't make the
+    // clouds jump across the props that stay put on screen.
     [ExecuteAlways]
     [RequireComponent(typeof(Light))]
     [DisallowMultipleComponent]
     public sealed class CloudShadows : MonoBehaviour
     {
-        [Tooltip("World size of one tile of clouds.")]
+        [Tooltip("World size of one tile of clouds when the screen is Reference Screen Height world units tall at the ground.")]
         [SerializeField, Min(1f)] float tileSize = 26f;
+        [Tooltip("Screen height, in world units at the ground in the middle of the screen, that Tile Size and Wind are for.")]
+        [SerializeField, Min(0.1f)] float referenceScreenHeight = 20f;
         [Tooltip("How dark the shadow under a cloud is (0 none, 1 black).")]
         [SerializeField, Range(0f, 1f)] float darkness = 0.28f;
         [Tooltip("Share of the sky covered by clouds.")]
@@ -25,13 +31,18 @@ namespace BlocksEscape
         Texture2D _texture;
         Light _light;
         UniversalAdditionalLightData _lightData;
-        Vector2 _offset;
+        Vector2 _drift;     // wind blown so far, at the reference framing
+        Vector2 _anchor;    // light-space position of the ground in the middle of the screen, as of the last framing
+        float _zoom = 1f;   // screen height at that point over referenceScreenHeight
         bool _dirty;
 
         void OnEnable()
         {
             _light = GetComponent<Light>();
             _lightData = GetComponent<UniversalAdditionalLightData>();
+            BoardCamera.Framed += Follow;
+            var boardCamera = Object.FindAnyObjectByType<BoardCamera>();
+            if (boardCamera != null) Follow(boardCamera);
             Build();
         }
 
@@ -39,6 +50,7 @@ namespace BlocksEscape
 
         void OnDisable()
         {
+            BoardCamera.Framed -= Follow;
             if (_light != null && _light.cookie == _texture) _light.cookie = null;
             if (_texture != null) DestroyImmediate(_texture);
             _texture = null;
@@ -48,10 +60,36 @@ namespace BlocksEscape
         {
             if (_dirty) { _dirty = false; Build(); }
             if (_lightData == null) return;
-            _offset += wind * Time.deltaTime;
-            _offset.x %= tileSize;
-            _offset.y %= tileSize;
-            _lightData.lightCookieOffset = _offset;
+            _drift += wind * Time.deltaTime;
+            _drift.x %= tileSize;
+            _drift.y %= tileSize;
+            Apply();
+        }
+
+        // The cookie maps a point P to (light space P - offset) / size. A ground point at a fixed spot on screen is
+        // anchor + zoom * (the same vector for every framing), so offset = anchor + zoom * drift and size = zoom * tileSize
+        // give it the same cloud whatever the framing.
+        void Follow(BoardCamera boardCamera)
+        {
+            var camera = boardCamera.Camera;
+            if (camera == null) return;
+            var ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            if (!new Plane(Vector3.up, Vector3.zero).Raycast(ray, out float distance)) return;
+            var point = ray.GetPoint(distance);
+            float depth = Vector3.Dot(point - camera.transform.position, camera.transform.forward);
+            float screenHeight = camera.orthographic
+                ? camera.orthographicSize * 2f
+                : 2f * depth * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            _zoom = screenHeight / referenceScreenHeight;
+            _anchor = transform.InverseTransformPoint(point);
+            Apply();
+        }
+
+        void Apply()
+        {
+            if (_lightData == null) return;
+            _lightData.lightCookieSize = Vector2.one * (tileSize * _zoom);
+            _lightData.lightCookieOffset = _anchor + _drift * _zoom;
         }
 
         void Build()
@@ -93,7 +131,7 @@ namespace BlocksEscape
             _texture.SetPixels32(pixels);
             _texture.Apply(true, false);
             _light.cookie = _texture;
-            if (_lightData != null) _lightData.lightCookieSize = Vector2.one * tileSize;
+            Apply();
         }
 
         static float Lattice(float[] grid, int period, float x, float y)

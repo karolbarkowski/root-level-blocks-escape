@@ -90,8 +90,9 @@ namespace BlocksEscape.EditorTools
                     if (IsPart(Path.GetFileNameWithoutExtension(part))) AddHingedPart(model.transform, part);
                 foreach (var r in model.GetComponentsInChildren<MeshRenderer>()) r.sharedMaterial = material;
                 // Shadows of ankle-high props and floating badges are a few pixels, not worth a second draw in the shadow pass.
+                // Turned off on the whole prop, so children added by hand (the title sign's peeking animals) go along.
                 bool casts = !SkipsShadow(name);
-                foreach (var r in model.GetComponentsInChildren<MeshRenderer>(true))
+                foreach (var r in (casts ? model : root).GetComponentsInChildren<MeshRenderer>(true))
                     r.shadowCastingMode = casts ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
                 Configure(root, name);
 
@@ -116,7 +117,8 @@ namespace BlocksEscape.EditorTools
 
         static bool SkipsShadow(string name) =>
             name.StartsWith("Grass") || name.StartsWith("Flowers") || name.StartsWith("Rock") ||
-            name is "Butterfly" or "SleepBubble" or "AxisArrow";
+            name is "Butterfly" or "SleepBubble" or "AxisArrow" or
+                "TitleSign"; // UI: its shadow would vanish with it when the menu pops out, a visible blink on the ground
 
         // Adds T to the prop's prefab if missing and sets its font to the game font.
         static void WireFont<T>(string prop) where T : Component

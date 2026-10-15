@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace BlocksEscape
 {
@@ -31,6 +33,7 @@ namespace BlocksEscape
 
         Camera _camera;
         float _framedAspect;
+        float _assetShadowDistance = -1f; // the pipeline asset's own value, put back on disable (-1: untouched)
         Board _subscribed;
 
         void OnEnable()
@@ -44,6 +47,9 @@ namespace BlocksEscape
         {
             if (_subscribed != null) _subscribed.Initialized -= Frame;
             _subscribed = null;
+            if (_assetShadowDistance >= 0f && GraphicsSettings.currentRenderPipeline is UniversalRenderPipelineAsset urp)
+                urp.shadowDistance = _assetShadowDistance;
+            _assetShadowDistance = -1f;
         }
 
         void OnValidate()
@@ -75,7 +81,8 @@ namespace BlocksEscape
 
             var rotation = board.transform.rotation * Quaternion.Euler(pitch, 0f, 0f);
             var bounds = ContentBounds();
-            BoardBounds = bounds;
+            // No level: the empty board only sets the framing, nothing is drawn there for scenery to avoid.
+            BoardBounds = board.Content != null ? bounds : new Bounds();
             bounds.Expand(margin * 2f * GridUnits.CellSize);
 
             // In camera-aligned axes around the bounds center, a point (x, y, z) is in view when
@@ -120,6 +127,18 @@ namespace BlocksEscape
             }
             _camera.nearClipPlane = 0.3f;
             _camera.farClipPlane = far + 10f; // trees and scenery stand up to a few cells above the ground
+            FitShadowDistance(far + 10f);
+        }
+
+        // A fixed shadow distance ends somewhere on screen, and where depends on how far this level's framing put the
+        // camera: shadows at the top of the screen faded in or out from one level to the next. Reaching past the top edge
+        // (fade band included) keeps the whole view shadowed; the shadow map then covers a similar slice of the screen
+        // whatever the framing. Play mode only, so the edited pipeline asset isn't changed; restored on disable.
+        void FitShadowDistance(float reach)
+        {
+            if (!Application.isPlaying || GraphicsSettings.currentRenderPipeline is not UniversalRenderPipelineAsset urp) return;
+            if (_assetShadowDistance < 0f) _assetShadowDistance = urp.shadowDistance;
+            urp.shadowDistance = reach / Mathf.Max(0.1f, 1f - urp.cascadeBorder);
         }
 
         static Vector3 Corner(Bounds b, int i) =>
