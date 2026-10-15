@@ -200,7 +200,13 @@ namespace BlocksEscape
             var hide = MainMenu(false);
             hide.Add(_sign);
             hide.AddRange(picker.PageOnlyProps());
-            yield return Pop(hide, false);
+            // Coming straight from a level, its pen comes down as on the way to the menu.
+            yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
+            if (board.Content != null)
+            {
+                board.Clear();
+                boardCamera.Frame();
+            }
             levelSign.Caption = "PICK LEVEL";
             var show = new List<ScreenAnchor> { _sign };
             show.AddRange(picker.SectionProps());
