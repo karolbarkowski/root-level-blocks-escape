@@ -3533,7 +3533,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -4310,7 +4310,7 @@ MonoBehaviour:
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 26.521048, y: 26.521048}
-  m_LightCookieOffset: {x: 5.64685, y: 2.0546196}
+  m_LightCookieOffset: {x: 9.886336, y: 25.921963}
   m_SoftShadowQuality: 1
   m_RenderingLayersMask:
     serializedVersion: 0
