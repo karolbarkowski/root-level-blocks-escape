@@ -71,7 +71,7 @@ namespace BlocksEscape
         {
             var props = new List<(TapReaction prop, float distance)>();
             float near = float.MaxValue, far = 0f;
-            foreach (var prop in FindObjectsByType<TapReaction>(FindObjectsSortMode.None))
+            foreach (var prop in FindObjectsByType<TapReaction>())
             {
                 if (!prop.IsShown) continue;
                 var offset = prop.transform.position - center;

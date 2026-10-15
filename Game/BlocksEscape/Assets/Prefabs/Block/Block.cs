@@ -138,8 +138,8 @@ namespace BlocksEscape
                 FaceCamera();
                 if (_shownTurns != turnsToWake)
                 {
-                    var number = DigitText.Build(_bubble, TurnsName, turnsToWake, art.Digits, art.DigitHeight, 0.06f);
-                    if (number != null) number.localPosition = art.DigitOffset;
+                    var number = WorldText.Show(_bubble, TurnsName, turnsToWake.ToString(), art.Font, art.DigitHeight);
+                    if (number != null) number.transform.localPosition = art.DigitOffset;
                     _shownTurns = turnsToWake;
                 }
             }

@@ -14,17 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.BlockStatusArt
   sleepBubble: {fileID: 4186501405516829689, guid: 200679691eb2b6c4d82ec6b88f59fe1e, type: 3}
   axisArrow: {fileID: 4727565845667026495, guid: f73e75b21b001e14b824ffca14d74be9, type: 3}
-  digits:
-  - {fileID: 4934846022653251358, guid: a381da634f710b141bbdfa0656275331, type: 3}
-  - {fileID: 8107198265612331803, guid: c7a3da84f5cd96f428c08e1f9dcee2bc, type: 3}
-  - {fileID: 7675260864983071589, guid: fa2230e38df08d047a89a296e1e82009, type: 3}
-  - {fileID: 4673838790363693644, guid: 36e8cb770d8239642b06e84fcba3c562, type: 3}
-  - {fileID: 6148074776876667917, guid: a59f9be8dc067204886121d8f5f0a943, type: 3}
-  - {fileID: 6954921134139294595, guid: d4b2916296416954bb908122950472a0, type: 3}
-  - {fileID: 2412514972085956973, guid: cc1105b395433a042b11a7a933277eb3, type: 3}
-  - {fileID: 6566315071316407568, guid: eb619edd3ac6bcb46857289e173c8863, type: 3}
-  - {fileID: 5560112993638155234, guid: 11e693a8515cd3346ab079b8f3890dae, type: 3}
-  - {fileID: 7961560191940867009, guid: 817a74a982614ad4e8681c2e27b31974, type: 3}
+  font: {fileID: 11400000, guid: e1d109573c9a2494394d28aa5d50b164, type: 2}
   bubbleSize: 0.42
   bubbleHeight: 0.05
   bubbleForward: 0.05

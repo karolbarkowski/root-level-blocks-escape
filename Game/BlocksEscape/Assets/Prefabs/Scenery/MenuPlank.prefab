@@ -65,48 +65,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.WorldLabel
   text: 
-  letters:
-  - {fileID: 4629978949562297184, guid: 1ae82039840d5c646af789b52f148ed7, type: 3}
-  - {fileID: 4729405753932717422, guid: 25e10f151574f5f4fa73acd0e20d35ca, type: 3}
-  - {fileID: 8051149021537810083, guid: 55966431c4a22a841b8ed7b8e9d6f7f4, type: 3}
-  - {fileID: 5907938594167220780, guid: b55fc12737a58374894cd990bbf28cc0, type: 3}
-  - {fileID: 7722271497702836932, guid: d7f601e0f87bc8e4fb4750c65e0395d9, type: 3}
-  - {fileID: 5914105596723230916, guid: a6091849cfcde98488e4ff8c50a46570, type: 3}
-  - {fileID: 4141681361388966023, guid: fcc41b430418f6b4ca83a1500ee57a54, type: 3}
-  - {fileID: 6044554668787331456, guid: 3e3fd5035d1fc2249a91a7ad73254c91, type: 3}
-  - {fileID: 97918015110119278, guid: 6fab76a3f42fd7342af5eb2e8e0fe69e, type: 3}
-  - {fileID: 1387733223044935092, guid: 6b35deff575771046b69b1a2d7cf6b7e, type: 3}
-  - {fileID: 8805227009524126394, guid: 52725a9f6633b4e4494d98be31f81164, type: 3}
-  - {fileID: 2093771595636511817, guid: a7f77007bc8b54b43b70a62f313101de, type: 3}
-  - {fileID: 8742589416868270059, guid: fcbe2cb6250a816469a8f213086c210c, type: 3}
-  - {fileID: 6236267198351449519, guid: 29b9495595fa2d6438a05bab51c9df38, type: 3}
-  - {fileID: 8186993207755444245, guid: 166a0ba1314cb0849b524a5e432f11bf, type: 3}
-  - {fileID: 4413158749795334471, guid: b16d4e9ab2503294c8af21dd19a118e4, type: 3}
-  - {fileID: 3660105159328844391, guid: f32b961c179421e42a39492a6365bc05, type: 3}
-  - {fileID: 6692423943975278740, guid: 0e73b7aa962ce9249b085070505f72ae, type: 3}
-  - {fileID: 8000086597920136565, guid: 5e88e71f3b4f3c94aa1b8c7b96ecdc86, type: 3}
-  - {fileID: 1169937714555279628, guid: f5e8df552a1fa9549ba6916d123ff1d8, type: 3}
-  - {fileID: 2708323356677046528, guid: c1c2cb46a358b2248acfd50b8a19bcd8, type: 3}
-  - {fileID: 8112763387811371153, guid: be35f4ac42da8ae449ba31ca6f07bc24, type: 3}
-  - {fileID: 710579189918650529, guid: c4b99dda5e446dd4b9ef6e39d9df440d, type: 3}
-  - {fileID: 5792655942449806622, guid: ed71fdb452465b44a85a2a53c3c10f69, type: 3}
-  - {fileID: 8178490858446370307, guid: 6114e061c5e6d4842a1aa0ca6cd227ae, type: 3}
-  - {fileID: 373685583602835939, guid: 22286716dffe4c045b070edf94e868e8, type: 3}
-  digits:
-  - {fileID: 4934846022653251358, guid: a381da634f710b141bbdfa0656275331, type: 3}
-  - {fileID: 8107198265612331803, guid: c7a3da84f5cd96f428c08e1f9dcee2bc, type: 3}
-  - {fileID: 7675260864983071589, guid: fa2230e38df08d047a89a296e1e82009, type: 3}
-  - {fileID: 4673838790363693644, guid: 36e8cb770d8239642b06e84fcba3c562, type: 3}
-  - {fileID: 6148074776876667917, guid: a59f9be8dc067204886121d8f5f0a943, type: 3}
-  - {fileID: 6954921134139294595, guid: d4b2916296416954bb908122950472a0, type: 3}
-  - {fileID: 2412514972085956973, guid: cc1105b395433a042b11a7a933277eb3, type: 3}
-  - {fileID: 6566315071316407568, guid: eb619edd3ac6bcb46857289e173c8863, type: 3}
-  - {fileID: 5560112993638155234, guid: 11e693a8515cd3346ab079b8f3890dae, type: 3}
-  - {fileID: 7961560191940867009, guid: 817a74a982614ad4e8681c2e27b31974, type: 3}
+  font: {fileID: 11400000, guid: e1d109573c9a2494394d28aa5d50b164, type: 2}
   center: {x: 0, y: 0.33, z: 0}
   rotation: {x: 90, y: 0, z: 0}
   letterHeight: 0.45
-  spacing: 0.04
   maxWidth: 3
 --- !u!1001 &5376119369856168360
 PrefabInstance:
