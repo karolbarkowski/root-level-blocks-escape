@@ -10,7 +10,7 @@ try {
             $folder = Join-Path $Output "$seed-$method"
             New-Item -ItemType Directory -Path $folder -Force | Out-Null
             Get-ChildItem -LiteralPath $folder -File | Where-Object Extension -in '.json', '.html', '.svg' | Remove-Item
-            $arguments = "../LevelGenerator/bin/Release/net10.0/LevelGenerator.dll generate --seed $seed --method $method --specials false --min-opening 4 --maxCandidates 1 --out `"$folder`""
+            $arguments = "../LevelGenerator/bin/Release/net10.0/LevelGenerator.dll generate --seed $seed --method $method --neutral false --layered false --frozen false --directional false --min-opening 4 --maxCandidates 1 --out `"$folder`""
             $watch = [Diagnostics.Stopwatch]::StartNew()
             $process = Start-Process dotnet -ArgumentList $arguments -NoNewWindow -PassThru `
                 -RedirectStandardOutput (Join-Path $folder 'console.txt') -RedirectStandardError (Join-Path $folder 'errors.txt')

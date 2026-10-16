@@ -4,7 +4,11 @@ namespace BlockPuzzle;
 
 public sealed record GenerateOptions(int Seed = 42, int Width = 6, int Height = 6,
     decimal Coverage = 80, decimal SingleCellRatio = .2m, int MaxCandidates = 1,
-    int MinOpening = 3, bool Specials = true, Layout? FixedLayout = null, string Method = "anneal", decimal BlockSize = 2.8m);
+    int MinOpening = 3, Layout? FixedLayout = null, string Method = "anneal", decimal BlockSize = 2.8m,
+    bool Neutral = true, bool Layered = true, bool Frozen = true, bool Directional = true, int TypeSpread = 1)
+{
+    public bool AnySpecials => Neutral || Layered || Frozen || Directional;
+}
 public sealed record GenerationResult(List<Level> Levels, int Attempts, int Constructed, int Evaluated, double Seconds);
 internal sealed record Candidate(Level Level, double Score, DepthResult Opening, double Density);
 
@@ -15,11 +19,11 @@ public sealed partial class Generator(GenerateOptions options)
     private Action reportProgress = () => { };
     private const int StallLimit = 150;
     // Up to four cells; the catalog adds every rotation and mirror image (so J, Z and the like).
+    // The 1x4 bar is left out: it looks out of place on the board.
     private static readonly Cell[][] Shapes =
     [
         [new(0,0)], [new(0,0),new(1,0)], [new(0,0),new(1,0),new(2,0)],
         [new(0,0),new(0,1),new(1,1)],
-        [new(0,0),new(1,0),new(2,0),new(3,0)],
         [new(0,0),new(1,0),new(0,1),new(1,1)],
         [new(0,0),new(0,1),new(0,2),new(1,2)],
         [new(1,0),new(2,0),new(0,1),new(1,1)],
@@ -31,8 +35,8 @@ public sealed partial class Generator(GenerateOptions options)
         if (options.Width is <2 or >20 || options.Height is <2 or >20 || options.Coverage <= 0 || options.Coverage > 100 ||
             options.SingleCellRatio < 0 || options.SingleCellRatio > 1 || options.MaxCandidates < 1 ||
             options.MinOpening < 2 || options.MinOpening > 12 || options.Method is not ("anneal" or "random") ||
-            options.BlockSize < 1 || options.BlockSize > 4)
-            throw new ArgumentException("Use coverage in (0,100], single-cell-ratio in [0,1], block-size in [1,4], maxCandidates >= 1 and min-opening in [2,12].");
+            options.BlockSize < 1 || options.BlockSize > 4 || options.TypeSpread < 0)
+            throw new ArgumentException("Use coverage in (0,100], single-cell-ratio in [0,1], block-size in [1,4], maxCandidates >= 1, min-opening in [2,12] and type-spread >= 0.");
         if (options.FixedLayout != null) GetCatalog(options.FixedLayout);
         watch.Restart();
         var levels = new List<Level>();
@@ -86,7 +90,7 @@ public sealed partial class Generator(GenerateOptions options)
 
     private Level? FinalizeCandidate(Candidate original, int attempts)
     {
-        var c=options.Specials?Evaluate(Decorate(original.Level),DateTime.UtcNow.AddSeconds(2)):original;
+        var c=options.AnySpecials?Evaluate(Decorate(original.Level),DateTime.UtcNow.AddSeconds(2)):original;
         if(c.Opening.LowerBound<options.MinOpening)return null;
         var engine = new Engine(c.Level);
         c.Level.Solution = Search.Shorten(engine,c.Level.Solution);
@@ -114,6 +118,7 @@ public sealed partial class Generator(GenerateOptions options)
             ["coverageRequested"] = options.Coverage,
             ["singleCellRatioRequested"] = options.SingleCellRatio, ["blockSizeRequested"] = options.BlockSize,
             ["blockCount"] = c.Level.Blocks.Length,
+            ["typeCounts"] = TypeCounts(c.Level), ["typeSpreadRequested"] = options.TypeSpread,
             ["singleCellCount"] = c.Level.Blocks.Count(p=>p.Shape.Length==1),
             ["singleCellRatioActual"] = (double)c.Level.Blocks.Count(p=>p.Shape.Length==1)/c.Level.Blocks.Length,
             ["minimumOpeningRequired"] = options.MinOpening,
@@ -249,15 +254,18 @@ public sealed partial class Generator(GenerateOptions options)
         var level=original with { Solution=Search.Shorten(new Engine(original),original.Solution),Analysis=[] };
         var baseEngine=new Engine(level);
         level.Solution=Search.Improve(baseEngine,level.Solution,30000,1.5).Moves;
-        string last=level.Solution[^1].Block;
-        var neutral=level with { Blocks=level.Blocks.Select(p=>p.Id==last?p with {Types=[]}:p).ToArray(),Solution=level.Solution[..^1] };
-        if (MeetsComposition(neutral)) level=neutral;
-        new Engine(level).Replay(level.Solution);
+        if (options.Neutral)
+        {
+            string last=level.Solution[^1].Block;
+            var neutral=level with { Blocks=level.Blocks.Select(p=>p.Id==last?p with {Types=[]}:p).ToArray(),Solution=level.Solution[..^1] };
+            if (MeetsComposition(neutral)) level=neutral;
+            new Engine(level).Replay(level.Solution);
+        }
 
         // Insert one extra peel after the first full removal. A return drop restores
         // the witness geometry; revalidation catches any earlier accidental peel.
         var engine=new Engine(level);var frames=engine.Replay(level.Solution);
-        bool layered=false;
+        bool layered=!options.Layered;
         for(int t=1;t<frames.Count-1&&!layered;t++)
         {
             var s=frames[t];if(s.Events==0)continue;
@@ -286,7 +294,7 @@ public sealed partial class Generator(GenerateOptions options)
 
         // Specials are an occasional twist in the genre, so cap them instead of applying them
         // to every eligible block. Freeze late-used pieces; the counter is global and layers count too.
-        int cap=1+level.Blocks.Length/8, frozen=0, directional=0;
+        int cap=1+level.Blocks.Length/8, frozen=options.Frozen?0:cap, directional=options.Directional?0:cap;
         engine=new Engine(level);frames=engine.Replay(level.Solution);
         foreach(int i in Enumerable.Range(0,level.Blocks.Length).OrderBy(_=>random.Next()))
         {

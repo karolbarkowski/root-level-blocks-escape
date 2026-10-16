@@ -9,7 +9,8 @@ try
 
         dotnet run -c Release -- generate --coverage 80 --single-cell-ratio 0.2 --block-size 2.8 --maxCandidates 1 --seed 42 --out output
           --width 6 --height 6 --min-opening 3
-          --specials true --layout layout.json --method anneal|random
+          --neutral true --layered true --frozen true --directional true --type-spread 1
+          --layout layout.json --method anneal|random
           Runs until maxCandidates verified levels are saved. Ctrl+C stops and keeps saved levels.
 
         verify, solve, analyze and render live in the LevelGenerator.Tools project.
@@ -31,7 +32,8 @@ try
     decimal Decimal(string key,decimal fallback)=>decimal.Parse(Text(key,fallback.ToString(System.Globalization.CultureInfo.InvariantCulture)),System.Globalization.CultureInfo.InvariantCulture);
     string[] allowed=args[0] switch
     {
-        "generate"=>["seed","width","height","coverage","single-cell-ratio","block-size","maxCandidates","min-opening","specials","layout","out","method"],
+        "generate"=>["seed","width","height","coverage","single-cell-ratio","block-size","maxCandidates","min-opening",
+            "neutral","layered","frozen","directional","type-spread","layout","out","method"],
         _=>throw new ArgumentException("Unknown command. verify, solve, analyze and render moved to LevelGenerator.Tools.")
     };
     if (opts.Keys.Except(allowed).Any()) throw new ArgumentException("Unknown option: "+string.Join(", ",opts.Keys.Except(allowed)));
@@ -42,7 +44,8 @@ try
             if (positional.Count>0) throw new ArgumentException("Unexpected positional argument.");
             var options=new GenerateOptions(Seed:Number("seed",42),Width:Number("width",6),Height:Number("height",6),
                 Coverage:Decimal("coverage",80),SingleCellRatio:Decimal("single-cell-ratio",.2m),BlockSize:Decimal("block-size",2.8m),MaxCandidates:Number("maxCandidates",1),
-                MinOpening:Number("min-opening",3),Specials:bool.Parse(Text("specials","true")),
+                MinOpening:Number("min-opening",3),Neutral:bool.Parse(Text("neutral","true")),Layered:bool.Parse(Text("layered","true")),
+                Frozen:bool.Parse(Text("frozen","true")),Directional:bool.Parse(Text("directional","true")),TypeSpread:Number("type-spread",1),
                 FixedLayout:opts.TryGetValue("layout",out var layout)?Files.Read<Layout>(layout):null,Method:Text("method","anneal"));
             string folder=Path.GetFullPath(Text("out","output"));
             Directory.CreateDirectory(folder);

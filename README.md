@@ -55,15 +55,19 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 | `--block-size` | Target average cells per block; 1–4. Lower means more, smaller blocks | 2.8 |
 | `--min-opening` | Minimum drops before anything can be removed; 2–12 | 3 |
 | `--maxCandidates` | Levels to save before stopping (alias `--max-candidates`) | 1 |
-| `--specials` | Add frozen, layered, directional and neutral (gray) blocks: true/false | true |
+| `--neutral` | Turn the last block of the solution into a neutral (gray) blocker: true/false | true |
+| `--layered` | Give one block an extra outer colour layer that must be peeled first: true/false | true |
+| `--frozen` | Freeze blocks until enough removals have happened: true/false | true |
+| `--directional` | Restrict blocks to horizontal or vertical movement: true/false | true |
+| `--type-spread` | Most blocks of one type minus fewest of another; 0 or more | 1 |
 | `--method` | `anneal` or `random` | anneal |
 | `--seed` | Random seed | 42 |
 | `--out` | Output folder | output |
 
 - Coverage rounds up to whole cells and counts only playable floor (not walls, gates or outside space). 80% of 38 cells means at least 31.
-- With N blocks, round(N × ratio) are 1×1, halves rounded up. The block count is steered towards covered area ÷ `--block-size`. Shapes are picked from 1–4-cell pieces in every rotation and mirror image. Targets above 3 force nearly every block to 4 cells, which barely move in narrow layouts.
-- Every gate type appears on at least one block's outer layer.
-- Specials stay occasional, as in the genre: one neutral blocker, one layered block, and at most 1 + blocks ÷ 8 frozen and 1 + blocks ÷ 8 directional blocks. They never break coverage, the 1×1 count or type representation.
+- With N blocks, round(N × ratio) are 1×1, halves rounded up. The block count is steered towards covered area ÷ `--block-size`. Shapes are picked from 1–4-cell pieces in every rotation and mirror image, except the 1×4 bar. Targets above 3 force nearly every block to 4 cells, which barely move in narrow layouts.
+- Every gate type appears on at least one block's outer layer, and the counts are kept even: types are assigned first and each block's shape is then picked from those that fit its gate. `--type-spread` is the largest allowed gap between the most and least common outer-layer type (neutral blocks don't count). Raise it if a layout with narrow gates generates slowly.
+- Specials stay occasional, as in the genre: one neutral blocker, one layered block, and at most 1 + blocks ÷ 8 frozen and 1 + blocks ÷ 8 directional blocks. Each kind has its own switch. They never break coverage, the 1×1 count, type representation or the type spread.
 - Every exported solution is checked by replay. The solver first tries to prove a shortest solution. If its budget runs out, a faster weighted search finds a short one instead, and `analysis.solutionOptimal` is false.
 - If a run seems stuck, check the progress line, e.g. `best opening 2 (need 3)`. It means the layout can't reach `--min-opening`; lower it.
 - Seeds help experiments, but machine speed affects bounded searches; the saved JSON is the reproducible artifact.

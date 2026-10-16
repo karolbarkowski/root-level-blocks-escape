@@ -6,6 +6,7 @@
 // earlier one in the same folder is deleted, so reruns never add copies. Existing levels
 // count towards the target, so the script can be stopped and rerun.
 // --maxAttempts 0 retries forever. Progress is appended to <out>/generate-all.log.
+// Any other option (e.g. --type-spread 2 --frozen false) is passed through to every generate run.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
@@ -21,6 +22,8 @@ const seconds = Number(args.seconds ?? 180);
 const jobs = Number(args.jobs ?? 8);
 const maxAttempts = Number(args.maxAttempts ?? 0);
 const dll = path.join(here, 'bin/Release/net10.0/LevelGenerator.dll');
+const own = ['layouts', 'out', 'count', 'seconds', 'jobs', 'maxAttempts'];
+const passThrough = Object.entries(args).filter(([key]) => !own.includes(key)).flatMap(([key, value]) => [`--${key}`, value]);
 
 fs.mkdirSync(outDir, { recursive: true });
 const logFile = path.join(outDir, 'generate-all.log');
@@ -59,7 +62,7 @@ function generate(name, missing, attempt) {
   const seed = Math.floor(Math.random() * 2 ** 31);
   return new Promise(resolve => {
     const child = spawn('dotnet', [dll, 'generate', '--layout', path.join(layoutsDir, `${name}.json`),
-      '--maxCandidates', String(missing), '--seed', String(seed), '--out', path.join(outDir, name)]);
+      '--maxCandidates', String(missing), '--seed', String(seed), '--out', path.join(outDir, name), ...passThrough]);
     let tail = '';
     const keep = d => { tail = (tail + d).slice(-400); };
     child.stdout.on('data', keep);
@@ -77,7 +80,7 @@ const queue = fs.readdirSync(layoutsDir).filter(f => f.endsWith('.json')).sort()
 const total = queue.length;
 const gaveUp = [];
 let running = 0, finished = 0;
-log(`Start: ${total} layouts, ${count} levels each, ${jobs} jobs, ${seconds}s base limit`);
+log(`Start: ${total} layouts, ${count} levels each, ${jobs} jobs, ${seconds}s base limit${passThrough.length ? `, generator options ${passThrough.join(' ')}` : ''}`);
 
 async function worker() {
   while (true) {

@@ -207,7 +207,7 @@ public static class SelfTests
         });
         Test("generation rejects invalid composition options and supports cancellation",()=>
         {
-            foreach(var options in new GenerateOptions[]{new(Coverage:0),new(Coverage:101),new(SingleCellRatio:-.1m),new(SingleCellRatio:1.1m),new(MaxCandidates:0)})
+            foreach(var options in new GenerateOptions[]{new(Coverage:0),new(Coverage:101),new(SingleCellRatio:-.1m),new(SingleCellRatio:1.1m),new(MaxCandidates:0),new(TypeSpread:-1)})
                 Reject(()=>new Generator(options).Run(_=>{}));
             using var stop=new CancellationTokenSource();stop.Cancel();
             var result=new Generator(new(FixedLayout:Room())).Run(_=>{},cancellation:stop.Token);
@@ -274,6 +274,39 @@ public static class SelfTests
             int cap=1+level.Blocks.Length/8;
             Check(average>=2.3,$"average block size {average:F2}");
             Check(level.Blocks.Count(p=>p.FrozenFor>0)<=cap&&level.Blocks.Count(p=>p.Axis!=Axis.Free)<=cap,"too many specials");
+        });
+        Test("composition balances types and never uses the 1x4 bar",()=>
+        {
+            var layout=new Layout(6,6,[new(2,2)],
+                [new("r",Side.Top,0,3,A),new("b",Side.Right,0,3,B),new("y",Side.Bottom,3,3,C),new("g",Side.Left,3,2,D)]);
+            foreach(int spread in new[]{0,1,2})
+            {
+                var generator=new Generator(new(FixedLayout:layout,Seed:spread,TypeSpread:spread));
+                int built=0;
+                for(int i=0;i<200;i++)
+                {
+                    var blocks=generator.CreateComposition(layout);if(blocks==null)continue;built++;
+                    var counts=blocks.GroupBy(p=>p.Types[0]).Select(g=>g.Count()).ToArray();
+                    Check(counts.Length==4&&counts.Max()-counts.Min()<=spread,$"type counts {string.Join(",",counts)} exceed spread {spread}");
+                    Check(!blocks.Any(p=>p.Shape.Length==4&&(p.Shape.All(c=>c.X==p.Shape[0].X)||p.Shape.All(c=>c.Y==p.Shape[0].Y))),"1x4 bar used");
+                    Check(generator.MeetsComposition(new Level {Board=layout,Blocks=blocks.ToArray()}));
+                }
+                Check(built>0,$"no composition with spread {spread}");
+            }
+            // Three A blocks against one of each other type: spread 2.
+            var skewed=new Level {Board=layout,Blocks=new[]{A,A,A,B,C,D}.Select((t,i)=>new Piece($"s{i}",[new(0,0)],new(i,0),[t])).ToArray()};
+            Check(!new Generator(new(FixedLayout:layout,Coverage:10,SingleCellRatio:1,TypeSpread:1)).MeetsComposition(skewed));
+            Check(new Generator(new(FixedLayout:layout,Coverage:10,SingleCellRatio:1,TypeSpread:2)).MeetsComposition(skewed));
+        });
+        Test("each special can be switched off on its own",()=>
+        {
+            var layout=new Layout(6,6,[new(2,2)],
+                [new("r",Side.Top,0,3,A),new("b",Side.Right,0,3,B),new("y",Side.Bottom,3,3,C),new("g",Side.Left,3,3,D)]);
+            var plain=new Generator(new(FixedLayout:layout,Coverage:65,SingleCellRatio:.4m,MinOpening:2,
+                Neutral:false,Layered:false,Frozen:false,Directional:false)).Run(_=>{}).Levels[0];
+            Check(plain.Blocks.All(p=>p.Types.Length==1&&p.FrozenFor==0&&p.Axis==Axis.Free),"special used while all are off");
+            var noFrozen=new Generator(new(FixedLayout:layout,Coverage:65,SingleCellRatio:.4m,MinOpening:2,Frozen:false,Directional:false)).Run(_=>{}).Levels[0];
+            Check(noFrozen.Blocks.All(p=>p.FrozenFor==0&&p.Axis==Axis.Free),"frozen or directional block while off");
         });
         Test("weighted search solves without claiming optimality and never lengthens a witness",()=>
         {

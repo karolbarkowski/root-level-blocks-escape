@@ -70,30 +70,40 @@ public sealed partial class Generator
         int planIndex=0;
         while(planIndex<weights.Length-1 && (pick-=weights[planIndex])>0) planIndex++;
         var plan=catalog.Plans[planIndex];
-        var chosen=new List<ShapeChoice>();
-        for(int i=0;i<plan.Singles;i++) chosen.Add(catalog.Shapes.First(c=>c.Shape.Length==1));
+        // Pick the type first, then a shape that can leave through that type's gate. Drawing shapes
+        // blind lets wide gates collect most blocks, and filtering afterwards keeps only boards of
+        // small, flexible pieces. Targets are as even as the block count allows; a type with no
+        // fitting shape left gives its slot to the next most wanted one.
+        int typeCount=catalog.Types.Length;
+        var wanted=Enumerable.Repeat(plan.Count/typeCount,typeCount).ToArray();
+        foreach(int t in Enumerable.Range(0,typeCount).OrderBy(_=>random.Next()).Take(plan.Count%typeCount)) wanted[t]++;
+        var counts=new int[typeCount];
+        var chosen=new List<(ShapeChoice Choice,int Type)>();
         int remaining=plan.Count-plan.Singles, area=plan.Area-plan.Singles;
-        while(remaining>0)
+        for(int slot=0;slot<plan.Count;slot++)
         {
-            var candidates=catalog.Shapes.Where(c=>c.Shape.Length>1 && area>=c.Shape.Length && catalog.Sums[remaining-1,area-c.Shape.Length]).ToArray();
-            var choice=candidates[random.Next(candidates.Length)]; chosen.Add(choice); area-=choice.Shape.Length; remaining--;
+            bool single=slot<plan.Singles;
+            ShapeChoice[] Fitting(string type)=>catalog.Shapes.Where(c=>c.Types.Contains(type) && (single ? c.Shape.Length==1 :
+                c.Shape.Length>1 && area>=c.Shape.Length && catalog.Sums[remaining-1,area-c.Shape.Length])).ToArray();
+            var best=Enumerable.Range(0,typeCount).OrderByDescending(t=>wanted[t]-counts[t]).ThenBy(_=>random.Next())
+                .Select(t=>(Type:t,Shapes:Fitting(catalog.Types[t]))).FirstOrDefault(o=>o.Shapes.Length>0);
+            if(best.Shapes==null) return null;
+            var choice=best.Shapes[random.Next(best.Shapes.Length)];
+            chosen.Add((choice,best.Type)); counts[best.Type]++;
+            if(!single) {area-=choice.Shape.Length; remaining--;}
         }
-        chosen=chosen.OrderBy(_=>random.Next()).ToList();
-        // Match every distinct type to a compatible block before filling the rest.
-        var assigned=Enumerable.Repeat(-1,chosen.Count).ToArray();
-        bool Match(int type, HashSet<int> visited)
-        {
-            foreach(int i in Enumerable.Range(0,chosen.Count).OrderBy(_=>random.Next()))
-            {
-                if(!chosen[i].Types.Contains(catalog.Types[type]) || !visited.Add(i)) continue;
-                if(assigned[i]<0 || Match(assigned[i],visited)) {assigned[i]=type;return true;}
-            }
-            return false;
-        }
-        for(int type=0;type<catalog.Types.Length;type++) if(!Match(type,[])) return null;
-        return chosen.Select((c,i)=>new Piece($"b{i+1}",c.Shape,new(0,0),
-            [assigned[i]>=0 ? catalog.Types[assigned[i]] : c.Types[random.Next(c.Types.Length)]])).ToList();
+        if(counts.Min()==0 || counts.Max()-counts.Min()>options.TypeSpread) return null;
+        return chosen.OrderBy(_=>random.Next()).Select((c,i)=>new Piece($"b{i+1}",c.Choice.Shape,new(0,0),[catalog.Types[c.Type]])).ToList();
     }
+
+    // Difference between the most and least common outer-layer type; neutral blocks don't count.
+    private static int Spread(IEnumerable<Piece> pieces, IEnumerable<string> types)
+    {
+        var counts=types.Distinct().Select(t=>pieces.Count(p=>p.Types.Length>0 && p.Types[0]==t)).ToArray();
+        return counts.Max()-counts.Min();
+    }
+    internal static Dictionary<string,int> TypeCounts(Level level)=>
+        level.Board.Gates.Select(g=>g.Type).Distinct().ToDictionary(t=>t,t=>level.Blocks.Count(p=>p.Types.Length>0 && p.Types[0]==t));
 
     internal bool MeetsComposition(Level level)
     {
@@ -101,6 +111,7 @@ public sealed partial class Generator
         var types=pieces.Where(p=>p.Types.Length>0).Select(p=>p.Types[0]).ToHashSet();
         return pieces.Sum(p=>p.Shape.Length)>=RequiredCells(new Geometry(level.Board).FloorCount,options.Coverage) &&
             pieces.Count(p=>p.Shape.Length==1)==RequiredSingles(pieces.Length,options.SingleCellRatio) &&
-            types.SetEquals(level.Board.Gates.Select(g=>g.Type));
+            types.SetEquals(level.Board.Gates.Select(g=>g.Type)) &&
+            Spread(pieces,level.Board.Gates.Select(g=>g.Type))<=options.TypeSpread;
     }
 }
