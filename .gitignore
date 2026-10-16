@@ -35,6 +35,15 @@ bld/
 Game/AndroidBuild
 Game/Il2CppBackup
 
+# Unity player builds made next to the project (Game/<name>.aab and what Unity writes beside it).
+# Keep the symbols zip and mapping file of every release somewhere safe outside git: they decode crash reports.
+*.aab
+*.apk
+*.symbols.zip
+Game/*_mapping.txt
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*_BurstDebugInformation_DoNotShip/
+
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
