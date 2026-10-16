@@ -37,9 +37,12 @@ namespace BlocksEscape
             _restScale = _model.localScale;
         }
 
-        public void TakeOff()
+        // Starts a flight unless one is under way; returns whether it did.
+        public bool TakeOff()
         {
-            if (_time < 0f && _model != null) Begin();
+            if (_time >= 0f || _model == null) return false;
+            Begin();
+            return true;
         }
 
         void Update()

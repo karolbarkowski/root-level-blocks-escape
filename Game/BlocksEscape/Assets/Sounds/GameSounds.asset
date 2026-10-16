@@ -13,16 +13,22 @@ MonoBehaviour:
   m_Name: GameSounds
   m_EditorClassIdentifier: Assembly-CSharp::BlocksEscape.GameSounds
   music: {fileID: 8300000, guid: a208173daf94cb94997cfc7cee4fe112, type: 3}
-  victory: {fileID: 8300000, guid: 3256048841d43ba4289e6793592db306, type: 3}
+  effects:
+  - {fileID: 8300000, guid: fe0605914f2372643ba65a31685ba08b, type: 3}
+  - {fileID: 8300000, guid: 00944832accd33147a8dcc7ffd06a2eb, type: 3}
+  - {fileID: 8300000, guid: b251aa0725314a44dad758cfeb2f9ba7, type: 3}
+  - {fileID: 8300000, guid: 5d1fe3de3cb9fcf468dfb9e52a4d3448, type: 3}
+  - {fileID: 8300000, guid: 3256048841d43ba4289e6793592db306, type: 3}
+  - {fileID: 8300000, guid: b1ce6ec24caa5754b9770d8292cb56b4, type: 3}
+  - {fileID: 8300000, guid: 3cea0de6536827e49bd015f19540626c, type: 3}
   blockTypes:
   - type: cat
     clips:
     - {fileID: 8300000, guid: 1189ea96fa2599b4eaed803685686357, type: 3}
     - {fileID: 8300000, guid: fc304e9231626cd4da72f5a25c2688a3, type: 3}
-    - {fileID: 8300000, guid: 302761ac4ea57064f9731080eb2b9eef, type: 3}
   - type: chicken
     clips:
-    - {fileID: 8300000, guid: 1aeaed6096af53c41866c5f57dfa9118, type: 3}
+    - {fileID: 8300000, guid: 57edd047a75c6c948bb452700dc11d3b, type: 3}
   - type: cow
     clips:
     - {fileID: 8300000, guid: d1d5645d538fdc943bc5684aab2d9d69, type: 3}
@@ -42,6 +48,5 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9ba73f1928a4b0944b8cb301436db427, type: 3}
   - type: sheep
     clips:
-    - {fileID: 8300000, guid: 03dfe082a40157744bf3cc7faee8974a, type: 3}
     - {fileID: 8300000, guid: dd2efb84fb527514fa972aa3ebf20176, type: 3}
     - {fileID: 8300000, guid: 1f40f78adf969604a8cdf3543ffc57af, type: 3}

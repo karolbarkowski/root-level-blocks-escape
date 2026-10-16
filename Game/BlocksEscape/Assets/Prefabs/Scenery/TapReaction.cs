@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +10,17 @@ namespace BlocksEscape
     // root keeps the position and scale ScreenAnchor gives it. Idle props cost nothing but an early return. Taps are found
     // with box colliders fitted to each mesh, added in Play mode (meshes aren't readable in builds, so no mesh colliders).
     // The project steps physics from script, so the colliders are synced to their props before each tap raycast.
+    // Reactions the player started announce their sounds on PlayerSound (SoundPlayer): the tap itself, and for the barn
+    // the doors opening and slamming shut. The celebration's Cheer is silent.
     [DisallowMultipleComponent]
     public sealed class TapReaction : MonoBehaviour
     {
         public enum Kind { Shake, Shrug, Wobble, Hop, Ripple, Doors, TakeOff }
+        public enum Sound { Tapped, DoorsOpen, DoorsShut }
+
+        public static event Action<TapReaction, Sound> PlayerSound;
+
+        const float DoorsShutAt = 1.25f; // when the closing swing hits the frame, before its little rebound
 
 
         [SerializeField] Kind kind;
@@ -35,6 +43,7 @@ namespace BlocksEscape
         ParticleSystem _fx;
         float _time = -1f;
         float _seed;
+        bool _byPlayer, _shutSounded;
 
         public Kind Reaction => kind;
 
@@ -81,11 +90,13 @@ namespace BlocksEscape
             return best;
         }
 
-        public void Tap(Vector3 point)
+        public void Tap(Vector3 point) => React(point, true);
+
+        void React(Vector3 point, bool byPlayer)
         {
             if (kind == Kind.TakeOff)
             {
-                if (TryGetComponent<ButterflyFlight>(out var flight)) flight.TakeOff();
+                if (TryGetComponent<ButterflyFlight>(out var flight) && flight.TakeOff() && byPlayer) PlayerSound?.Invoke(this, Sound.Tapped);
                 return;
             }
             if (_time < 0f)
@@ -96,13 +107,16 @@ namespace BlocksEscape
             }
             else if (kind == Kind.Doors && _time < 1.2f) return; // let the doors finish swinging
             _time = 0f;
-            _seed = Random.value * 10f;
+            _seed = UnityEngine.Random.value * 10f;
+            _byPlayer = byPlayer;
+            _shutSounded = false;
             Burst(point);
+            if (byPlayer) PlayerSound?.Invoke(this, kind == Kind.Doors ? Sound.DoorsOpen : Sound.Tapped);
         }
 
         // Reacts as if tapped at its natural spot (the middle of the pond's water), for the scenery's cheer when a level is
         // solved (Celebration).
-        public void Cheer() => Tap(kind == Kind.Ripple ? _model.TransformPoint(new Vector3(0f, 0.045f, 0f)) : transform.position);
+        public void Cheer() => React(kind == Kind.Ripple ? _model.TransformPoint(new Vector3(0f, 0.045f, 0f)) : transform.position, false);
 
         // Whether the prop is shown: ScreenAnchor hides props that would overlap the board on this screen.
         public bool IsShown
@@ -163,6 +177,11 @@ namespace BlocksEscape
                     float open = t < 0.35f ? EaseOut(t / 0.35f) : t < 0.9f ? 1f : 1f - BounceIn(Mathf.Clamp01((t - 0.9f) / 0.5f));
                     for (int i = 0; i < Hinges().Length; i++)
                         _hinges[i].localRotation = Quaternion.Euler(0f, _hingeSigns[i] * 75f * open, 0f);
+                    if (t >= DoorsShutAt && !_shutSounded)
+                    {
+                        _shutSounded = true;
+                        if (_byPlayer) PlayerSound?.Invoke(this, Sound.DoorsShut);
+                    }
                     if (t > 1.45f) Finish();
                     break;
                 }

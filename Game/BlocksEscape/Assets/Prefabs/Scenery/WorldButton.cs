@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -7,6 +8,7 @@ namespace BlocksEscape
     // A 3D prop that works as a button: pressing it with mouse or touch squashes it, and releasing over it raises Clicked.
     // A press that moves further than Drag Tolerance is a drag or a swipe (the level picker's pages), not a click.
     // Hit-tests its own colliders with a ray from the camera, so it needs a collider on itself or a child.
+    // Every click is also announced on AnyClicked, after the button's own listeners (SoundPlayer's click sound).
     [DisallowMultipleComponent]
     public sealed class WorldButton : MonoBehaviour
     {
@@ -19,6 +21,7 @@ namespace BlocksEscape
         [SerializeField] UnityEvent clicked = new UnityEvent();
 
         public UnityEvent Clicked => clicked;
+        public static event Action<WorldButton> AnyClicked;
 
         Transform _visual;
         bool _pressed;
@@ -46,7 +49,11 @@ namespace BlocksEscape
                 else if (_pressed && pointer.press.wasReleasedThisFrame)
                 {
                     _pressed = false;
-                    if (IsUnder(screen)) clicked.Invoke();
+                    if (IsUnder(screen))
+                    {
+                        clicked.Invoke();
+                        AnyClicked?.Invoke(this);
+                    }
                 }
             }
             float target = _pressed ? pressedSquash : 1f;

@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace BlocksEscape
 {
-    // Plays the game's sounds: the looping background music from the start, and now and then an animal's voice when the
-    // player picks up its block (a random clip from that block type's sounds, see GameSounds), and the victory jingle
-    // when a level is solved (PlayVictory). Follows the player's
-    // music and sound switches in GameSettings.
+    // Plays the game's sounds: the looping background music from the start, now and then an animal's voice when the
+    // player picks up its block (a random clip from that block type's sounds, see GameSounds), the victory jingle when a
+    // level is solved (PlayVictory), a click for every WorldButton, and the scenery's sounds when the player taps it
+    // (TapReaction.PlayerSound: rustling plants, a droplet in the pond, wings of the butterfly, the barn doors opening and
+    // slamming). Follows the player's music and sound switches in GameSettings.
     [DisallowMultipleComponent]
     public sealed class SoundPlayer : MonoBehaviour
     {
@@ -32,6 +33,8 @@ namespace BlocksEscape
         void OnEnable()
         {
             if (dragger != null) dragger.Grabbed += OnGrabbed;
+            WorldButton.AnyClicked += OnButtonClicked;
+            TapReaction.PlayerSound += OnScenerySound;
             GameSettings.Changed += ApplySettings;
             ApplySettings();
         }
@@ -39,6 +42,8 @@ namespace BlocksEscape
         void OnDisable()
         {
             if (dragger != null) dragger.Grabbed -= OnGrabbed;
+            WorldButton.AnyClicked -= OnButtonClicked;
+            TapReaction.PlayerSound -= OnScenerySound;
             GameSettings.Changed -= ApplySettings;
         }
 
@@ -54,9 +59,32 @@ namespace BlocksEscape
             _music.Play();
         }
 
-        public void PlayVictory()
+        public void PlayVictory() => PlayEffect("victory");
+
+        void OnButtonClicked(WorldButton _) => PlayEffect("click");
+
+        void OnScenerySound(TapReaction prop, TapReaction.Sound sound)
         {
-            if (GameSettings.SoundOn && sounds != null && sounds.Victory != null) _effects.PlayOneShot(sounds.Victory, effectsVolume);
+            PlayEffect(sound switch
+            {
+                TapReaction.Sound.DoorsOpen => "door_open",
+                TapReaction.Sound.DoorsShut => "door_slam",
+                _ => prop.Reaction switch
+                {
+                    TapReaction.Kind.Shake or TapReaction.Kind.Shrug or TapReaction.Kind.Wobble => "leaves_rustling",
+                    TapReaction.Kind.Ripple => "water_droplet",
+                    TapReaction.Kind.TakeOff => "wings",
+                    _ => null, // the hopping animals stay quiet
+                },
+            });
+        }
+
+        // Plays the effect clip with this file name (GameSounds.Effect), if sound is on and the clip exists.
+        void PlayEffect(string name)
+        {
+            if (name == null || !GameSettings.SoundOn || sounds == null) return;
+            var clip = sounds.Effect(name);
+            if (clip != null) _effects.PlayOneShot(clip, effectsVolume);
         }
 
         void OnGrabbed(int block)

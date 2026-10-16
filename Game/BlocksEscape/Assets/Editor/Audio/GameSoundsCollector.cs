@@ -7,9 +7,9 @@ using UnityEngine;
 namespace BlocksEscape.EditorTools
 {
     // Keeps Sounds/GameSounds.asset in step with the Sounds folder: whenever an audio file under Assets/Sounds is added,
-    // removed or moved, the music (Sounds/music), the victory jingle (Sounds/victory.*) and each block type's clips
-    // (Sounds/<type id>) are collected again.
-    // Also sets import settings: the music streams, the short animal calls load fully decompressed.
+    // removed or moved, the music (Sounds/music), the effects (every clip directly in Sounds, looked up by file name) and
+    // each block type's clips (Sounds/<type id>) are collected again.
+    // Also sets import settings: the music streams, the short effects and animal calls load fully decompressed.
     sealed class GameSoundsCollector : AssetPostprocessor
     {
         const string Root = "Assets/Sounds";
@@ -53,7 +53,7 @@ namespace BlocksEscape.EditorTools
             }
 
             AudioClip music = Clips(MusicFolder).FirstOrDefault();
-            AudioClip victory = Clips(Root).FirstOrDefault(c => c.name == "victory");
+            AudioClip[] effects = Clips(Root);
             var types = new List<GameSounds.TypeSounds>();
             foreach (var folder in AssetDatabase.GetSubFolders(Root).OrderBy(f => f))
             {
@@ -61,10 +61,10 @@ namespace BlocksEscape.EditorTools
                 var clips = Clips(folder);
                 if (clips.Length > 0) types.Add(new GameSounds.TypeSounds { type = Path.GetFileName(folder), clips = clips });
             }
-            sounds.Set(music, victory, types.ToArray());
+            sounds.Set(music, effects, types.ToArray());
             EditorUtility.SetDirty(sounds);
             AssetDatabase.SaveAssets();
-            Debug.Log($"Collected sounds: music {(music != null ? music.name : "none")}, victory {(victory != null ? "yes" : "none")}, {types.Count} block types.", sounds);
+            Debug.Log($"Collected sounds: music {(music != null ? music.name : "none")}, effects {string.Join(", ", effects.Select(c => c.name))}, {types.Count} block types.", sounds);
         }
 
         static AudioClip[] Clips(string folder) =>
