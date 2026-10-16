@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.Serialization;
 using BlocksEscape.Levels;
@@ -19,10 +20,15 @@ namespace BlocksEscape
     // Continue goes where Progress.ContinueLevel says; before the first level is ever started it reads START (and
     // starts level 1). Pick Level opens the level picker (LevelPicker): the section planks under a "PICK LEVEL" sign, then
     // the chosen section's pages of level tiles under its name. Back steps out one screen at a time.
+    //
+    // Only the first section is free until the unlock is bought (Entitlements). While locked, Continue and the next level
+    // stay in the first section, and the unlock screen (the sign over a message plank, Buy and Not now) opens from a
+    // locked section, a locked level, or once every free level is solved. It is built in Awake from copies of the main
+    // menu's planks. When the unlock arrives there, the game goes on to where the player was heading.
     [DisallowMultipleComponent]
     public sealed class GameFlow : MonoBehaviour
     {
-        enum Screen { Menu, Settings, Sections, Page, Level }
+        enum Screen { Menu, Settings, Sections, Page, Level, Unlock }
 
         [SerializeField] LevelCatalog catalog;
         [SerializeField] Board board;
@@ -70,12 +76,26 @@ namespace BlocksEscape
         [Tooltip("Seconds from solving a level to the next one, so the celebration plays out.")]
         [SerializeField, Min(0f)] float nextLevelDelay = 2.4f;
 
+        [Header("Unlock")]
+        [Tooltip("Seconds the unlock screen shows UNLOCKED! before going on.")]
+        [SerializeField, Min(0f)] float unlockedDelay = 0.8f;
+
         Screen _screen;
         int _level = -1; // catalog index of the level being played
         int _section, _page; // the picker page shown or last shown
         bool _busy;      // a switch is animating
         ScreenAnchor _sign, _back;
         readonly Dictionary<GameObject, List<Vector2>> _slots = new(); // per page: the planks' places as laid out in the scene
+        GameObject _unlockPage;
+        WorldButton _unlockMessage, _buyButton, _notNowButton;
+        Screen _unlockFrom;              // where the unlock screen was opened from, for Not now
+        Func<IEnumerator> _afterUnlock;  // where the player was heading, once unlocked
+
+        // Levels that can be played now: all of them once unlocked, otherwise the first section.
+        int Playable => Entitlements.IsUnlocked ? catalog.Count : Mathf.Min(catalog.Count, picker.LevelsPerSection);
+
+        // Locked with every free level solved: Continue and the next level lead to the unlock screen.
+        bool MustUnlock => Playable < catalog.Count && Progress.AllSolved(Playable);
 
         void Awake()
         {
@@ -84,6 +104,7 @@ namespace BlocksEscape
             // The planks' places in the scene, top to bottom, are the slots the shown ones fill (LayOut).
             foreach (var page in new[] { mainPage, settingsPage })
                 _slots[page] = Planks(page, false).ConvertAll(plank => plank.ViewportPoint);
+            BuildUnlockPage();
             // Everything starts hidden and pops in as the first screen opens.
             mainPage.SetActive(true);
             settingsPage.SetActive(true);
@@ -99,7 +120,10 @@ namespace BlocksEscape
         {
             if (board != null) board.Completed += OnCompleted;
             Listen(backButton, Back);
-            Listen(continueButton, () => StartLevel(Progress.ContinueLevel(catalog.Count)));
+            Listen(continueButton, Continue);
+            Listen(_buyButton, Entitlements.Buy);
+            Listen(_notNowButton, Back);
+            Entitlements.Changed += OnEntitlementsChanged;
             Listen(pickLevelButton, ShowLevelPicker);
             Listen(settingsButton, ShowSettings);
             picker.SectionPicked += ShowSection;
@@ -113,9 +137,10 @@ namespace BlocksEscape
         void OnDisable()
         {
             if (board != null) board.Completed -= OnCompleted;
-            foreach (var button in new[] { backButton, continueButton, pickLevelButton, settingsButton, musicButton, soundButton })
+            foreach (var button in new[] { backButton, continueButton, pickLevelButton, settingsButton, musicButton, soundButton, _buyButton, _notNowButton })
                 if (button != null) button.Clicked.RemoveAllListeners();
             GameSettings.Changed -= UpdateSettingsLabels;
+            Entitlements.Changed -= OnEntitlementsChanged;
             picker.SectionPicked -= ShowSection;
             picker.LevelPicked -= StartLevel;
             picker.PageTurned -= TurnPage;
@@ -133,8 +158,20 @@ namespace BlocksEscape
 
         public void ShowLevelPicker() => Switch(ToSections());
 
-        // Opens a section on the page holding its first unsolved level.
-        public void ShowSection(int section) => Switch(ToPage(section, picker.FirstUnsolvedPage(section)));
+        // Opens a section on the page holding its first unsolved level; a locked one opens the unlock screen first.
+        public void ShowSection(int section)
+        {
+            IEnumerator Open() => ToPage(section, picker.FirstUnsolvedPage(section));
+            Switch(picker.IsLocked(section) ? ToUnlock(Open) : Open());
+        }
+
+        // Continue: the level Progress.ContinueLevel picks among the playable ones, or the unlock screen when locked
+        // with every free level solved (then the first unsolved level after them, once unlocked).
+        void Continue()
+        {
+            if (MustUnlock) Switch(ToUnlock(() => ToLevel(Progress.ContinueLevel(catalog.Count))));
+            else StartLevel(Progress.ContinueLevel(Playable));
+        }
 
         void TurnPage(int step)
         {
@@ -144,12 +181,14 @@ namespace BlocksEscape
 
         public void StartLevel(int index)
         {
-            if (catalog != null && index >= 0 && index < catalog.Count) Switch(ToLevel(index));
+            if (catalog == null || index < 0 || index >= catalog.Count) return;
+            Switch(index < Playable ? ToLevel(index) : ToUnlock(() => ToLevel(index)));
         }
 
         public void Back()
         {
             if (_screen == Screen.Page) ShowLevelPicker();
+            else if (_screen == Screen.Unlock) Switch(_unlockFrom is Screen.Sections or Screen.Page ? ToSections() : ToMenu());
             else if (_screen != Screen.Menu) ShowMenu();
         }
 
@@ -168,6 +207,8 @@ namespace BlocksEscape
             dragger.enabled = _screen == Screen.Level;
             picker.SwipeEnabled = _screen == Screen.Page;
             _busy = false;
+            // The unlock may have arrived while the unlock screen was still popping in.
+            if (_screen == Screen.Unlock && Entitlements.IsUnlocked) Switch(AfterUnlock());
         }
 
         IEnumerator ToMenu()
@@ -176,6 +217,7 @@ namespace BlocksEscape
             _level = -1;
             var hide = new List<ScreenAnchor> { _sign, _back };
             hide.AddRange(Planks(settingsPage, false));
+            hide.AddRange(Planks(_unlockPage, false));
             hide.AddRange(picker.AllProps());
             yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
             board.Clear();
@@ -199,6 +241,7 @@ namespace BlocksEscape
             _screen = Screen.Sections;
             var hide = MainMenu(false);
             hide.Add(_sign);
+            hide.AddRange(Planks(_unlockPage, false));
             hide.AddRange(picker.PageOnlyProps());
             // Coming straight from a level, its pen comes down as on the way to the menu.
             yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
@@ -221,6 +264,7 @@ namespace BlocksEscape
             _page = page;
             var hide = new List<ScreenAnchor> { _sign };
             hide.AddRange(picker.AllProps());
+            hide.AddRange(Planks(_unlockPage, false));
             yield return Pop(hide, false);
             levelSign.Caption = picker.SectionName(section);
             var show = new List<ScreenAnchor> { _sign };
@@ -245,6 +289,7 @@ namespace BlocksEscape
             // From level to level the old pen comes down first (its blocks are usually gone already).
             var hide = new List<ScreenAnchor>(MainMenu(false)) { _sign };
             hide.AddRange(picker.AllProps());
+            hide.AddRange(Planks(_unlockPage, false));
             yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
             levelSign.Caption = null;
             levelSign.Number = index + 1;
@@ -278,8 +323,95 @@ namespace BlocksEscape
             yield return Wait(celebrationDelay);
             if (celebration != null) celebration.Play();
             yield return Wait(nextLevelDelay - celebrationDelay);
-            yield return _level + 1 < catalog.Count ? ToLevel(_level + 1) : ToMenu();
+            int next = _level + 1;
+            if (next < Playable) yield return ToLevel(next);
+            else if (Playable == catalog.Count) yield return ToMenu(); // the last level
+            // Locked at the end of the free levels: the free ones still unsolved first, then the unlock screen.
+            else if (!MustUnlock) yield return ToLevel(Progress.ContinueLevel(Playable));
+            else yield return ToUnlock(() => ToLevel(Progress.ContinueLevel(catalog.Count)));
         }
+
+        // The unlock screen; afterUnlock is where the player was heading, run once the unlock arrives.
+        IEnumerator ToUnlock(Func<IEnumerator> afterUnlock)
+        {
+            _unlockFrom = _screen;
+            _afterUnlock = afterUnlock;
+            _screen = Screen.Unlock;
+            var hide = MainMenu(false);
+            hide.Add(_sign);
+            hide.AddRange(picker.AllProps());
+            yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
+            if (board.Content != null)
+            {
+                board.Clear();
+                boardCamera.Frame();
+            }
+            levelSign.Caption = "UNLOCK";
+            UpdateUnlockLabels();
+            var show = new List<ScreenAnchor> { _sign };
+            show.AddRange(LayOut(_unlockPage));
+            if (!_back.gameObject.activeSelf) show.Add(_back);
+            yield return Pop(show, true);
+        }
+
+        IEnumerator AfterUnlock()
+        {
+            UpdateUnlockLabels();
+            yield return Wait(unlockedDelay);
+            Func<IEnumerator> next = _afterUnlock ?? ToSections;
+            _afterUnlock = null;
+            yield return next();
+        }
+
+        void OnEntitlementsChanged()
+        {
+            UpdateUnlockLabels();
+            if (_screen == Screen.Sections && !_busy) picker.SectionProps(); // relabels the planks in place
+            if (_screen == Screen.Unlock && Entitlements.IsUnlocked) Switch(AfterUnlock());
+        }
+
+        // The unlock page: a copy of the main menu page whose first plank shows the offer (not a button), then Buy and
+        // Not now, in the main menu's slots.
+        void BuildUnlockPage()
+        {
+            _unlockPage = Instantiate(mainPage, mainPage.transform.parent);
+            _unlockPage.name = "Unlock Page";
+            _unlockPage.SetActive(true);
+            var planks = Planks(_unlockPage, false);
+            for (int i = 3; i < planks.Count; i++) Destroy(planks[i].gameObject);
+            if (planks.Count > 3) planks.RemoveRange(3, planks.Count - 3);
+            _slots[_unlockPage] = planks.ConvertAll(plank => plank.ViewportPoint);
+            _unlockMessage = planks[0].GetComponent<WorldButton>();
+            _unlockMessage.enabled = false; // shows the offer only
+            _buyButton = planks[1].GetComponent<WorldButton>();
+            _notNowButton = planks[2].GetComponent<WorldButton>();
+            planks[0].name = "Unlock Message";
+            planks[1].name = "Buy Button";
+            planks[2].name = "Not Now Button";
+            foreach (var plank in planks) plank.gameObject.SetActive(false);
+            SetLabel(_notNowButton, "NOT NOW");
+        }
+
+        void UpdateUnlockLabels()
+        {
+            if (_buyButton == null || catalog == null) return;
+            int free = Mathf.Min(catalog.Count, picker.LevelsPerSection);
+            int sections = Mathf.Max(0, picker.SectionCount - 1);
+            SetLabel(_unlockMessage, TwoLines($"{(catalog.Count - free).ToString("N0", CultureInfo.InvariantCulture)} MORE LEVELS",
+                sections == 1 ? "1 NEW SECTION" : $"{sections} NEW SECTIONS"));
+            string price = Entitlements.Price;
+            SetLabel(_buyButton,
+                Entitlements.IsUnlocked ? "UNLOCKED!" :
+                Entitlements.IsPending ? TwoLines("PENDING", "WAITING FOR PAYMENT") :
+                Entitlements.IsPurchasing ? "PLEASE WAIT" :
+                Entitlements.LastResult == Entitlements.PurchaseResult.Failed ? "TRY AGAIN" :
+                Entitlements.LastResult == Entitlements.PurchaseResult.Unavailable && price == null ? TwoLines("BUY", "STORE UNAVAILABLE") :
+                price == null ? "BUY" : $"BUY {price}"); // one line: a short word over the price would letter far too big
+        }
+
+        // Two lines on a plank as on the level picker's section planks, the second smaller; just the first without one.
+        static string TwoLines(string top, string bottom) =>
+            string.IsNullOrEmpty(bottom) ? top : $"<line-height=72%>{top}\n<size=62%>{bottom}</size>";
 
         IEnumerator Pop(List<ScreenAnchor> props, bool show)
         {

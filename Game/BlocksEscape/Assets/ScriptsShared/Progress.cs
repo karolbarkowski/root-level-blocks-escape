@@ -4,7 +4,7 @@ using UnityEngine;
 namespace BlocksEscape
 {
     // The player's progress, kept in PlayerPrefs: which levels are solved (a bit per level index, stored as base64)
-    // and the last level played. Every level is open, so the solved levels can have gaps.
+    // and the last level played. Every playable level is open, so the solved levels can have gaps.
     public static class Progress
     {
         const string SolvedKey = "progress.solved";
@@ -61,6 +61,14 @@ namespace BlocksEscape
                 if (!IsSolved(i)) return i;
             }
             return (last + 1) % levelCount;
+        }
+
+        // Whether every level below levelCount is solved.
+        public static bool AllSolved(int levelCount)
+        {
+            for (int i = 0; i < levelCount; i++)
+                if (!IsSolved(i)) return false;
+            return true;
         }
 
         public static void Reset()

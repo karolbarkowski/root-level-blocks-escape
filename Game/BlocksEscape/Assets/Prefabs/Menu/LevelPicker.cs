@@ -83,6 +83,11 @@ namespace BlocksEscape
 
         public int SectionCount => Mathf.Min(_planks.Count, (_levelCount + levelsPerSection - 1) / levelsPerSection);
 
+        public int LevelsPerSection => levelsPerSection;
+
+        // Every section after the first needs the unlock (Entitlements).
+        public bool IsLocked(int section) => section > 0 && !Entitlements.IsUnlocked;
+
         public string SectionName(int section) =>
             section >= 0 && section < sectionNames.Length ? sectionNames[section] : $"SECTION {section + 1}";
 
@@ -107,7 +112,7 @@ namespace BlocksEscape
             return 0;
         }
 
-        // The section planks with their progress, in the order they pop.
+        // The section planks with their progress (or LOCKED), in the order they pop.
         public List<ScreenAnchor> SectionProps()
         {
             var shown = new List<ScreenAnchor>();
@@ -116,8 +121,9 @@ namespace BlocksEscape
                 var (first, count) = Section(s);
                 int solved = 0;
                 for (int i = 0; i < count; i++) if (Progress.IsSolved(first + i)) solved++;
+                string status = IsLocked(s) ? "LOCKED" : $"{solved}/{count}";
                 // Name over progress, small enough that no name needs shrinking, so every plank's lettering matches.
-                _planks[s].GetComponent<WorldLabel>().Text = $"<line-height=72%>{SectionName(s)}\n<size=62%>{solved}/{count}</size>";
+                _planks[s].GetComponent<WorldLabel>().Text = $"<line-height=72%>{SectionName(s)}\n<size=62%>{status}</size>";
                 shown.Add(_planks[s]);
             }
             return shown;
