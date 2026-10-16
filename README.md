@@ -89,7 +89,7 @@ Each verified level is saved immediately as JSON, an SVG preview and an HTML sol
 
 Gates sit on the outline. There are about one per 4.5 perimeter cells, and never fewer than the type count. They are 2 cells wide where a side has room, and neighbouring gates get different types. The type set rotates through `block-types.json` from layout to layout, so every animal appears. A few layouts use another rotation or one gate more or fewer (`OVERRIDES` in the script), because their default gates couldn't reach the generator's default forced opening. Smaller recessed and mixed boards were dropped for the same reason.
 
-Every layout generates levels with the default options. `generate-all.mjs` fills `levels/<layout>/` with 10 levels per layout, retrying slow layouts with fresh seeds and longer limits and deleting duplicate levels. Difficulty of those 1,200 levels:
+Every layout generates levels with the default options. `generate-all.mjs` fills `<out>/<layout>/` with 10 levels per layout (`--count`), retrying slow layouts with fresh seeds and longer limits and deleting duplicate levels. `--only <regex>` limits it to matching layout names, and any other option is passed to the generator. Difficulty of the first 1,200-level set (archived as `LevelGenerator/Set1.zip`, before the type balancing and the 1×4 bar removal):
 
 | Shape | Difficulty range | Median |
 |---|---|---:|
@@ -101,6 +101,27 @@ Every layout generates levels with the default options. `generate-all.mjs` fills
 | `mixed` | 135–682 | 289 |
 
 Most layouts produce a level within seconds. Pillars and mixed boards with 6–7 types on 7×9–8×9 can take 10+ minutes per level: narrow lanes and alcoves leave few ways to keep blocks away from their exits.
+
+### Building the game's level set
+
+[`LevelGenerator/curriculum.json`](LevelGenerator/curriculum.json) defines both the generated level pools and the order they reach the game in:
+
+```powershell
+node generate-pools.mjs --jobs 12      # fills levels/<pool>/<layout>/ for every pool; reruns top up
+node export-to-game.mjs --dry-run true # prints the stage summary only
+node export-to-game.mjs                # replaces the level JSONs in Game/BlocksEscape/Assets/Levels
+```
+
+| Levels | Stage | Pool / filter |
+|---|---|---|
+| 1–10, 11–20, 21–30, 31–40 | 4, 5, 6, then 7 types | `plain`: no specials, `--min-opening 2` |
+| 41–60 | directional introduced | `directional`: 4–5 types, every level has an arrow block |
+| 61–80 | frozen introduced | `frozen`: 4–5 types, every level has a frozen block; arrows allowed |
+| 81–100 | layered introduced | `layered`: 4–5 types, every level has an extra layer; earlier specials allowed |
+| 101–120 | neutral introduced | `neutral`: 4–5 types, every level has a gray block; everything allowed |
+| 121–1200 | rest | `main`: default options, ascending difficulty |
+
+Each stage takes the easiest levels in its pool that match its type count (`types`), contain its `requires` special, and have no special outside `requires` and `allow`. Specials are read from `analysis.difficultyFeatures`. The same layout never repeats within `gap` levels, stage borders included. If a stage can't be filled, the export stops before touching the game folder. Pool levels not used by a stage are dropped; only the `rest` pools fill the remainder.
 
 ### Difficulty and file names
 

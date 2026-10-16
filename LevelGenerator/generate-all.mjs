@@ -1,10 +1,11 @@
 // Generates levels for every layout until each has --count of them:
-//   node generate-all.mjs [--layouts layouts] [--out levels] [--count 10] [--seconds 180] [--jobs 8] [--maxAttempts 0]
+//   node generate-all.mjs [--layouts layouts] [--out levels] [--count 10] [--seconds 180] [--jobs 8] [--maxAttempts 0] [--only regex]
 // Each layout gets its own folder, levels/<layout>/. A layout that comes up short goes to
 // the back of the queue and is retried after the others, with a new seed and a longer time
 // limit. Every run gets a fresh random seed (logged), and a level whose blocks match an
 // earlier one in the same folder is deleted, so reruns never add copies. Existing levels
 // count towards the target, so the script can be stopped and rerun.
+// --only limits the run to layouts whose name matches the regex, e.g. _[45]types.
 // --maxAttempts 0 retries forever. Progress is appended to <out>/generate-all.log.
 // Any other option (e.g. --type-spread 2 --frozen false) is passed through to every generate run.
 import fs from 'node:fs';
@@ -21,8 +22,9 @@ const count = Number(args.count ?? 10);
 const seconds = Number(args.seconds ?? 180);
 const jobs = Number(args.jobs ?? 8);
 const maxAttempts = Number(args.maxAttempts ?? 0);
+const only = new RegExp(args.only ?? '');
 const dll = path.join(here, 'bin/Release/net10.0/LevelGenerator.dll');
-const own = ['layouts', 'out', 'count', 'seconds', 'jobs', 'maxAttempts'];
+const own = ['layouts', 'out', 'count', 'seconds', 'jobs', 'maxAttempts', 'only'];
 const passThrough = Object.entries(args).filter(([key]) => !own.includes(key)).flatMap(([key, value]) => [`--${key}`, value]);
 
 fs.mkdirSync(outDir, { recursive: true });
@@ -75,7 +77,7 @@ function generate(name, missing, attempt) {
   });
 }
 
-const queue = fs.readdirSync(layoutsDir).filter(f => f.endsWith('.json')).sort()
+const queue = fs.readdirSync(layoutsDir).filter(f => f.endsWith('.json') && only.test(f.slice(0, -5))).sort()
   .map(f => ({ name: f.slice(0, -5), attempt: 0 }));
 const total = queue.length;
 const gaveUp = [];

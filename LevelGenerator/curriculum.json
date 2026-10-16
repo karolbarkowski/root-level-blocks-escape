@@ -1,0 +1,31 @@
+{
+  "comment": "Level order for the game. generate-pools.mjs fills levels/<pool>/ from 'pools'; export-to-game.mjs fills 'stages' in order (easiest matching levels first), then orders the 'rest' pools by difficulty until 'total' levels. Specials: directional, frozen, layered, neutral. A stage rejects any special not in 'allow' or 'requires'.",
+  "total": 1200,
+  "gap": 8,
+  "pick": 3,
+  "pools": {
+    "plain": { "only": "", "count": 2, "maxAttempts": 3,
+      "options": { "neutral": false, "layered": false, "frozen": false, "directional": false, "min-opening": 2 } },
+    "directional": { "only": "_[45]types$", "count": 2, "maxAttempts": 3,
+      "options": { "neutral": false, "layered": false, "frozen": false } },
+    "frozen": { "only": "_[45]types$", "count": 2, "maxAttempts": 3,
+      "options": { "neutral": false, "layered": false } },
+    "layered": { "only": "_[45]types$", "count": 2, "maxAttempts": 3,
+      "options": { "neutral": false } },
+    "neutral": { "only": "_[45]types$", "count": 2, "maxAttempts": 3,
+      "options": {} },
+    "main": { "only": "", "count": 10, "maxAttempts": 4,
+      "options": {} }
+  },
+  "stages": [
+    { "name": "4 types", "count": 10, "pool": "plain", "types": [4] },
+    { "name": "5 types", "count": 10, "pool": "plain", "types": [5] },
+    { "name": "6 types", "count": 10, "pool": "plain", "types": [6] },
+    { "name": "7 types", "count": 10, "pool": "plain", "types": [7] },
+    { "name": "directional", "count": 20, "pool": "directional", "types": [4, 5], "requires": "directional" },
+    { "name": "frozen", "count": 20, "pool": "frozen", "types": [4, 5], "requires": "frozen", "allow": ["directional"] },
+    { "name": "layered", "count": 20, "pool": "layered", "types": [4, 5], "requires": "layered", "allow": ["directional", "frozen"] },
+    { "name": "neutral", "count": 20, "pool": "neutral", "types": [4, 5], "requires": "neutral", "allow": ["directional", "frozen", "layered"] }
+  ],
+  "rest": { "pools": ["main"] }
+}

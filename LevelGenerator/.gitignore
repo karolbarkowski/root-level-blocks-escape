@@ -2,3 +2,4 @@ bin/
 obj/
 .build-env/
 levels
+*.zip
