@@ -97,7 +97,8 @@ namespace BlocksEscape.EditorTools
         static GateCell BuildGate(string animal)
         {
             string dir = $"{GateRoot}/{animal}";
-            var material = MakeMaterial($"{dir}/{animal}Gate.mat", $"{dir}/{animal}Gate_Albedo.png");
+            // A gate tile shows at about 100 px; its 800 px face is plenty at half size.
+            var material = MakeMaterial($"{dir}/{animal}Gate.mat", $"{dir}/{animal}Gate_Albedo.png", 512);
             var outline = MakeOutlineMaterial($"{dir}/{animal}GateOutline.mat", $"{dir}/{animal}Gate_Albedo.png");
             var instance = Instantiate($"{dir}/{animal}Gate_Tile.fbx", material, outline);
             instance.name = $"{animal}Gate";
@@ -126,18 +127,18 @@ namespace BlocksEscape.EditorTools
             Save(root, WallPath);
         }
 
-        static Material MakeMaterial(string path, string texturePath)
+        static Material MakeMaterial(string path, string texturePath, int maxSize = 2048)
         {
             if (AssetImporter.GetAtPath(texturePath) is TextureImporter textures)
             {
                 // Flat cartoon colours survive ASTC 8x8 (2 bpp) fine; it halves the atlases' memory on phones.
                 var android = textures.GetPlatformTextureSettings("Android");
-                bool androidSet = android.overridden && android.maxTextureSize == 2048 && android.format == TextureImporterFormat.ASTC_8x8;
-                if (textures.maxTextureSize != 2048 || !androidSet)
+                bool androidSet = android.overridden && android.maxTextureSize == maxSize && android.format == TextureImporterFormat.ASTC_8x8;
+                if (textures.maxTextureSize != maxSize || !androidSet)
                 {
-                    textures.maxTextureSize = 2048; // plenty for blocks a phone shows at ~100 px per cell
+                    textures.maxTextureSize = maxSize; // 2048: plenty for blocks a phone shows at ~100 px per cell
                     android.overridden = true;
-                    android.maxTextureSize = 2048;
+                    android.maxTextureSize = maxSize;
                     android.format = TextureImporterFormat.ASTC_8x8;
                     textures.SetPlatformTextureSettings(android);
                     textures.SaveAndReimport();

@@ -74,6 +74,8 @@ namespace BlocksEscape
 
         public GameObject WallPrefab => wallPrefab;
         public BlockTypeModels Models => models;
+        public Material GateGlowMaterial => gateGlow;
+        public BlockExitSettings Exit => exit;
         public Transform Surface => surface;
         public Transform Content => content;
         public Vector2 Size => new Vector2(xTiles, yTiles) * GridUnits.CellSize;

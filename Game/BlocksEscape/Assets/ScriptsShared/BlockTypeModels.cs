@@ -30,6 +30,14 @@ namespace BlocksEscape.Levels
 
         public GateCell GateOf(string type) => TryGet(type, out var entry) ? entry.gate : null;
 
+        // Any type's gate prefab (they share one shader), or null.
+        public GateCell AnyGate()
+        {
+            foreach (var entry in entries)
+                if (entry.gate != null) return entry.gate;
+            return null;
+        }
+
         bool TryGet(string type, out Entry found)
         {
             foreach (var entry in entries)
