@@ -26,6 +26,9 @@ namespace BlocksEscape
         // Raised after every framing, with the camera already moved.
         public static event System.Action<BoardCamera> Framed;
 
+        // The enabled board camera, for the props that follow it (ScreenAnchor); null while there is none.
+        public static BoardCamera Active { get; private set; }
+
         public Camera Camera => _camera;
 
         // World bounds of everything the board renders, as of the last framing; scenery keeps clear of it.
@@ -39,12 +42,14 @@ namespace BlocksEscape
         void OnEnable()
         {
             _camera = GetComponent<Camera>();
+            Active = this;
             Subscribe();
             Frame();
         }
 
         void OnDisable()
         {
+            if (Active == this) Active = null;
             if (_subscribed != null) _subscribed.Initialized -= Frame;
             _subscribed = null;
             if (_assetShadowDistance >= 0f && GraphicsSettings.currentRenderPipeline is UniversalRenderPipelineAsset urp)

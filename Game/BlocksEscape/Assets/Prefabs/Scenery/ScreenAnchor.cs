@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BlocksEscape
@@ -34,6 +35,9 @@ namespace BlocksEscape
         [SerializeField] bool keepInSafeArea;
 
         const float AvoidTime = 0.25f; // seconds a prop takes to shrink away from the board or grow back, in Play mode
+
+        // The prop's renderers as of now (text children come and go), read into one shared list: no array per call.
+        static readonly List<Renderer> Renderers = new();
 
         float _pop = 1f;
         float _placedScale; // from the last placement, before Pop
@@ -73,7 +77,8 @@ namespace BlocksEscape
 
         void Place()
         {
-            var boardCamera = Object.FindAnyObjectByType<BoardCamera>();
+            // The enabled camera is at hand; only before it is enabled (scene load, in any order) does this search.
+            var boardCamera = BoardCamera.Active != null ? BoardCamera.Active : Object.FindAnyObjectByType<BoardCamera>();
             if (boardCamera != null) Place(boardCamera);
         }
 
@@ -132,7 +137,9 @@ namespace BlocksEscape
         void ApplyVisibility()
         {
             bool off = _shown <= 0f;
-            foreach (var r in GetComponentsInChildren<Renderer>(true)) r.forceRenderingOff = off;
+            GetComponentsInChildren(true, Renderers);
+            foreach (var r in Renderers) r.forceRenderingOff = off;
+            Renderers.Clear();
         }
 
 #if UNITY_EDITOR
@@ -177,12 +184,14 @@ namespace BlocksEscape
             if (board.size == Vector3.zero) return false;
             bool any = false;
             var prop = new Bounds();
-            foreach (var r in GetComponentsInChildren<Renderer>(true))
+            GetComponentsInChildren(true, Renderers);
+            foreach (var r in Renderers)
             {
                 var b = r.bounds;
                 if (!any) { prop = b; any = true; }
                 else prop.Encapsulate(b);
             }
+            Renderers.Clear();
             if (!any) return false;
             var shrink = new Vector3(prop.size.x * 0.25f, 0f, prop.size.z * 0.25f);
             prop.size -= shrink;

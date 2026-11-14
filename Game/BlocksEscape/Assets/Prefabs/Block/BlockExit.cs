@@ -24,7 +24,8 @@ namespace BlocksEscape
     }
 
     // Plays a block leaving the board in Play mode: it slides one cell out into its gate while the gate flares, then rises
-    // and dissolves from the bottom up into light with sparkles drifting up, and is destroyed. The rules have already
+    // and dissolves from the bottom up into light with sparkles drifting up, and is destroyed (its dissolve materials
+    // are kept for the next block). The rules have already
     // removed it, so the board plays on meanwhile. For a peel, Board strips the leaving object down to its top layer.
     [DisallowMultipleComponent]
     public sealed class BlockExit : MonoBehaviour
@@ -35,6 +36,9 @@ namespace BlocksEscape
         static readonly int HeightId = Shader.PropertyToID("_Height");
         static readonly int BaseMapId = Shader.PropertyToID("_BaseMap");
 
+        // Dissolve materials of blocks that have gone, for the next ones to leave.
+        static readonly Stack<Material> SpareMaterials = new();
+
         BlockExitSettings _settings;
         readonly List<Material> _materials = new();
         IReadOnlyList<GateCell> _gates;
@@ -42,6 +46,7 @@ namespace BlocksEscape
         ParticleSystem _sparkles;
         Vector3 _start, _slide, _center, _size;
         float _bottom, _height, _time;
+        bool _hidden;
 
         // outward is the gate's direction in world space, one cell long.
         public static void Play(GameObject block, Vector3 outward, IReadOnlyList<GateCell> gates, Material gateGlow, BlockExitSettings settings)
@@ -70,7 +75,7 @@ namespace BlocksEscape
                 var texture = source != null && source.HasProperty(BaseMapId) ? source.GetTexture(BaseMapId) : null;
                 if (!byTexture.TryGetValue(texture ?? Texture2D.whiteTexture, out var material))
                 {
-                    material = new Material(_settings.dissolve);
+                    material = NewMaterial(_settings.dissolve);
                     if (texture != null) material.SetTexture(BaseMapId, texture);
                     byTexture[texture ?? Texture2D.whiteTexture] = material;
                     _materials.Add(material);
@@ -84,6 +89,17 @@ namespace BlocksEscape
             _size = bounds.size;
             _height = bounds.size.y;
             Apply(0f, 0f);
+        }
+
+        // A copy of the dissolve material: a spare one brought back in step with it, or a new one.
+        static Material NewMaterial(Material dissolve)
+        {
+            Material material = null;
+            while (SpareMaterials.Count > 0 && material == null) material = SpareMaterials.Pop();
+            if (material == null) return new Material(dissolve);
+            if (material.shader != dissolve.shader) material.shader = dissolve.shader;
+            material.CopyPropertiesFromMaterial(dissolve);
+            return material;
         }
 
         void MakeSparkles()
@@ -141,7 +157,11 @@ namespace BlocksEscape
 
             if (_time >= done)
             {
-                foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+                if (!_hidden)
+                {
+                    _hidden = true;
+                    foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+                }
                 if (_time >= done + _settings.flareFade) Destroy(gameObject);
             }
         }
@@ -159,7 +179,7 @@ namespace BlocksEscape
 
         void OnDestroy()
         {
-            foreach (var m in _materials) Destroy(m);
+            foreach (var m in _materials) SpareMaterials.Push(m);
             foreach (var gate in _gates ?? Array.Empty<GateCell>()) if (gate != null) gate.SetGlow(0f, _gateGlow);
             if (_sparkles != null)
             {

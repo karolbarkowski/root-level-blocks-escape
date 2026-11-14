@@ -48,6 +48,15 @@ namespace BlocksEscape
         Block[] _blocks = Array.Empty<Block>(); // spawned block per level block index; null when skipped or removed
         readonly List<GateCell> _gates = new();
 
+        BlockTypeSet _types;    // parsed block types, kept in Play mode
+        TextAsset _typesSource; // the file _types was parsed from
+
+        // Play mode: fence pieces and gate tiles are kept between levels instead of being destroyed and spawned again
+        // (a level has dozens of them, each with children). They wait, inactive, under the Pool child.
+        Transform _pool;
+        readonly Dictionary<GameObject, Stack<GameObject>> _pooled = new();                // per prefab
+        readonly List<(GameObject prefab, GameObject instance)> _inLevel = new();          // taken for the current level
+
         public int XTiles
         {
             get => xTiles;
@@ -113,7 +122,7 @@ namespace BlocksEscape
                 data.board.width > MaxTiles || data.board.height > MaxTiles)
                 throw new ArgumentException("Level has no board or an unsupported board size.");
             if (blockTypes == null) throw new InvalidOperationException("No block types assigned.");
-            var types = BlockTypeSet.Parse(blockTypes.text);
+            var types = Types();
             // Check every type before clearing, so a bad level leaves the current board untouched.
             foreach (var gate in data.board.gates ?? Array.Empty<GateData>()) types.Get(gate.type);
             foreach (var block in data.blocks ?? Array.Empty<BlockData>())
@@ -139,7 +148,7 @@ namespace BlocksEscape
             {
                 foreach (var cell in data.board.walls ?? Array.Empty<CellData>())
                 {
-                    var wall = Spawn(wallPrefab, walls);
+                    var wall = Take(wallPrefab, walls);
                     wall.name = $"Wall {cell.x},{cell.y}";
                     wall.transform.localPosition = CellToLocal(cell.x, cell.y);
                     RecordPrefabInstanceChanges(wall.transform);
@@ -157,7 +166,7 @@ namespace BlocksEscape
                 foreach (var cell in data.GateCells(gate))
                 {
                     // Unrotated whatever the side, so the face on the tile is upright like the blocks' faces.
-                    var gateCell = Spawn(prefab.gameObject, gateRoot).GetComponent<GateCell>();
+                    var gateCell = Take(prefab.gameObject, gateRoot).GetComponent<GateCell>();
                     gateCell.name = $"Gate Cell {cell.x},{cell.y}";
                     gateCell.transform.localPosition = CellToLocal(cell.x, cell.y);
                     gateCell.transform.localRotation = Quaternion.identity;
@@ -174,6 +183,56 @@ namespace BlocksEscape
             RefreshStatus();
 
             Initialized?.Invoke();
+        }
+
+        // The block types file, parsed once in Play mode; in the editor it is read every time, as it may have changed.
+        BlockTypeSet Types()
+        {
+            if (_types == null || _typesSource != blockTypes || !Application.isPlaying)
+            {
+                _types = BlockTypeSet.Parse(blockTypes.text);
+                _typesSource = blockTypes;
+            }
+            return _types;
+        }
+
+        // A fence piece or gate tile for the level: one waiting in the pool if there is any, otherwise a new instance.
+        // Pooled ones come back at the prefab's own rotation and scale (BoardAppear leaves hidden pieces tiny).
+        GameObject Take(GameObject prefab, Transform parent)
+        {
+            if (!Application.isPlaying) return Spawn(prefab, parent);
+            GameObject instance = null;
+            if (_pooled.TryGetValue(prefab, out var waiting))
+                while (waiting.Count > 0 && instance == null) instance = waiting.Pop();
+            if (instance == null) instance = Object.Instantiate(prefab, parent, false);
+            else
+            {
+                instance.transform.SetParent(parent, false);
+                instance.transform.localRotation = prefab.transform.localRotation;
+                instance.transform.localScale = prefab.transform.localScale;
+            }
+            _inLevel.Add((prefab, instance));
+            return instance;
+        }
+
+        // Moves the current level's fence pieces and gate tiles to the pool, before the level root is destroyed.
+        void PoolLevelPieces()
+        {
+            if (_pool == null)
+            {
+                _pool = NewChild("Pool", transform);
+                _pool.gameObject.SetActive(false);
+            }
+            foreach (var (prefab, instance) in _inLevel)
+            {
+                if (instance == null) continue;
+                if (instance.TryGetComponent<BoardAppear>(out var appear)) DestroyImmediate(appear);
+                if (instance.TryGetComponent<GateCell>(out var gate)) gate.SetGlow(0f, gateGlow);
+                instance.transform.SetParent(_pool, false);
+                if (!_pooled.TryGetValue(prefab, out var waiting)) _pooled[prefab] = waiting = new Stack<GameObject>();
+                waiting.Push(instance);
+            }
+            _inLevel.Clear();
         }
 
         // Pen floor: the cells the fence encloses, found by flooding the grid (plus a margin) from outside.
@@ -392,6 +451,7 @@ namespace BlocksEscape
 
         public void Clear()
         {
+            if (Application.isPlaying) PoolLevelPieces();
             foreach (var root in LevelRoots())
             {
                 // The floor mesh is generated per level, so it goes with it.

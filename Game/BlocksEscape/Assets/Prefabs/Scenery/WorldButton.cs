@@ -23,7 +23,10 @@ namespace BlocksEscape
         public UnityEvent Clicked => clicked;
         public static event Action<WorldButton> AnyClicked;
 
+        static int _syncedFrame = -1; // frame the colliders were last synced to their props, shared by all buttons
+
         Transform _visual;
+        Collider[] _colliders; // found on the first press
         bool _pressed;
         Vector2 _pressedAt;
         float _squash = 1f;
@@ -57,6 +60,7 @@ namespace BlocksEscape
                 }
             }
             float target = _pressed ? pressedSquash : 1f;
+            if (_squash == target) return; // at rest: the model is left alone
             _squash = Mathf.MoveTowards(_squash, target, (1f - pressedSquash) / animationTime * Time.unscaledDeltaTime);
             var scale = _visual.localScale;
             _visual.localScale = new Vector3(scale.x, _squash, scale.z);
@@ -74,9 +78,15 @@ namespace BlocksEscape
             var cam = viewCamera != null ? viewCamera : Camera.main;
             if (cam == null) return false;
             var ray = cam.ScreenPointToRay(screen);
-            Physics.SyncTransforms(); // physics is stepped from script, so moved props' colliders lag until synced
-            foreach (var c in GetComponentsInChildren<Collider>())
-                if (c.Raycast(ray, out _, 1000f)) return true;
+            // Physics is stepped from script, so moved props' colliders lag until synced: once a frame, for every button.
+            if (_syncedFrame != Time.frameCount)
+            {
+                _syncedFrame = Time.frameCount;
+                Physics.SyncTransforms();
+            }
+            _colliders ??= GetComponentsInChildren<Collider>(true);
+            foreach (var c in _colliders)
+                if (c != null && c.Raycast(ray, out _, 1000f)) return true;
             return false;
         }
     }

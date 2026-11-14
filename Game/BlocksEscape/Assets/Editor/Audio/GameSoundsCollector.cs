@@ -9,7 +9,8 @@ namespace BlocksEscape.EditorTools
     // Keeps Sounds/GameSounds.asset in step with the Sounds folder: whenever an audio file under Assets/Sounds is added,
     // removed or moved, the music (Sounds/music), the effects (every clip directly in Sounds, looked up by file name) and
     // each block type's clips (Sounds/<type id>) are collected again.
-    // Also sets import settings: the music streams, the short effects and animal calls load fully decompressed.
+    // Also sets import settings: the music streams, the short effects and animal calls load fully decompressed with
+    // the scene.
     sealed class GameSoundsCollector : AssetPostprocessor
     {
         const string Root = "Assets/Sounds";
@@ -30,6 +31,7 @@ namespace BlocksEscape.EditorTools
             else
             {
                 settings.loadType = AudioClipLoadType.DecompressOnLoad;
+                settings.preloadAudioData = true; // decoded with the scene, not in the middle of play on first use
                 importer.forceToMono = true;
             }
             importer.defaultSampleSettings = settings;

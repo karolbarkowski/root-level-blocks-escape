@@ -293,8 +293,7 @@ namespace BlocksEscape
             yield return Together(Pop(hide, false), Wait(TakeDownBoard()));
             levelSign.Caption = null;
             levelSign.Number = index + 1;
-            board.Level = catalog[index];
-            board.Initialize(LevelData.Parse(catalog[index].text));
+            board.Initialize(LevelData.Parse(catalog.Json(index)));
             // The pen goes up first, the animals pop in once the floor is mostly there.
             float pen = BoardAppear.Sweep(board, true, floorGrowTime, fenceSweep, fencePopTime);
             float blocks = BlockAppear.Sweep(board, true, blockSweep, blockPopTime, floorGrowTime * 0.6f);

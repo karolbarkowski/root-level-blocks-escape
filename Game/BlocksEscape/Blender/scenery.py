@@ -28,6 +28,7 @@ PALETTE = [
     ("sign_face", "#F4CB90"), ("sign_frame", "#CC8E58"), ("letter_edge", "#6B3E22"),
     ("barn_dark", "#A9372F"), ("straw", "#E8B64A"),
     ("sleep", "#BFDDF7"), ("sleep_rim", "#6F95C9"), ("sleep_z", "#3D5A8C"),
+    ("barn_light", "#D9574B"),
 ]
 GRID = 8; SW = 8  # 8x8 swatches of 8 px -> 64 px texture
 
@@ -343,52 +344,131 @@ def bar(color, a, b, width, y, depth):
     length = math.hypot(bx - ax, bz - az); angle = math.atan2(bz - az, bx - ax)
     return box(color, ((ax + bx)/2, y, (az + bz)/2), (length + width, depth, width), bevel=0.02, rot=(0, -angle, 0))
 
-def standing_flower(x, z, petal, r=0.16, rot=0.4):
+def standing_flower(x, z, petal, r=0.16, rot=0.4, y=-0.2):
     parts = flower((0, 0, 0), petal, r=r, rot=rot)
     for ob in parts:
-        ob.location = Vector((ob.location.x + x, -0.2, ob.location.z + z + ob.location.y)); ob.rotation_euler = (math.pi/2, 0, 0)
+        ob.location = Vector((ob.location.x + x, y, ob.location.z + z + ob.location.y)); ob.rotation_euler = (math.pi/2, 0, 0)
     return parts
 
-def standing_leaf(x, z, length, angle, color):
+def standing_leaf(x, z, length, angle, color, y=-0.22):
     """A leaf standing in the XZ plane, growing from (x, z) at the given angle (0 = towards +X)."""
-    ob = sphere(color, (x + math.cos(angle)*length*0.5, -0.22, z + math.sin(angle)*length*0.5), (length*0.5, 0.03, length*0.2), subdiv=2)
+    ob = sphere(color, (x + math.cos(angle)*length*0.5, y, z + math.sin(angle)*length*0.5), (length*0.5, 0.03, length*0.2), subdiv=2)
     ob.rotation_euler = (0, -angle, 0)
     return ob
 
+def clip(poly, axis, value, keep_above):
+    """Sutherland-Hodgman: the part of the convex polygon (points (x, z)) on one side of x or z = value."""
+    out = []
+    inside = lambda p: (p[axis] >= value) if keep_above else (p[axis] <= value)
+    for i, p in enumerate(poly):
+        q = poly[i - 1]
+        if inside(p) != inside(q):
+            t = (value - q[axis]) / (p[axis] - q[axis])
+            out.append((q[0] + (p[0] - q[0])*t, q[1] + (p[1] - q[1])*t))
+        if inside(p): out.append(p)
+    return out
+
+def fillet(poly, r, steps=4):
+    """The closed polygon (x, z) with every corner rounded off by an arc of radius r (less where edges are short)."""
+    out = []; n = len(poly)
+    for i in range(n):
+        a, v, b = Vector(poly[i - 1]), Vector(poly[i]), Vector(poly[(i + 1) % n])
+        d1, d2 = (a - v).normalized(), (b - v).normalized()
+        half = math.acos(max(-1.0, min(1.0, d1.dot(d2)))) / 2
+        if half > math.radians(89): out.append(tuple(v)); continue
+        rr = min(r, (a - v).length*0.45*math.tan(half), (b - v).length*0.45*math.tan(half))
+        t = rr / math.tan(half); p1, p2 = v + d1*t, v + d2*t
+        c = v + (d1 + d2).normalized() * (rr / math.sin(half))
+        a1, a2 = math.atan2(p1.y - c.y, p1.x - c.x), math.atan2(p2.y - c.y, p2.x - c.x)
+        da = (a2 - a1 + math.pi) % (2*math.pi) - math.pi
+        for k in range(steps + 1):
+            ang = a1 + da*k/steps; out.append((c.x + math.cos(ang)*rr, c.y + math.sin(ang)*rr))
+    return out
+
+def tube(color, pts, r, y, closed=True, resolution=3):
+    """A round rod of radius r along the polyline (x, z) at depth y."""
+    cu = bpy.data.curves.new("tube", 'CURVE'); cu.dimensions = '3D'
+    sp = cu.splines.new('POLY'); sp.points.add(len(pts) - 1)
+    for p, (x, z) in zip(sp.points, pts): p.co = (x, y, z, 1)
+    sp.use_cyclic_u = closed
+    cu.bevel_depth = r; cu.bevel_resolution = resolution; cu.use_fill_caps = True
+    ob = link(bpy.data.objects.new("tube", cu)); bpy.context.view_layer.update()
+    me = bpy.data.meshes.new_from_object(ob.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+    bpy.data.objects.remove(ob); bpy.data.curves.remove(cu)
+    return finish(link(bpy.data.objects.new("tube", me)), color)
+
+ROOF_EAVE, ROOF_KNEE, ROOF_PEAK = 0.72, 1.75, 1.2  # gambrel roof over the title barn: knee height, knee x, peak height
+
+def title_outline(inset=0.0):
+    """The title barn's front, counter-clockwise: the body plus a gambrel roof (steep lower slopes, shallow upper ones),
+    shrunk by inset."""
+    W, H, Z = TITLE_W, TITLE_H, TITLE_Z; top, bottom = Z + H/2, Z - H/2
+    w = W/2 - inset; knee = ROOF_KNEE - inset*0.6
+    return [(-w, bottom + inset), (w, bottom + inset), (w, top), (knee, top + ROOF_EAVE - inset*0.3),
+            (0, top + ROOF_PEAK - inset), (-knee, top + ROOF_EAVE - inset*0.3), (-w, top)]
+
 def title_sign(col):
-    """The game's title board: a red barn front (body plus a roof gable with an X window) with cream trim and board
-    seams, flowers on its sides and straw at its feet, on two posts behind. WorldLabel writes the title on the body."""
-    W, H, Z, GW, GH = TITLE_W, TITLE_H, TITLE_Z, GABLE_W, GABLE_H
+    """The game's title board, after the concept art: a red barn front of horizontal planks under a gambrel roof, with a
+    thick rounded cream trim, a loft door with an X in the gable, leafy daisies on its lower corners and straw at its
+    feet, on two posts behind. WorldLabel writes the title on the body; the planks stay behind its depth (-0.24)."""
+    W, H, Z = TITLE_W, TITLE_H, TITLE_Z
     top, bottom = Z + H/2, Z - H/2
+    rng = random.Random(42)
     parts = []
     for x in (-W/3, W/3):  # posts behind, holding it up
-        parts.append(box("wood_dark", (x, 0.25, (bottom + 0.3)/2), (0.22, 0.22, bottom + 0.3), bevel=0.04))
-    body = [(-W/2, bottom), (W/2, bottom), (W/2, top), (GW/2, top), (0, top + GH), (-GW/2, top), (-W/2, top)]
-    parts.append(prism("barn_red", body, -0.1, 0.25, bevel=0.05))
-    for i in range(1, 10):  # board seams
-        x = -W/2 + i * W/10
-        ztop = top if abs(x) > GW/2 else top + GH * (1 - abs(x) / (GW/2))
-        parts.append(box("barn_dark", (x, -0.115, (bottom + ztop)/2), (0.045, 0.02, ztop - bottom - 0.24), bevel=0.0))
-    loop = body + [body[0]]
-    for a, b in zip(loop, loop[1:]):  # cream trim all round
-        parts.append(bar("barn_trim", a, b, 0.16, -0.14, 0.1))
-    for s_ in (-1, 1):  # roof edge over the gable
-        parts.append(bar("roof", (s_ * (GW/2 + 0.22), top - 0.08), (0, top + GH + 0.16), 0.18, -0.06, 0.36))
-    wz, ws = top + GH * 0.4, 0.46  # X window in the gable
-    corners = [(-ws/2, wz - ws/2), (ws/2, wz - ws/2), (ws/2, wz + ws/2), (-ws/2, wz + ws/2)]
-    for a, b in zip(corners, corners[1:] + corners[:1]):
-        parts.append(bar("barn_trim", a, b, 0.07, -0.16, 0.06))
-    parts.append(bar("barn_trim", corners[0], corners[2], 0.06, -0.16, 0.06))
-    parts.append(bar("barn_trim", corners[1], corners[3], 0.06, -0.16, 0.06))
-    for s_ in (-1, 1):  # flowers on the sides, straw at the feet
+        parts.append(box("wood_dark", (x, 0.3, (bottom + 0.3)/2), (0.22, 0.22, bottom + 0.3), bevel=0.04))
+    o = title_outline()
+    parts.append(prism("barn_dark", title_outline(0.05), -0.08, 0.32, bevel=0.03))  # backing, seen in the plank gaps
+
+    # Planks: rows of boards clipped to the outline, joints staggered from row to row, two reds mixed.
+    inner = title_outline(0.08); ph, gap = 0.27, 0.035
+    zrow = bottom + 0.08
+    while zrow < top + ROOF_PEAK:
+        band = clip(clip(inner, 1, zrow, True), 1, zrow + ph - gap, False)
+        if len(band) >= 3:
+            xs = [p[0] for p in band]; x0, x1 = min(xs), max(xs)
+            cuts = [x0]; x = x0 + rng.uniform(0.6, 1.6)
+            while x < x1 - 0.5: cuts.append(x); x += rng.uniform(1.3, 2.3)
+            cuts.append(x1)
+            for a, b in zip(cuts, cuts[1:]):
+                board = clip(clip(band, 0, a + gap/2, True), 0, b - gap/2, False)
+                if len(board) >= 3:
+                    parts.append(prism(rng.choice(("barn_red", "barn_red", "barn_light")), board, -0.17, 0.12, bevel=0.025))
+        zrow += ph
+
+    # Thick rounded trim all round, then the roof on top of it: a dark slab along each slope, overhanging at the eaves,
+    # standing out in front of the trim.
+    parts.append(tube("barn_trim", fillet(o, 0.22), 0.13, -0.2))
+    for a, b in ((o[2], o[3]), (o[3], o[4]), (o[4], o[5]), (o[5], o[6])):
+        d = (Vector(b) - Vector(a)).normalized(); n = Vector((d.y, -d.x))  # out of the barn: the outline runs CCW
+        a2, b2 = Vector(a) + n*0.12, Vector(b) + n*0.12
+        if a == o[2]: a2 -= d*0.35
+        if b == o[6]: b2 += d*0.35
+        parts.append(bar("barn_dark", tuple(a2), tuple(b2), 0.24, -0.12, 0.5))
+
+    # Loft door with an X in the gable.
+    dz, ds = top + 0.48, 0.56
+    sq = [(-ds/2, dz - ds/2), (ds/2, dz - ds/2), (ds/2, dz + ds/2), (-ds/2, dz + ds/2)]
+    parts.append(prism("barn_red", sq, -0.21, 0.06, bevel=0.015))
+    parts.append(tube("barn_trim", fillet(sq, 0.05, 2), 0.045, -0.23))
+    parts.append(bar("barn_trim", (sq[0][0] + 0.05, sq[0][1] + 0.05), (sq[2][0] - 0.05, sq[2][1] - 0.05), 0.06, -0.24, 0.05))
+    parts.append(bar("barn_trim", (sq[1][0] - 0.05, sq[1][1] + 0.05), (sq[3][0] + 0.05, sq[3][1] - 0.05), 0.06, -0.24, 0.05))
+
+    # Leafy daisies on the lower corners with a pink flower among them, straw tufts at the feet; in front of the trim.
+    for s_ in (-1, 1):
         x = s_ * (W/2 - 0.02)
-        parts += standing_flower(x, Z + 0.25, "white", r=0.2)
-        parts += standing_flower(x + s_ * 0.05, Z - 0.3, "pink", r=0.15, rot=1.1)
-        for k in range(3):
-            parts.append(standing_leaf(x - s_ * 0.05, Z - 0.02, 0.34, (0 if s_ > 0 else math.pi) + (k - 1) * 0.55, ["leaf", "leaf_dark", "leaf_light"][k]))
-        for k in range(7):
-            a = (k - 3) * 0.22 + s_ * 0.15
-            parts.append(cylinder("straw", (x - s_ * 0.55 + (k - 3) * 0.06, -0.18, bottom - 0.18), 0.022, 0.5, verts=6, bevel=0.0, rot=(0, a, 0)))
+        for k, (z, length, ang) in enumerate([(0.5, 0.7, -0.5), (0.62, 0.75, 0.05), (0.8, 0.65, 0.6), (1.0, 0.55, 1.05),
+                                              (0.45, 0.55, -1.2), (1.1, 0.5, 1.55), (0.7, 0.6, 2.4)]):
+            a = ang if s_ > 0 else math.pi - ang  # outwards, mirrored on the left
+            parts.append(standing_leaf(x, z, length, a, ["leaf", "leaf_dark", "leaf_light"][k % 3], y=-0.4))
+        for fx, fz, r, petal, rot in ((0.0, 1.02, 0.27, "white", 0.3), (0.2, 0.58, 0.21, "white", 1.0),
+                                      (-0.22, 0.42, 0.13, "pink", 0.6), (0.3, 1.3, 0.11, "pink", 0.2)):
+            parts += standing_flower(x + s_*fx, fz, petal, r=r, rot=rot, y=-0.46)
+        for t, cx in enumerate((W/2 - 0.75, W/2 - 1.9)):  # straw tufts under the bottom trim
+            for k in range(9):  # short blades fanned wide, longest in the middle
+                a = (k - 4) * 0.27 + rng.uniform(-.06, .06)
+                parts.append(cylinder("straw", (s_*cx + (k - 4)*0.02, -0.36, bottom - 0.12), 0.026,
+                                      (0.36 - abs(k - 4)*0.03) * rng.uniform(.85, 1.1), r2=0.008, verts=6, bevel=0.0, rot=(0, a, 0)))
     return join("TitleSign", parts, col)
 
 def back_button(col):

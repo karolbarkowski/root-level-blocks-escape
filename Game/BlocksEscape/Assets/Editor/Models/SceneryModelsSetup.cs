@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BlocksEscape.EditorTools
 {
     // Turns the models exported by Game/BlocksEscape/Blender/scenery.py (Prefabs/Scenery/*.fbx + Scenery_Palette.png)
-    // into prefabs that share one URP Lit material. The palette texture is a grid of flat colour swatches the meshes are
+    // into prefabs that share one URP Simple Lit material. The palette texture is a grid of flat colour swatches the meshes are
     // UV-mapped into, so it is imported without filtering or mipmaps to keep the swatches from bleeding.
     // The back button, the menu plank and the level tile get a collider and a WorldButton; the sign gets a LevelSign, and
     // the plank, the tile and the title sign a WorldLabel, all wired to the game font (Fonts/Fredoka SDF, "Blocks
@@ -49,14 +49,16 @@ namespace BlocksEscape.EditorTools
                 palette.textureCompression = TextureImporterCompression.Uncompressed;
                 palette.SaveAndReimport();
             }
+            var shader = Shader.Find(BlenderModelsSetup.PropShader);
             var material = AssetDatabase.LoadAssetAtPath<Material>(MaterialPath);
             if (material == null)
             {
-                material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                material = new Material(shader);
                 AssetDatabase.CreateAsset(material, MaterialPath);
             }
+            if (material.shader != shader) material.shader = shader;
             material.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(PalettePath));
-            material.SetFloat("_Smoothness", 0.15f);
+            BlenderModelsSetup.MatteSimpleLit(material);
             EditorUtility.SetDirty(material);
 
             var models = Directory.GetFiles(Dir, "*.fbx").Select(p => p.Replace('\\', '/')).OrderBy(p => p).ToList();
